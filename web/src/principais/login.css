@@ -1,0 +1,59 @@
+.container{
+    font-family: 'Times New Roman', Times, serif;
+    background: rgba(255, 247, 209, 0.9);
+    transform: translate(-40px, 0);
+    border-radius: 20px;
+    padding: 12%;
+    width: 130%;
+}
+
+.header1{
+    background: none;
+    display: inline-flex;
+    transform: translate(-600px, -110px);
+}
+
+.header1>h3{
+    background: none;
+    font-size: 23px;
+}
+
+.play1{
+    background: none;
+    font-size: 23px;
+}
+
+.title1{
+    background: none;
+    font-size: 27px;
+    display: flex;
+    margin-bottom: 10%;
+    padding-left: 3%;
+}
+
+.form1{
+    background: none;
+}
+
+.label1{
+    background: none;
+    display: flex;
+}
+
+.in1{
+    background: rgba(255, 247, 209, 0.9);
+    border: 1px solid black;
+    margin-bottom: 12%;
+    display: flex;
+}
+
+.btn1{
+    background: black;
+    border-radius: 10px;
+    margin-bottom: 12%;
+    width: 80%;
+}
+
+.reg{
+    background: none;
+}

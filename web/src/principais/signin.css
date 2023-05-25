@@ -1,0 +1,65 @@
+.container2{
+    font-family: 'Times New Roman', Times, serif;
+    background: rgba(255, 247, 209, 0.9);
+    transform: translate(-50px, 0);
+    border-radius: 20px;
+    padding: 7%;
+    width: 130%;
+}
+
+.header2{
+    background: none;
+    display: inline-flex;
+    transform: translate(-600px, -80px);
+}
+
+.header2>h3{
+    background: none;
+    font-size: 23px;
+}
+
+.play2{
+    background: none;
+    font-size: 23px;
+}
+
+.title2{
+    background: none;
+    font-size: 24px;
+    display: flex;
+    margin-top: -10%;
+    margin-bottom: 5%;
+    padding-left: 6%;
+}
+
+.form2{
+    background: none;
+}
+
+.label2{
+    background: none;
+    display: flex;
+}
+
+.in2{
+    background: rgba(255, 247, 209, 0.9);
+    border: 1px solid black;
+    margin-bottom: 7%;
+    display: flex;
+}
+
+.btn2{
+    background: black;
+    border-radius: 10px;
+    margin-bottom: 3%;
+    width: 80%;
+}
+
+.reg2{
+    background: none;
+}
+
+.link2{
+    background: none;
+    color: black;
+}
