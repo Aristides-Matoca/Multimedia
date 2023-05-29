@@ -1,12 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
 import { Container, Row} from 'reactstrap'
-import Begin from '../componentes/begin'
 import Sobre from '../componentes/about'
 import Menu from '../componentes/menu'
 
-export default function Start(props){
-    const change = true
+export default function Start2(){
     return(
         <Container className={css(styles.cont1)}>
             <Row className={css(styles.row1)}>
@@ -15,8 +13,7 @@ export default function Start(props){
                 </header>
 
                 <div className={css(styles.divBegin)}>
-                    {change ? <Begin /> : <Sobre />}
-                    
+                    <Sobre />
                 </div>
             </Row>
         </Container>

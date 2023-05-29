@@ -2,9 +2,23 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
 import { Nav, Button} from 'reactstrap'
 import { FaPlay } from 'react-icons/fa'
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
+import { useRef } from 'react'
 
 export default function Menu(){
+
+    const homeRef = useRef(null)
+    const sobreRef = useRef(null)
+    var valor 
+
+    const extrairHome = () => {
+        if (homeRef.current) {valor = 'home'}
+    }
+
+    const extrairSobre = () => {
+        if (sobreRef.current) {valor = 'sobre'}
+    }
+
     return (
         <Nav className={css(styles.nav1)} justified>
             <aside className={css(styles.aside1)}>
@@ -13,8 +27,8 @@ export default function Menu(){
             </aside>
 
             <ul className={css(styles.ul1)}>
-                <Link className={css(styles.link1)} onClick={() => handleClick('home')}>Home</Link>
-                <Link className={css(styles.link1)} onClick={() => handleClick('about')}>Sobre</Link>
+                <Link className={css(styles.link1)} ref={homeRef} onClick={extrairHome} to={'/'}>Home</Link>
+                <Link className={css(styles.link1)} ref={sobreRef} onClick={extrairSobre} to={'/sobre'}>Sobre</Link>
                 <Link className={css(styles.link1)}>Descobrir</Link>
             </ul>
 
@@ -24,6 +38,10 @@ export default function Menu(){
             </aside>
         </Nav>
     )
+}
+
+function qualquer(){
+    console.log('Olas')
 }
 
 const styles = StyleSheet.create({
@@ -39,7 +57,7 @@ const styles = StyleSheet.create({
 
     isp:{
         background: 'none',
-        fontSize: '23px',
+        fontSize: '23.5px',
     },
 
     ul1:{
@@ -51,7 +69,10 @@ const styles = StyleSheet.create({
     link1:{
         background: 'none',
         marginRight: '50px',
-        color: 'black'
+        color: 'black',
+        ':hover':{
+            textDecoration: 'underline'
+        }
     },
 
     aside2:{
@@ -62,13 +83,22 @@ const styles = StyleSheet.create({
     btn3:{
         background: 'black',
         marginLeft: '20px',
+        ':hover': {
+            background: '#336699',
+            color: 'black',
+            border: '1px solid #336699'
+        }
     },
 
     btn4:{
         background: 'none',
         color: 'black',
         paddingLeft: '20px',
-        paddingRight: '20px'
+        paddingRight: '20px', 
+        ':hover': {
+            background: 'black',
+            color: 'white'
+        }
     },
 
     links:{

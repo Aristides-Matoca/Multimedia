@@ -10,17 +10,17 @@
 .header1{
     background: none;
     display: inline-flex;
-    transform: translate(-600px, -110px);
+    transform: translate(-562px, -115px);
 }
 
 .header1>h3{
     background: none;
-    font-size: 23px;
+    font-size: 23.3px;
 }
 
 .play1{
     background: none;
-    font-size: 23px;
+    font-size: 23.3px;
 }
 
 .title1{
@@ -29,10 +29,6 @@
     display: flex;
     margin-bottom: 10%;
     padding-left: 3%;
-}
-
-.form1{
-    background: none;
 }
 
 .label1{
@@ -52,6 +48,16 @@
     border-radius: 10px;
     margin-bottom: 12%;
     width: 80%;
+}
+
+.btn-link{
+    color: white;
+    background: none;
+    text-decoration: none;
+}
+
+.btn-link:hover{
+    color: white;
 }
 
 .reg{

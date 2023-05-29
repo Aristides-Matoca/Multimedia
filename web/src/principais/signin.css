@@ -10,7 +10,7 @@
 .header2{
     background: none;
     display: inline-flex;
-    transform: translate(-600px, -80px);
+    transform: translate(-557.3px, -71.5px);
 }
 
 .header2>h3{
@@ -20,7 +20,7 @@
 
 .play2{
     background: none;
-    font-size: 23px;
+    font-size: 23.5px;
 }
 
 .title2{
@@ -30,10 +30,6 @@
     margin-top: -10%;
     margin-bottom: 5%;
     padding-left: 6%;
-}
-
-.form2{
-    background: none;
 }
 
 .label2{

@@ -74,6 +74,9 @@ const styles = StyleSheet.create({
         border: 'none',
         marginLeft: '5%',
         color: 'black',
+        ':hover':{
+            color: 'white'
+        }
     },
 
     icon1:{
