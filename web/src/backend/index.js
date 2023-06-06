@@ -1,9 +1,8 @@
 import express from 'express';
 import { json } from 'express';
 import cors from 'cors';
-
 //import Pessoa from './pessoaDB.js';
-import { UsuariosOn, Pessoa } from './config.js';
+import { UsuariosOn, Pessoa, Upload } from './config.js';
 
 const app = express();
 app.use(express.json());
@@ -36,12 +35,25 @@ app.post("/create", async(req, res)=>{
     res.send({msg: "User Added"})
 })
 // Enviar para usuáriosOn
-
 app.post("/addUOn", async(req, res)=>{
     const data = req.body
-    console.log("Data of Pessoa ", data)
+    console.log("Data of UsuarioOn ", data)
     await UsuariosOn.add(data)
     res.send({msg: "User Added"})
+})
+// Enviar ficheiro 
+app.post("/upload", async(req, res)=>{
+    const data = req.body
+    console.log("Data of upload ", data)
+    await Upload.add(data);
+    res.send({msg: "File Added"})
+})
+
+// Enviar ficheiro 
+app.get("/download", async(req, res)=>{
+    const snapshot = await Upload.get();
+    const list = snapshot.docs.map((doc) => doc.data());
+    res.send(list);
 })
 
 app.post("/update", async(req, res)=>{
