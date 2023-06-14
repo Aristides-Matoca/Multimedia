@@ -4,19 +4,33 @@ import { Container, Row} from 'reactstrap'
 import Begin from '../componentes/begin'
 import Sobre from '../componentes/about'
 import Menu from '../componentes/menu'
+import { useState } from 'react'
 
-export default function Start(props){
-    const change = true
+export default function Start(){
+
+    const [showHome, setShowHome] = useState(true);
+    const [showAbout, setShowAbout] = useState(false);
+  
+    const handleShowHome = () => {
+        setShowHome(true)
+        setShowAbout(false)
+    }
+  
+    const handleShowAbout = () => {
+        setShowHome(false);
+        setShowAbout(true);
+    }
+
     return(
         <Container className={css(styles.cont1)}>
             <Row className={css(styles.row1)}>
                 <header className={css(styles.header3)}>
-                <Menu/>
+                <Menu showHome={handleShowHome} showAbout={handleShowAbout} />
                 </header>
 
                 <div className={css(styles.divBegin)}>
-                    {change ? <Begin /> : <Sobre />}
-                    
+                    {showHome && <Begin />}
+                    {showAbout && <Sobre />}
                 </div>
             </Row>
         </Container>

@@ -12,7 +12,8 @@ import { Row, Nav, NavItem, NavLink } from 'reactstrap'
 
 import React from 'react';
 
-const Navegator = () => {
+const Navegator = ({handleShow}) => {
+
     return(
         <Row className={css(styles.row1)}>
             <Nav vertical className={css(styles.nav1)}>
@@ -25,42 +26,42 @@ const Navegator = () => {
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Inicio')}>
                         <BiHomeAlt className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Início</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Artistas')}>
                         <FaMicrophone className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Artistas</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Audio')}>
                         <MdMusicNote className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Áudio</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Podcast')}>
                         <BiPodcast className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Podcast</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Radio')}>
                         <FiRadio className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Rádio</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Video')}>
                         <RxVideo className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Vídeo</p>
                     </NavLink>
@@ -74,28 +75,28 @@ const Navegator = () => {
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Albuns')}>
                         <IoAlbums className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Álbuns</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Playlist')}>
                         <RiPlayListLine className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Criar Playlist</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Gostos')}>
                         <RiHeart3Fill className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Gostos</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#">
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Grupos')}>
                         <HiUserGroup className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Grupos</p>
                     </NavLink>

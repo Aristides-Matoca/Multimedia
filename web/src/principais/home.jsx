@@ -1,21 +1,61 @@
+import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { StyleSheet, css } from 'aphrodite'
+import Audios from '../componentes/audios'
 import Navegator from '../componentes/nav'
 import Homepage from '../componentes/homepage'
+import AudioPlayer from '../componentes/ouvirAudios'
 import Reproducao from '../componentes/reproducao'
+import { StyleSheet, css } from 'aphrodite'
 import { IoIosNotifications } from "react-icons/io"
 import { TbSearch, TbSettings } from "react-icons/tb"
 import { InputGroup, InputGroupText, Input, Row} from 'reactstrap'
+import NGA from '../audios/NGA-Dona.mp3'
+import KMW from '../audios/KMW-MeuSucesso.mp3'
 
 export default function Home() {
+  
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const songs = [
+    { artist: 'NGA', title: 'Dona', url: NGA },
+    { artist: 'MW', title: 'Meu',  url: KMW },
+    { artist: 'NGA', title: 'Dona', url: NGA }
+  ]
+
+  
+  const [navs, setNavs] = useState({
+    Inicio: true,
+    Artistas: false,
+    Audio: false,
+    Ouvir: false,
+    Podcast: false,
+    Radio: false,
+    Video: false,
+    Albuns: false,
+    Playlist: false,
+    Gostos: false,
+    Grupos: false,
+  })
+
+  const handleShow = (nav) => {
+    const newNavs = { ...navs }
+
+    Object.keys(newNavs).forEach((key) => {
+      newNavs[key] = key === nav;
+    })
+    setNavs(newNavs)
+  }
+
   return (
     <Row className={css(styles.row2)}>
       <nav className={css(styles.nav4)}>
-        <Navegator/>
+        <Navegator handleShow={handleShow}/>
       </nav>
 
       <header className={css(styles.header)}>
-        <InputGroup className={css(styles.search)}>
+
+        <InputGroup size='lg' className={css(styles.search)}>
           <InputGroupText className={css(styles.logosearch)}>
             <TbSearch className={css(styles.logosearch)}/>
           </InputGroupText>
@@ -26,18 +66,24 @@ export default function Home() {
         <TbSettings className={css(styles.notUser)}/>
       </header>
 
-
-
       <div className={css(styles.home)}>
-        <Homepage/>
+        {Object.entries(navs).map(([nav, show]) =>
+          show && (
+            <React.Fragment key={nav}>
+              {nav === 'Inicio' && <Homepage />}
+              {nav === 'Audio' && <Audios handleShow={handleShow}/>}
+              {nav === 'Ouvir' && <AudioPlayer songs={songs} onSongClick={setCurrentSongIndex}/>}
+            </React.Fragment>
+          )
+        )}
       </div>
 
-      <aside className={css(styles.aside)}>
-      
-      </aside>
-
       <footer className={css(styles.footer)}>
-        <Reproducao/>
+        <Reproducao songs={songs}
+        currentSongIndex={currentSongIndex}
+        setCurrentSongIndex={setCurrentSongIndex}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}/>
       </footer>
     </Row>
   )
@@ -69,7 +115,8 @@ const styles = StyleSheet.create({
   },
 
   search:{
-    background: 'none'
+    background: 'none',
+    fontSize: '10px',
   },
 
   logosearch:{
@@ -83,31 +130,57 @@ const styles = StyleSheet.create({
   },
 
   notUser:{
-    transform: 'translate(2000%, -110%)',
-    marginRight: '8%',
+    transform: 'translate(2000%, -130%)',
+    marginRight: '10%',
     background: 'none',
     fontSize: '28px',
     ':hover':{
-    cursor: 'pointer'
+    cursor: 'pointer',
+    color: 'rgba(255, 213, 0, 1)'
+    },
+
+  ':focus':{
+      color: 'rgba(255, 213, 0, 1)',
     }
   },
 
   home:{
-    transform: 'translate(-56%, -54%)',
+    transform: 'translate(-39%, -54%)',
     fontFamily: 'Cormorant Garamond',
+    paddingTop: '1.3%',
     background: 'none',
     position: 'fixed',
     height: '71%',
-    width: '57%'
-  },
+    width: '82%',
+    flexGrow: '1',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    scrollbarColor: 'transparent transparent',
+    '::-webkit-scrollbar': {
+      width: '10px',
+    },
 
-  aside:{
-    transform: 'translate(121%, -54%)',
-    border: '1px solid black',
-    background: 'none',
-    position: 'fixed',
-    height: '71%',
-    width: '22%'
+    '::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+    },
+
+    '::-webkit-scrollbar-thumb': {
+      backgroundColor: 'transparent',
+      border: 'none',
+      borderRadius: '5px',
+    },
+
+    '::-webkit-scrollbar-thumb:hover': {
+      backgroundColor: 'transparent',
+    },
+
+    '::-webkit-scrollbar-thumb:vertical': {
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    },
+    
+    '::-webkit-scrollbar-thumb:vertical:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    },
   },
 
   footer:{

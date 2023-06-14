@@ -3,21 +3,8 @@ import { StyleSheet, css } from 'aphrodite'
 import { Nav, Button} from 'reactstrap'
 import { FaPlay } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { useRef } from 'react'
 
-export default function Menu(){
-
-    const homeRef = useRef(null)
-    const sobreRef = useRef(null)
-    var valor 
-
-    const extrairHome = () => {
-        if (homeRef.current) {valor = 'home'}
-    }
-
-    const extrairSobre = () => {
-        if (sobreRef.current) {valor = 'sobre'}
-    }
+export default function Menu({showHome, showAbout}){
 
     return (
         <Nav className={css(styles.nav1)} justified>
@@ -27,8 +14,8 @@ export default function Menu(){
             </aside>
 
             <ul className={css(styles.ul1)}>
-                <Link className={css(styles.link1)} ref={homeRef} onClick={extrairHome} to={'/'}>Home</Link>
-                <Link className={css(styles.link1)} ref={sobreRef} onClick={extrairSobre} to={'/sobre'}>Sobre</Link>
+                <Link className={css(styles.link1)} onClick={showHome} >Home</Link>
+                <Link className={css(styles.link1)} onClick={showAbout} >Sobre</Link>
                 <Link className={css(styles.link1)}>Descobrir</Link>
             </ul>
 
