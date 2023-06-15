@@ -1,7 +1,8 @@
 *{
   margin: 0;
   padding: 0;
-  background: radial-gradient(97.1% 91.89% at 48.02% 8.11%, #FFFFFF 0.19%, rgba(255, 238, 87, 0.73) 100%) /*warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  font-family: 'Circular Std', Arial, sans-serif;
+  background: radial-gradient(97.1% 91.89% at 48.02% 8.11%, rgba(215, 215, 211, 0.73)  0.19%, rgba(0, 0, 0, 0.73) 100%) /*warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
 }
 
 :root {

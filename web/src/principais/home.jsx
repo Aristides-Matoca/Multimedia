@@ -5,6 +5,7 @@ import Navegator from '../componentes/nav'
 import Homepage from '../componentes/homepage'
 import AudioPlayer from '../componentes/ouvirAudios'
 import Reproducao from '../componentes/reproducao'
+import Conta from '../componentes/acount'
 import { StyleSheet, css } from 'aphrodite'
 import { IoIosNotifications } from "react-icons/io"
 import { TbSearch, TbSettings } from "react-icons/tb"
@@ -37,6 +38,7 @@ export default function Home() {
     Playlist: false,
     Gostos: false,
     Grupos: false,
+    Conta: false,
   })
 
   const handleShow = (nav) => {
@@ -100,9 +102,11 @@ export default function Home() {
         <TbSettings className={css(styles.notUser)} onClick={handleClick} ref={iconRef}/>
         {showDefinitions ? (
           <div className={css(styles.definition)} onClick={handleDefinitionsClick} ref={definitionsRef}>
-            <p  className={css(styles.cont)}>Minha Conta</p>
-            <p  className={css(styles.cont)}>Upload</p>
-            <p  className={css(styles.cont)}>Definições</p>
+            <p className={css(styles.cont)} onClick={() => handleShow('Conta')}>Minha Conta</p>
+            <p className={css(styles.cont)}>Perfil</p>
+            <p className={css(styles.cont)}>Upload</p>
+            <p className={css(styles.cont)}>Definições</p>
+            <p className={css(styles.cont)}>Terminar Sessão</p>
           </div>
         ) : null}
       </header>
@@ -114,6 +118,7 @@ export default function Home() {
               {nav === 'Inicio' && <Homepage />}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
               {nav === 'Ouvir' && <AudioPlayer songs={songs} onSongClick={setCurrentSongIndex}/>}
+              {nav === 'Conta' && <Conta/>}
             </React.Fragment>
           )
         )}
@@ -136,10 +141,10 @@ const styles = StyleSheet.create({
   },
 
   nav4:{
-    transform: 'translate(-307.2%, -50%)',
-    background: 'rgba(255, 253, 245, 1)',
+    transform: 'translate(-308%, -50%)',
+    background: 'black',
     borderRight: '2px solid grey',
-    paddingLeft: '4%',
+    paddingLeft: '1%',
     position: 'fixed',
     height: '100%',
     width: '16%'
@@ -251,10 +256,10 @@ const styles = StyleSheet.create({
 
   footer:{
     transform: 'translate(-39.5%, 193%)',
-    background: 'rgba(255, 253, 245, 1)',
+    background: 'rgb(40,40,40)',
     paddingTop: '50px',
     position: 'fixed',
     height: '17%',
-    width: '84%'
+    width: '84.3%'
   }
 })

@@ -33,9 +33,9 @@ const Navegator = ({handleShow}) => {
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Artistas')}>
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Video')}>
                         <FaMicrophone className={css(styles.item12)}/>
-                        <p className={css(styles.item12)}>Artistas</p>
+                        <p className={css(styles.item12)}>Vídeo</p>
                     </NavLink>
                 </NavItem>
 
@@ -47,13 +47,6 @@ const Navegator = ({handleShow}) => {
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Podcast')}>
-                        <BiPodcast className={css(styles.item12)}/>
-                        <p className={css(styles.item12)}>Podcast</p>
-                    </NavLink>
-                </NavItem>
-
-                <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Radio')}>
                         <FiRadio className={css(styles.item12)}/>
                         <p className={css(styles.item12)}>Rádio</p>
@@ -61,9 +54,9 @@ const Navegator = ({handleShow}) => {
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
-                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Video')}>
-                        <RxVideo className={css(styles.item12)}/>
-                        <p className={css(styles.item12)}>Vídeo</p>
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Podcast')}>
+                        <BiPodcast className={css(styles.item12)}/>
+                        <p className={css(styles.item12)}>Podcast</p>
                     </NavLink>
                 </NavItem>
 
@@ -71,6 +64,13 @@ const Navegator = ({handleShow}) => {
                     <NavLink className={css(styles.item2)} disabled href="#">
                         <BiLibrary className={css(styles.bib)}/>
                         <h3 className={css(styles.bib)}>Biblioteca</h3>
+                    </NavLink>
+                </NavItem>
+
+                <NavItem className={css(styles.item1)}>
+                    <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Artistas')}>
+                        <RxVideo className={css(styles.item12)}/>
+                        <p className={css(styles.item12)}>Artistas</p>
                     </NavLink>
                 </NavItem>
 
@@ -109,31 +109,31 @@ export default Navegator;
 
 const styles = StyleSheet.create({
     row1: {
-        background: 'rgba(255, 253, 245, 1)'
+        background: 'black'
     },
     nav1:{
         background: 'none',
-        fontFamily: 'Cormorant Garamond',
     },
 
     logo:{
         marginTop: '10%',
-        background: 'none',
+        background: 'black',
         display: 'inline-flex',
+        //border: '1px solid white',
     },
 
     isp:{
         marginBottom: '30%', 
         background: 'none',
         fontSize: '25px',
-        color: 'black'
+        color: 'white'
     },
 
     item1:{
         display: 'inline-flex',
         background: 'none',
         textAlign: 'left',
-        color: 'black',
+        color: 'white',
         fontSize: '18px',
         lineHeight: '80%',
         ':hover':{

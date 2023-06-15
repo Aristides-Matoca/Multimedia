@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "aphrodite": "^2.4.0",
+    "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "firebase": "^9.22.2",
     "howler": "^2.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
