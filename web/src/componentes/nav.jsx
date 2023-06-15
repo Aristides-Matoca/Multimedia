@@ -1,25 +1,31 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
-import { RxVideo } from "react-icons/rx";
-import { FiRadio } from "react-icons/fi";
-import { IoAlbums } from "react-icons/io5";
-import { HiUserGroup } from "react-icons/hi";
-import { MdMusicNote } from "react-icons/md";
+import { RxVideo } from "react-icons/rx"
+import { FiRadio } from "react-icons/fi"
+import { IoAlbums } from "react-icons/io5"
+import { HiUserGroup } from "react-icons/hi"
+import { MdMusicNote } from "react-icons/md"
 import { FaPlay, FaMicrophone } from 'react-icons/fa'
 import { RiPlayListLine, RiHeart3Fill } from "react-icons/ri";
-import { BiLibrary, BiHomeAlt, BiPodcast } from "react-icons/bi";
+import { BiLibrary, BiPodcast, BiHomeAlt } from "react-icons/bi";
 import { Row, Nav, NavItem, NavLink } from 'reactstrap'
+import { useState } from 'react';
 
 import React from 'react';
 
 const Navegator = ({handleShow}) => {
+    const [changeLogo, setChangeLogo] = useState(false)
+
+    function handleClick(){
+        setChangeLogo(!changeLogo)
+    }
 
     return(
         <Row className={css(styles.row1)}>
             <Nav vertical className={css(styles.nav1)}>
 
                 <NavItem className={css(styles.logo)} >
-                    <NavLink className={css(styles.logo)} disabled href="#">
+                    <NavLink className={css(styles.logo1)} disabled href="#">
                         <FaPlay className={css(styles.isp)}/>
                         <h3 className={css(styles.isp)}>ISPMedia</h3>
                     </NavLink>
@@ -27,35 +33,35 @@ const Navegator = ({handleShow}) => {
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Inicio')}>
-                        <BiHomeAlt className={css(styles.item12)}/>
+                        <BiHomeAlt className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Início</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Video')}>
-                        <FaMicrophone className={css(styles.item12)}/>
+                        <RxVideo className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Vídeo</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Audio')}>
-                        <MdMusicNote className={css(styles.item12)}/>
+                        <MdMusicNote className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Áudio</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Radio')}>
-                        <FiRadio className={css(styles.item12)}/>
+                        <FiRadio className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Rádio</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Podcast')}>
-                        <BiPodcast className={css(styles.item12)}/>
+                        <BiPodcast className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Podcast</p>
                     </NavLink>
                 </NavItem>
@@ -69,35 +75,35 @@ const Navegator = ({handleShow}) => {
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Artistas')}>
-                        <RxVideo className={css(styles.item12)}/>
+                        <FaMicrophone className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Artistas</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Albuns')}>
-                        <IoAlbums className={css(styles.item12)}/>
+                        <IoAlbums className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Álbuns</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Playlist')}>
-                        <RiPlayListLine className={css(styles.item12)}/>
+                        <RiPlayListLine className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Criar Playlist</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Gostos')}>
-                        <RiHeart3Fill className={css(styles.item12)}/>
+                        <RiHeart3Fill className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Gostos</p>
                     </NavLink>
                 </NavItem>
 
                 <NavItem className={css(styles.item1)}>
                     <NavLink className={css(styles.item1)} href="#" onClick={() => handleShow('Grupos')}>
-                        <HiUserGroup className={css(styles.item12)}/>
+                        <HiUserGroup className={css(styles.item13)}/>
                         <p className={css(styles.item12)}>Grupos</p>
                     </NavLink>
                 </NavItem>
@@ -116,10 +122,18 @@ const styles = StyleSheet.create({
     },
 
     logo:{
+        borderBottom: '0.5px solid grey',
         marginTop: '10%',
         background: 'black',
         display: 'inline-flex',
-        //border: '1px solid white',
+        height: '14%',
+        marginBottom: '11%'
+    },
+
+    logo1:{
+        marginTop: '10%',
+        background: 'black',
+        display: 'inline-flex',
     },
 
     isp:{
@@ -150,7 +164,14 @@ const styles = StyleSheet.create({
 
     item12:{
         background: 'none',
-        paddingRight: '5px'
+        paddingRight: '5px',
+        transform: 'translate(0%, 60%)',
+    },
+
+    item13:{
+        fontSize: '28px',
+        background: 'none',
+        paddingRight: '6px'
     },
 
     item2:{

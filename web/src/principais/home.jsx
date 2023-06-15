@@ -78,8 +78,7 @@ export default function Home() {
   };
 
   const handleDefinitionsClick = () => {
-    setShowDefinitions(false);
-    // Coloque aqui a lógica adicional para lidar com o clique em uma notificação
+    setShowDefinitions(false)
   };
 
 
@@ -106,7 +105,7 @@ export default function Home() {
             <p className={css(styles.cont)}>Perfil</p>
             <p className={css(styles.cont)}>Upload</p>
             <p className={css(styles.cont)}>Definições</p>
-            <p className={css(styles.cont)}>Terminar Sessão</p>
+            <p className={css(styles.cont2)}>Terminar Sessão</p>
           </div>
         ) : null}
       </header>
@@ -118,7 +117,7 @@ export default function Home() {
               {nav === 'Inicio' && <Homepage />}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
               {nav === 'Ouvir' && <AudioPlayer songs={songs} onSongClick={setCurrentSongIndex}/>}
-              {nav === 'Conta' && <Conta/>}
+              {nav === 'Conta' && <Conta handleShow={handleShow}/>}
             </React.Fragment>
           )
         )}
@@ -177,10 +176,11 @@ const styles = StyleSheet.create({
   },
 
   notUser:{
-    transform: 'translate(2000%, -130%)',
-    marginRight: '10%',
+    transform: 'translate(2500%, -130%)',
+    marginRight: '8.5%',
     background: 'none',
     fontSize: '28px',
+    color: 'rgba(255, 253, 245, 1)',
     ':hover':{
     cursor: 'pointer',
     color: 'rgba(255, 213, 0, 1)'
@@ -195,23 +195,39 @@ const styles = StyleSheet.create({
   definition:{
     position: 'absolute',
     top: '65px',
-    right: '-25.5%',
-    border: '2px solid #ccc',
+    right: '-44%',
+    border: '1px solid #ccc',
     borderRadius: '5px',
-    padding: '15px',
     boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
     textAlign: 'justify',
-    background: 'rgba(255, 253, 245, 1)',
+    background: 'rgb(44,44,43)',
+    width: '23%'
   },
 
   cont:{
     background: 'none',
-    fontSize: '20px',
-    margin: '0',
-  padding: '5px 0',
+    fontSize: '18px',
+    color: 'white',
+    margin: '5px',
+    padding: '4px',
     ':hover':{
       cursor: 'pointer',
-      color: 'rgba(255, 213, 0, 1)'
+      color: 'rgba(255, 213, 0, 1)',
+      background: 'rgb(36,36,36)'
+    },
+  },
+
+  cont2:{
+    borderTop: '2.5px solid rgb(36,36,36)',
+    background: 'none',
+    fontSize: '18px',
+    color: 'white',
+    margin: '5px',
+    padding: '4px',
+    ':hover':{
+      cursor: 'pointer',
+      color: 'rgba(255, 213, 0, 1)',
+      background: 'rgb(36,36,36)'
     },
   },
 
@@ -256,7 +272,7 @@ const styles = StyleSheet.create({
 
   footer:{
     transform: 'translate(-39.5%, 193%)',
-    background: 'rgb(40,40,40)',
+    background: 'rgb(10,10,10)',
     paddingTop: '50px',
     position: 'fixed',
     height: '17%',

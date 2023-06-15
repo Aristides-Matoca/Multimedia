@@ -121,6 +121,7 @@ export default function Reproducao({ songs, currentSongIndex }){
 
 const styles = StyleSheet.create({
     nav:{
+        color: 'white',
         background: 'none',
         fontFamily: 'Cormorant Garamond',
     },
@@ -136,33 +137,32 @@ const styles = StyleSheet.create({
 
     img:{
         background: 'none',
-        color: 'black',
         height: '100%',
         width: '100%'
     },
 
     item1:{
         background: 'none',
-        fontSize: '20px',
-        color: 'black'
+        fontSize: '18px',
+        color: 'white'
     },
 
     item11:{
         transform: 'translate(-300%, -20%)',
         background: 'none',
-        color: 'black'
+        color: 'white'
     },
 
     item2:{
         transform: 'translate(-300%, 0%)',
         background: 'none',
-        color: 'black',
+        color: 'white',
         fontSize: '25px'
     },
 
     item21:{
         background: 'none',
-        color: 'black',
+        color: 'white',
         ':hover':{
             color: 'rgba(255, 213, 0, 1)'
         },
@@ -171,13 +171,13 @@ const styles = StyleSheet.create({
     item22:{
         //transform: 'translate(150%, 0%)',
         background: 'none',
-        color: 'black',
-        border: '1px solid black'
+        color: 'white',
+        border: '1px solid white'
     },
 
     item23:{
         background: 'none',
-        color: 'black',
+        color: 'white',
         ':hover':{
             color: 'rgba(255, 213, 0, 1)',
             fontSize: '26px'
@@ -195,6 +195,6 @@ const styles = StyleSheet.create({
 
     item32:{
         background: 'none',
-        color: 'black'
+        color: 'white'
     }
 })
