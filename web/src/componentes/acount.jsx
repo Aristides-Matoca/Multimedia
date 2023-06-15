@@ -19,11 +19,11 @@ export default function Conta({handleShow}){
                 <h1 className={css(styles.tittle)}>Minha conta</h1>
                 <Nav tabs className={css(styles.nav)}>
                     <NavItem className={css(styles.item)}>
-                        <NavLink className={activeTab === '1' ? 'active' : '' && css(styles.item)} onClick={() => toggleTab('1')}>Editar perfil</NavLink>
+                        <NavLink id='linkConta' className={activeTab === '1' ? 'active' : '' && css(styles.item)} onClick={() => toggleTab('1')}>Editar perfil</NavLink>
                     </NavItem>
                     
                     <NavItem className={css(styles.item)}>
-                        <NavLink className={activeTab === '2' ? 'active' : ''} onClick={() => toggleTab('2')}>Alterar palavra-passe</NavLink>
+                        <NavLink id='linkConta' className={activeTab === '2' ? 'active' : ''} onClick={() => toggleTab('2')}>Alterar palavra-passe</NavLink>
                     </NavItem>
                 </Nav>
 
