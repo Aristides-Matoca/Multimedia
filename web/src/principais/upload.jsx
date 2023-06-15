@@ -22,6 +22,21 @@ const Upload = () => {
   const onFileUpload = () => {
     if (selectedFile) {
       const storageRef = storage.ref();
+      let path = "";
+
+      if(type=="audio/mp3"|| type=="audio/wav" || type=="audio/aac" || type=="audio/flac" || type=="audio/ogg" || type=="audio/m4a" || type=="audio/aiff" || type=="audio/wma" || type=="audio/alac" || type=="audio/mid"){
+        path= "musica/"+name;
+      }
+      else if(type=="video/mp4"|| type=="video/avi" || type=="video/mkv" || type=="video/mov" || type=="video/wmv" || type=="video/flv" || type=="video/webm" || type=="video/mpeg" || type=="video/3gp" || type=="video/vob"){
+        path= "videos/"+name;
+      }
+      else if(type=="image/jpg" || type=="image/png" || type=="image/gif" || type=="image/tiff" || type=="image/bmp" || type=="image/webp" || type=="image/svg" || type=="image/raw" || type=="image/psd" || type=="image/ico"){ 
+        path= "imagens/"+name;
+      }
+      else{
+        path= "publico/"+name;
+      }
+      
       const fileRef = storageRef.child("publico/"+name);
 
       const uploadTask = fileRef.put(selectedFile);
