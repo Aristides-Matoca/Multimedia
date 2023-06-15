@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Audios from '../componentes/audios'
 import Navegator from '../componentes/nav'
@@ -14,6 +14,7 @@ import KMW from '../audios/KMW-MeuSucesso.mp3'
 
 export default function Home() {
   
+  //Funções de áudio--------------------------------------------------------------------------------------------------------
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -23,7 +24,7 @@ export default function Home() {
     { artist: 'NGA', title: 'Dona', url: NGA }
   ]
 
-  
+  //Funções de rotas----------------------------------------------------------------------------------------------------------------------
   const [navs, setNavs] = useState({
     Inicio: true,
     Artistas: false,
@@ -47,6 +48,39 @@ export default function Home() {
     setNavs(newNavs)
   }
 
+  //Funções de Configuranções------------------------------------------------------------------
+  const [showDefinitions, setShowDefinitions] = useState(false)
+  const iconRef = useRef(null)
+  const definitionsRef = useRef(null)
+
+  const handleOutsideClick = (event) => {
+    if (
+      iconRef.current &&
+      !iconRef.current.contains(event.target) &&
+      definitionsRef.current &&
+      !definitionsRef.current.contains(event.target)
+    ) {
+      setShowDefinitions(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, []);
+
+  const handleClick = () => {
+    setShowDefinitions(!showDefinitions)
+  };
+
+  const handleDefinitionsClick = () => {
+    setShowDefinitions(false);
+    // Coloque aqui a lógica adicional para lidar com o clique em uma notificação
+  };
+
+
   return (
     <Row className={css(styles.row2)}>
       <nav className={css(styles.nav4)}>
@@ -63,7 +97,14 @@ export default function Home() {
         </InputGroup>
 
         <IoIosNotifications className={css(styles.notUser)}/>
-        <TbSettings className={css(styles.notUser)}/>
+        <TbSettings className={css(styles.notUser)} onClick={handleClick} ref={iconRef}/>
+        {showDefinitions ? (
+          <div className={css(styles.definition)} onClick={handleDefinitionsClick} ref={definitionsRef}>
+            <p  className={css(styles.cont)}>Minha Conta</p>
+            <p  className={css(styles.cont)}>Upload</p>
+            <p  className={css(styles.cont)}>Definições</p>
+          </div>
+        ) : null}
       </header>
 
       <div className={css(styles.home)}>
@@ -111,7 +152,8 @@ const styles = StyleSheet.create({
     background: 'none',
     position: 'fixed',
     height: '10%',
-    width: '50%'
+    width: '50%',
+    zIndex: '1000',
   },
 
   search:{
@@ -141,7 +183,31 @@ const styles = StyleSheet.create({
 
   ':focus':{
       color: 'rgba(255, 213, 0, 1)',
+      fontWeight: 'bold'
     }
+  },
+
+  definition:{
+    position: 'absolute',
+    top: '65px',
+    right: '-25.5%',
+    border: '2px solid #ccc',
+    borderRadius: '5px',
+    padding: '15px',
+    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+    textAlign: 'justify',
+    background: 'rgba(255, 253, 245, 1)',
+  },
+
+  cont:{
+    background: 'none',
+    fontSize: '20px',
+    margin: '0',
+  padding: '5px 0',
+    ':hover':{
+      cursor: 'pointer',
+      color: 'rgba(255, 213, 0, 1)'
+    },
   },
 
   home:{

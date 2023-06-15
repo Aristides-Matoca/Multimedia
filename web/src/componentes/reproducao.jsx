@@ -8,6 +8,8 @@ import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Do
 import React, { useState, useRef, useEffect } from 'react'
 
 export default function Reproducao({ songs, currentSongIndex }){
+
+    //Funções de áudio------------------------------------------------------------------------------------------------
     const audioRef = useRef(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [currentTime, setCurrentTime] = useState(0)
