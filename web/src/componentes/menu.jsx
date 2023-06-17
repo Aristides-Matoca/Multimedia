@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
     },
 
     btn4:{
-        background: 'none',
+        background: 'white',
+        border: '2px solid grey',
         color: 'black',
         paddingLeft: '20px',
         paddingRight: '20px', 

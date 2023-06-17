@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
   },
 
   home:{
+    //border: '1px solid red',
     transform: 'translate(-39%, -54%)',
     fontFamily: 'Cormorant Garamond',
     paddingTop: '1.3%',

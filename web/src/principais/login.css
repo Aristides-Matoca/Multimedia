@@ -74,5 +74,8 @@
 #linkPerfil{
     color: white;
     background-color: black;
-    border-bottom: 2.5px solid grey;
+}
+
+#remove{
+    margin-left: 4%;
 }

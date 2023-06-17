@@ -1,9 +1,44 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Container, Row, Nav, NavItem, NavLink, TabPane, TabContent} from 'reactstrap'
+import {Container, Row, Nav, NavItem, NavLink, TabPane, TabContent, Input, InputGroup, InputGroupText} from 'reactstrap'
 import { StyleSheet, css } from 'aphrodite'
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { BiUser } from "react-icons/bi"
+import { FiEdit2 } from "react-icons/fi"
 
 export default function Perfil({handleShow}){
+    //Tem a ver com upload de fotos
+    const [profilePicture, setProfilePicture] = useState(null);
+    const [isHovered, setIsHovered] = useState(false);
+    const fileInputRef = useRef(null);
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setProfilePicture(URL.createObjectURL(file));
+    };
+
+    const handleSelectFile = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const clearProfilePicture = () => {
+        setProfilePicture(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = null;
+        }
+    };
+
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+    
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+    const name = 'Aristides Matoca'
+
+    //Tem a ver o TabPane
     const [activeTab, setActiveTab] = useState('1');
 
     const toggleTab = tab => {
@@ -16,8 +51,25 @@ export default function Perfil({handleShow}){
         <Container className={css(styles.cont)}>
             <Row className={css(styles.row)}>
 
-                <h1 className={css(styles.tittle)}>Perfil</h1>
-                <Nav tabs className={css(styles.nav)}>
+                <div className={css(styles.div)}>
+                    <InputGroup style={{background: 'none'}}>
+                        <InputGroupText className={css(styles.imgArea)} onClick={handleSelectFile} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                            {profilePicture ? (
+                                <img src={profilePicture} alt="Foto de Perfil" style={{ width: '111.2%', height: '104.3%', marginLeft: '-5.8%', borderRadius: '50%' }}/>
+                            ) : (isHovered ? <FiEdit2 className={css(styles.icon)}/> : <BiUser className={css(styles.icon)}/>)}
+                        </InputGroupText>
+                        
+                        <Input type="file" onChange={handleFileChange} style={{ display: 'none' }} innerRef={fileInputRef}/>
+                    </InputGroup>
+
+                    {profilePicture && (
+                        <button className="btn btn-link" id='remove' onClick={clearProfilePicture}>Remover Foto</button>
+                    )}
+                    
+                    <h1 className={css(styles.tittle)}>{name}</h1>
+                </div>
+
+                <Nav tabs className={css(styles.nav)} justified>
                     <NavItem className={css(styles.item)}>
                         <NavLink id='linkPerfil' className={activeTab === '1' ? 'active' : '' && css(styles.item)} onClick={() => toggleTab('1')}>Áudios</NavLink>
                     </NavItem>
@@ -49,7 +101,7 @@ export default function Perfil({handleShow}){
                     </TabPane>
 
                     <TabPane tabId="4" className={css(styles.tab)}>
-                        <p className={css(styles.txt)}>Sem Podcasts</p>
+                        <p className={css(styles.txt)}>Sem podcasts</p>
                     </TabPane>
                 </TabContent>
             </Row>
@@ -59,28 +111,55 @@ export default function Perfil({handleShow}){
 
 const styles = StyleSheet.create({
     cont:{
-        borderRadius: '10px',
         background: 'none',
-        color: 'black'
+        color: 'black',
+        width: '100%',
     },
 
     row:{
+        transform: 'translate(-8%, 0%)',
+        width: '127%',
         borderRadius: '10px',
         marginTop: '-13.5%',
         background: 'rgb(18,18,18)',
         textAlign: 'justify',
     },
 
+    div:{
+        background: 'none',
+        display: 'inline',
+        padding: '2% 0 0 2%',
+    },
+
+    imgArea:{
+        width: '230px', 
+        height: '230px', 
+        borderRadius: '100%', 
+        border: 'none',
+        cursor: 'pointer',
+        background: 'rgb(36,36,36)',
+        boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.5)',
+    },
+
+    icon:{
+        fontSize: '150px',
+        marginLeft: '13%',
+        background: 'none',
+        color: 'black'
+    },
+
     tittle:{
+        transform: 'translate(50%, -230%)',
+        position: 'fixed',
         color: 'white',
         background: 'none',
-        fontSize: '45px',
-        margin: '4% 0 4% 0',
+        fontSize: '70px',
     },
 
     nav:{
         background: 'black',
-        borderBottom: '2.5px solid grey'
+        borderBottom: '2.5px solid grey',
+        marginTop: '4%'
     },
 
     item:{
@@ -96,7 +175,6 @@ const styles = StyleSheet.create({
 
     tab:{
         background: 'black',
-        //background: 'rgb(100,100,100)',
         paddingTop: '1%',
     },
 
