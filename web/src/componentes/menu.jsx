@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
 
     btn4:{
         background: 'none',
-        color: 'white',
+        color: 'black',
         paddingLeft: '20px',
         paddingRight: '20px', 
         border: '1px solid black',
