@@ -22,18 +22,16 @@ export default function Start(){
     }
 
     return(
-        <Container className={css(styles.cont1)}>
-            <Row className={css(styles.row1)}>
-                <header className={css(styles.header3)}>
-                <Menu showHome={handleShowHome} showAbout={handleShowAbout} />
-                </header>
-
-                <div className={css(styles.divBegin)}>
-                    {showHome && <Begin />}
-                    {showAbout && <Sobre />}
-                </div>
-            </Row>
-        </Container>
+        <>
+            <Menu></Menu>
+            <div className={css(styles.divBegin)}>
+               <Begin/> 
+            </div>
+            <div className={css(styles.divBegin)}>
+               <Sobre/> 
+            </div>
+            
+        </>
     )
 }
 
@@ -53,10 +51,31 @@ const styles = StyleSheet.create({
     },
 
     divBegin:{
-        position: 'fixed',
-        top: '-130.5%',
-        left: '-45%',
-        height: '370%',
-        background: 'none'
+        top: 0,
+        left: 0,
+        width: "100%",
+        background: 'none',
+        height: "100vh",
+        display: "block"
     }
 })
+
+/*
+<header className={css(styles.header3)}>
+                <Menu showHome={handleShowHome} showAbout={handleShowAbout} />
+                </header>
+
+                <div className={css(styles.divBegin)}>
+                    {showHome && <Begin />}
+                    {showAbout && <Sobre />}
+                </div>
+                
+                <Container className={css(styles.cont1)}>
+            <Row className={css(styles.row1)}>
+            <Begin />
+            <Sobre />
+                
+            </Row>
+        </Container>
+                
+                */

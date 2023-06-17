@@ -13,12 +13,6 @@ export default function Menu({showHome, showAbout}){
                 <h3 className={css(styles.isp)}>ISPMedia</h3>
             </aside>
 
-            <ul className={css(styles.ul1)}>
-                <Link className={css(styles.link1)} onClick={showHome} >Home</Link>
-                <Link className={css(styles.link1)} onClick={showAbout} >Sobre</Link>
-                <Link className={css(styles.link1)}>Descobrir</Link>
-            </ul>
-
             <aside className={css(styles.aside2)}>
                 <Link className={css(styles.links)} to={"/login"}><Button className={css(styles.btn4)}>Login</Button></Link>
                 <Link className={css(styles.links)} to={"/signin"}><Button className={css(styles.btn3)}>Criar Conta</Button></Link>
@@ -33,19 +27,25 @@ function qualquer(){
 
 const styles = StyleSheet.create({
     nav1:{
-        background: 'none'
+        background: 'none',
+        width: "100%",
+        position: "fixed",
+        top: 25,
+        left: 0,
+        zIndex: 1,
     },
 
     aside1:{
         color: 'white',
         background: 'none',
-        display: 'inline-flex',
-        transform: 'translate(-280%, 0)'
+        display: 'inline',
+        transform: 'translate(25%, 0)'
     },
 
     isp:{
         background: 'none',
         fontSize: '23.5px',
+        display: 'inline',
     },
 
     ul1:{
@@ -65,27 +65,29 @@ const styles = StyleSheet.create({
 
     aside2:{
         background: 'none',
-        transform: 'translate(170%, 0)'
+        transform: 'translate(470%, 0)'
     },
 
     btn3:{
         background: 'black',
         marginLeft: '20px',
         ':hover': {
-            background: '#336699',
+            background: '#FFFF00',
             color: 'black',
-            border: '1px solid #336699'
+            border: '1px solid #FFFF00'
         }
     },
 
     btn4:{
         background: 'none',
-        color: 'black',
+        color: 'white',
         paddingLeft: '20px',
         paddingRight: '20px', 
+        border: '1px solid black',
         ':hover': {
             background: 'black',
-            color: 'white'
+            color: 'white',
+            border: '1px solid transparent',
         }
     },
 

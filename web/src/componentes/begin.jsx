@@ -6,9 +6,9 @@ import Image1 from '../img/imagem1.png'
 
 export default function Begin(){
     return(
+        
         <Container className={css(styles.navBegin)}>
-            <Row>
-                <div className={css(styles.div0Begin)}>
+                <aside className={css(styles.aside1)}>
                     <h4 className={css(styles.text1)}>Conheça o ISPMedia</h4>
                     <h1 className={css(styles.text2)}>Deixe a música te envolver com o ISPMedia</h1>
                     <p className={css(styles.text3)}>Encontre artistas de toda parte do mundo e vibre com as suas músicas</p>
@@ -22,58 +22,83 @@ export default function Begin(){
                         <IoLogoAppleAppstore className={css(styles.icon1)} />
                        <br/>AppStore
                     </Button>
-                </div>
+                </aside>
 
-                <div className={css(styles.divBegin)}>
+                <aside className={css(styles.aside2)}>
                     <img className={css(styles.image)} src={Image1} alt="" width={'100%'} height={'100%'}/>
-                </div>
-            </Row>
+                </aside>
         </Container>
     )
 }
 
 const styles = StyleSheet.create({
     navBegin:{
-        background: 'none'
+        background: 'none',
+        width: "100%",
+        height: "100vh",
+    },
+
+    aside1:{
+        color: 'white',
+        background: 'none',
+        display: "inline-block",
+        transform: 'translate(-70%, 0)',
+        width: "60%",
+        textAlign: 'left',
+        fontFamily: 'Cormorant Cormorant',
+    },
+
+    aside2:{
+        background: 'none',
+        transform: 'translate(60%, 0)',
+        width: "70%",
+        position: "absolute",
+        top: 20,
+        left: 0,
+        zIndex: 1,
+        height: "100%",
+        
     },
 
     div0Begin:{
         fontFamily: 'Cormorant Cormorant',
         background: 'none',
-        textAlign: 'left',
-        position: 'fixed',
         color: 'white',
-        height: '250%',
-        width: '50%',
-        left: '20%',
-        top: '80%'
+        width: "60%",
+        display: 'inline-flex',
+        transform: 'translate(-1%, 0)'
+        
     },
 
     text1:{
         background: 'none',
-        marginBottom: '9%'
+        marginBottom: '9%',
+        width: "100%",
     },
 
     text2:{
         background: 'none',
-        marginBottom: '6%'
+        marginBottom: '6%',
+        width: "100%",
     },
 
     text3:{
         background: 'none',
         fontSize: '25px',
-        marginBottom: '5%'
+        marginBottom: '5%',
+        width: "100%",
     },
 
     text4:{
         background: 'none',
-        fontSize: '20px'
+        fontSize: '20px',
+        width: "100%",
     },
 
     btn1:{
         background: 'none',
         border: 'none',
-        marginLeft: '5%',
+        marginLeft: '1%',
         color: 'white',
         ':hover':{
             color: 'white'
@@ -87,11 +112,10 @@ const styles = StyleSheet.create({
 
     divBegin: {
         position: 'fixed',
-        top: '-15%',
-        right: '-39%',
-        width: '75%',
-        height: '382%',
-        background: 'none'
+        background: 'none',
+        width: "50%",
+        display: 'inline-flex',
+        transform: 'translate(15%, 0)'
     },
 
     image: {
