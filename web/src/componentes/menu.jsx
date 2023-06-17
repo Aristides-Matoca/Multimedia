@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     },
 
     aside1:{
+        color: 'white',
         background: 'none',
         display: 'inline-flex',
         transform: 'translate(-280%, 0)'
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     link1:{
         background: 'none',
         marginRight: '50px',
-        color: 'black',
+        color: 'white',
         ':hover':{
             textDecoration: 'underline'
         }

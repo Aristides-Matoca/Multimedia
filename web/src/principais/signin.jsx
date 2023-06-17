@@ -7,10 +7,12 @@ import { Link } from "react-router-dom"
 export default function SignIn(){
     return (
         <Container className='container2'>
-            <header className='header2'>
-                <FaPlay className='play2'/>
-                <h3>ISPMedia</h3>
-            </header>
+            <Link className='link2' to={"/"}>
+                <header className='header2'>
+                    <FaPlay className='play2'/>
+                    <h3>ISPMedia</h3>
+                </header>
+            </Link>
 
             <h2 className='title2'>Regista-te e sintonize a sua paixão</h2>
 

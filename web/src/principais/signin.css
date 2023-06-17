@@ -1,6 +1,6 @@
 .container2{
     font-family: 'Times New Roman', Times, serif;
-    background: rgba(255, 247, 209, 0.9);
+    background: white;
     transform: translate(-50px, 0);
     border-radius: 20px;
     padding: 7%;
@@ -8,6 +8,7 @@
 }
 
 .header2{
+    color: white;
     background: none;
     display: inline-flex;
     transform: translate(-557.3px, -71.5px);
@@ -33,12 +34,14 @@
 }
 
 .label2{
+    font-weight: bold;
     background: none;
+    font-size: 14px;
     display: flex;
 }
 
 .in2{
-    background: rgba(255, 247, 209, 0.9);
+    background: white;
     border: 1px solid black;
     margin-bottom: 7%;
     display: flex;

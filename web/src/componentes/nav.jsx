@@ -165,13 +165,13 @@ const styles = StyleSheet.create({
     item12:{
         background: 'none',
         paddingRight: '5px',
-        transform: 'translate(0%, 60%)',
+        transform: 'translate(0%, 35%)',
     },
 
     item13:{
-        fontSize: '28px',
+        fontSize: '22px',
         background: 'none',
-        paddingRight: '6px'
+        marginRight: '20px'
     },
 
     item2:{

@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         background: 'none',
         textAlign: 'left',
         position: 'fixed',
+        color: 'white',
         height: '250%',
         width: '50%',
         left: '27%',

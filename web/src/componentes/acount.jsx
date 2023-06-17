@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Label, Input, Button, Container, Row, Nav, NavItem, NavLink, TabPane, TabContent} from 'reactstrap'
+import { Label, Input, InputGroup, Button, Container, Row, Nav, NavItem, NavLink, TabPane, TabContent} from 'reactstrap'
 import { StyleSheet, css } from 'aphrodite'
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 export default function Conta({handleShow}){
     const [activeTab, setActiveTab] = useState('1');
@@ -12,6 +12,34 @@ export default function Conta({handleShow}){
         }
     }
 
+    const genders = [
+        'Masculino',
+        'Feminino',
+        'Prefiro não dizer'
+    ]
+
+    const months = [
+        'Janeiro',
+        'Fevereiro',
+        'Março',
+        'Abril',
+        'Maio',
+        'Junho',
+        'Julho',
+        'Agosto',
+        'Setembro',
+        'Outubro',
+        'Novembro',
+        'Dezembro',
+    ];
+
+    const [user, setUser] = useState('Aristides Matoca');
+    const [email, setEmail] = useState('my.email@example.com');
+    const [gender, setGender] = useState(genders[0]);
+    const [day, setDay] = useState('10');
+    const [month, setMonth] = useState(months[0]);
+    const [year, setYear] = useState('2001');
+
     return (
         <Container className={css(styles.cont)}>
             <Row className={css(styles.row)}>
@@ -19,7 +47,7 @@ export default function Conta({handleShow}){
                 <h1 className={css(styles.tittle)}>Minha conta</h1>
                 <Nav tabs className={css(styles.nav)}>
                     <NavItem className={css(styles.item)}>
-                        <NavLink id='linkConta' className={activeTab === '1' ? 'active' : '' && css(styles.item)} onClick={() => toggleTab('1')}>Editar perfil</NavLink>
+                        <NavLink id='linkConta' className={activeTab === '1' ? 'active' : '' && css(styles.item)} onClick={() => toggleTab('1')}>Editar conta</NavLink>
                     </NavItem>
                     
                     <NavItem className={css(styles.item)}>
@@ -30,16 +58,33 @@ export default function Conta({handleShow}){
                 <TabContent activeTab={activeTab} className={css(styles.tab)}>
                     <TabPane tabId="1" className={css(styles.tab)}>
                         <Label className={css(styles.label)}>Utilizador</Label>
-                        <Input className={css(styles.input)} type='text' value='Username'/>
+                        <Input className={css(styles.input)} type='text' value={user} onChange={(e) => setUser(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Email</Label>
-                        <Input className={css(styles.input)} type='email' value='your.email@example.com'/>
+                        <Input className={css(styles.input)} type='email' value={email} onChange={(e) => setEmail(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Gênero</Label>
-                        <Input className={css(styles.input)} type='text' value='your.email@example.com'/>
+                        <Input type="select" className={css(styles.input)} value={gender} onChange={(e) => setGender(e.target.value)}>
+                           {genders.map((gender, index) => (
+                                <option key={index} value={gender}>{gender}</option>
+                           ))}
+                        </Input>
+
+                        <Label className={css(styles.label)}>Data de nascimento</Label>
+                        <InputGroup className={css(styles.Inputg)}>
+                            <Input  className={css(styles.input2)} value={day} onChange={(e) => setDay(e.target.value)}/>
+
+                            <Input type="select"  className={css(styles.input2)} value={month} onChange={(e) => setMonth(e.target.value)}>
+                                {months.map((month, index) => (
+                                    <option key={index} value={month}>{month}</option>
+                                ))}
+                            </Input>
+
+                            <Input  className={css(styles.input2)} value={year} onChange={(e) => setYear(e.target.value)}/>
+                        </InputGroup>
 
                         <Label className={css(styles.label)}>País/Região</Label>
-                        <Input className={css(styles.input)} type='text' value='your.email@example.com'/>
+                        <Input className={css(styles.input)} type='text' value='Angola'/>
 
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
                         <Button className={css(styles.btn2)}>Guardar as alterações</Button>
@@ -115,6 +160,20 @@ const styles = StyleSheet.create({
         padding: '1%',
         margin: '0 0 2% 4%',
         width: '90%'
+    },
+
+    Inputg:{
+        width: '91.5%',
+        background: 'none',
+        margin: '0 0 0 4%',
+    },
+
+    input2:{
+        background: 'white',
+        border: '1px solid black',
+        borderRadius: '4px',
+        padding: '1%',
+        margin: '0 2% 2% 0',
     },
 
     btn1:{

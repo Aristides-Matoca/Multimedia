@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         background: 'none',
         textAlign: 'left',
         position: 'fixed',
+        color: 'white',
         height: '250%',
         width: '50%',
         left: '20%',
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
         background: 'none',
         border: 'none',
         marginLeft: '5%',
-        color: 'black',
+        color: 'white',
         ':hover':{
             color: 'white'
         }

@@ -7,10 +7,12 @@ import { Link } from "react-router-dom"
 export default function Login(){
     return (
         <Container className='container'>
-            <header className='header1'>
-                <FaPlay className='play1'/>
-                <h3>ISPMedia</h3>
-            </header>
+            <Link className='link2' to={"/"}>
+                <header className='header1'>
+                    <FaPlay className='play1'/>
+                    <h3>ISPMedia</h3>
+                </header>
+            </Link>
 
             <h2 className='title1'>Iniciar Sessão no ISPMedia</h2>
 

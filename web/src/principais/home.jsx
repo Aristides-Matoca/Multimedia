@@ -6,10 +6,12 @@ import Homepage from '../componentes/homepage'
 import AudioPlayer from '../componentes/ouvirAudios'
 import Reproducao from '../componentes/reproducao'
 import Conta from '../componentes/acount'
+import Perfil from '../componentes/perfil'
 import { StyleSheet, css } from 'aphrodite'
 import { IoIosNotifications } from "react-icons/io"
 import { TbSearch, TbSettings } from "react-icons/tb"
 import { InputGroup, InputGroupText, Input, Row} from 'reactstrap'
+import { Link } from "react-router-dom"
 import NGA from '../audios/NGA-Dona.mp3'
 import KMW from '../audios/KMW-MeuSucesso.mp3'
 
@@ -39,6 +41,7 @@ export default function Home() {
     Gostos: false,
     Grupos: false,
     Conta: false,
+    Perfil: false,
   })
 
   const handleShow = (nav) => {
@@ -102,10 +105,10 @@ export default function Home() {
         {showDefinitions ? (
           <div className={css(styles.definition)} onClick={handleDefinitionsClick} ref={definitionsRef}>
             <p className={css(styles.cont)} onClick={() => handleShow('Conta')}>Minha Conta</p>
-            <p className={css(styles.cont)}>Perfil</p>
+            <p className={css(styles.cont)} onClick={() => handleShow('Perfil')}>Perfil</p>
             <p className={css(styles.cont)}>Upload</p>
             <p className={css(styles.cont)}>Definições</p>
-            <p className={css(styles.cont2)}>Terminar Sessão</p>
+            <Link to={'/'}><p className={css(styles.cont2)}>Terminar Sessão</p></Link>
           </div>
         ) : null}
       </header>
@@ -114,10 +117,11 @@ export default function Home() {
         {Object.entries(navs).map(([nav, show]) =>
           show && (
             <React.Fragment key={nav}>
-              {nav === 'Inicio' && <Homepage />}
+              {nav === 'Inicio' && <Homepage handleShow={handleShow}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
               {nav === 'Ouvir' && <AudioPlayer songs={songs} onSongClick={setCurrentSongIndex}/>}
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
+              {nav === 'Perfil' && <Perfil handleShow={handleShow}/>}
             </React.Fragment>
           )
         )}

@@ -2,12 +2,16 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
 import { Row, Nav, NavItem, NavLink } from 'reactstrap';
 import Img from '../img/imagem2.png'
+import React from 'react';
 
-export default function Homepage(){
+export default function Homepage({handleShow}){
     return (
         <Row className={css(styles.row)}>
             <Nav vertical className={css(styles.nav1)}>
-                <h2 className={css(styles.title)}>Vídeos Mais Recentes</h2>
+                <div className={css(styles.div)}>
+                    <h2 className={css(styles.title)}>Top vídeos</h2>
+                    <p className={css(styles.see)} onClick={() => handleShow('Video')}>Ver mais</p>
+                </div>
                 
                 <Nav className={css(styles.nav)}>
                     <NavItem className={css(styles.item1)}>
@@ -35,7 +39,11 @@ export default function Homepage(){
                     </NavItem>
                 </Nav>
                 
-                <h2 className={css(styles.title)}>Top Áudios</h2>
+                <div className={css(styles.div)}>
+                    <h2 className={css(styles.title)}>Top áudios</h2>
+                    <p className={css(styles.see)} onClick={() => handleShow('Audio')}>Ver mais</p>
+                </div>
+
                 <Nav className={css(styles.nav)}>
                     <NavItem className={css(styles.item1)}>
                         <NavLink href="#" className={css(styles.item11)}>
@@ -118,7 +126,8 @@ const styles = StyleSheet.create({
     nav1:{
         background: 'none',
         paddingLeft: '27px',
-        width: '65%'
+        width: '70%',
+        borderRight: '1px solid grey'
     },
 
     nav:{
@@ -126,25 +135,49 @@ const styles = StyleSheet.create({
         paddingLeft: '27px',
     },
 
-    title:{
-        marginLeft: '87px',
+    div:{
+        transform: 'translate(15%, 0%)',
+        textAlign: 'justify',
         background: 'none',
+        display: 'inline',
+        color: 'white',
+        width: '72%',
+    },
+
+    title:{
+        background: 'none',
+        display: 'inline',
         textAlign: 'left',
         fontSize: '27px'
+    },
+
+    see:{
+        width: '10%',
+        display: 'inline',
+        background: 'none',
+        fontWeight: 'bold',
+        marginLeft: '66.5%',
+        ':hover':{
+            cursor: 'pointer',
+            textDecoration: 'underline'
+        }
     },
 
     item1:{
         background: 'none',
         marginLeft: '60px',
-        width: '23%',
+        width: '20%',
     },
 
 
     item11:{
         background: 'none',
         height: '80%',
-        color: 'black',
+        color: 'white',
         width: '100%',
+        ':hover':{
+            textDecoration: 'underline'
+        }
     },
     
     img:{
@@ -158,9 +191,9 @@ const styles = StyleSheet.create({
     },
 
     nav2:{
-        transform: 'translate(28.5%, 0%)',
+        transform: 'translate(15%, 0%)',
         background: 'none',
-        width: '25%'
+        width: '25%',
     },
 
     nav0:{
@@ -171,7 +204,8 @@ const styles = StyleSheet.create({
     tops:{
         background: 'none',
         fontSize: '23px',
-        textAlign: 'left'
+        textAlign: 'left',
+        color: 'white'
     },
 
     item2:{
