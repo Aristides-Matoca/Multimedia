@@ -5,113 +5,143 @@ import { FaPlay } from 'react-icons/fa'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom"
-//import Swal from 'sweetalert2';
-//import 'sweetalert2/dist/sweetalert2.min.js';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.js';
 
 
 export default function SignIn(){
 
-  const api = "http://localhost:4000";
-  const [dadosUsuario, setDadosUsuario] = useState(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const navigate = useNavigate();
+    const api = "http://localhost:4000";
 
-  useEffect(() => {
-    // Busca dados 
-    axios
-    .get(api+'/') 
-    .then(response => {
-      setDadosUsuario(response.data);   
-    })
+    const [dadosUsuario, setDadosUsuario] = useState(null);
 
-    .catch(error => {
-      console.error('Error:', error);
-    });
-  }, []);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
 
-  function verificarUsuario() {
-    const usuarios = [];
-    if(dadosUsuario != null){
-      dadosUsuario.forEach(obj => {
-        if (obj.username === username || obj.email === email) {
-          const copia = { ...obj };
-          usuarios.push(copia);
+    const navigate = useNavigate();
+
+    function validatePassword(password) {
+        // Define the conditions for a valid password
+        const minLength = 8; // Minimum length
+        const hasUppercase = /[A-Z]/.test(password); // At least one uppercase letter
+        const hasLowercase = /[a-z]/.test(password); // At least one lowercase letter
+        const hasNumber = /[0-9]/.test(password); // At least one number
+        const hasSpecialChar = /[!@#$%^&*]/.test(password); // At least one special character
+      
+        // Check if the password meets all the conditions
+        if (
+          password.length >= minLength &&
+          hasUppercase &&
+          hasLowercase &&
+          hasNumber &&
+          hasSpecialChar
+        ) {
+          return true; // Password is valid
+        } else {
+          return false; // Password is invalid
         }
-      });
-    }
-    return usuarios.length === 0;
-  }
+      }
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
+    useEffect(() => {
+        // Busca dados 
+        axios
+          .get(api+'/') 
+          .then(response => {
+            setDadosUsuario(response.data);   
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }, []);
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
+    function verificarUsuario() {
+        const usuarios = [];
+        if(dadosUsuario != null){
+            dadosUsuario.forEach(obj => {
+                if (obj.username === username || obj.email === email) {
+                const copia = { ...obj };
+                usuarios.push(copia);
+                }
+            });
+        }
+        return usuarios.length === 0;
+      }
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+      };
 
-  const handleFormSubmit = event => {
-    event.preventDefault();
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+      };
 
-    // Verificar existência de usuários com o mesmo username ou email 
-    const nExiste = verificarUsuario();
-    if(!nExiste){
-      // MUDAR AQUI, APRESENTA A MENSAGEM AO USUÁRIO
-      alert("Username ou email já exitem.");
-      navigate('/signin');
-    }
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+      };
 
-    else{
-      // Criar um novo usuário
-      axios
-      .post(api+'/create', { username, email, password })
+    const handleFormSubmit = event => {
+        event.preventDefault();
 
-      .then(response => {
-        const createdUser = response.data;
-        console.log('Created user:', createdUser);
-        setUsername('');
-        setEmail('');
-        setPassword('');
-        navigate('/home');
-      })
-        
-      .catch(error => {
-        console.error('Error creating user:', error);
-      });
-    }        
-  };
+        let pass = validatePassword(password);
+        const nExiste = verificarUsuario();
+
+        if(!pass){
+            alert("A password tem de ter pelo menos 8 caracteres, 1 letra maiúscula e minúscula, número e caractere especial.");
+            navigate('/signin');
+        }
+        else{
+            if(!nExiste){
+                // Verificar existência de usuários com o mesmo username ou email 
+                // MUDAR AQUI, APRESENTA A MENSAGEM AO USUÁRIO
+                alert("Username ou email já exitem.");
+                navigate('/signin');
+            }
+            else{
+                // Criar um novo usuário
+                axios
+                .post(api+'/create', { username, email, password })
+                .then(response => {
+                const createdUser = response.data;
+                console.log('Created user:', createdUser);
+                setUsername('');
+                setEmail('');
+                setPassword('');
+                navigate('/home');
+                })
+                .catch(error => {
+                console.error('Error creating user:', error);
+                });
+            }  
+        }      
+      };
     
-  return (
-    <Container className='container2'>
-      <Link className='link2' to={"/"}>
-        <header className='header2'>
-          <FaPlay className='play2'/>
-          <h3>ISPMedia</h3>
-        </header>
-      </Link>
 
-      <h2 className='title2'>Regista-te e sintonize a sua paixão</h2>
+    return (
+        <Container className='container2'>
+            <Link className='link2' to={"/"}>
+                <header className='header2'>
+                    <FaPlay className='play2'/>
+                    <h3>ISPMedia</h3>
+                </header>
+            </Link>
 
-      <Label className='label2'>Username</Label>
-      <Input className='in2' type='text' placeholder='Username' value={username} onChange={handleUsernameChange} required/>
+            <h2 className='title2'>Regista-te e sintonize a sua paixão</h2>
 
-      <Label className='label2'>Email</Label>
-      <Input className='in2' type='email' placeholder='your.email@example.com' required value={email} onChange={handleEmailChange}/>
+            <Label className='label2'>Username</Label>
+            <Input className='in2' type='text' placeholder='Username' value={username} onChange={handleUsernameChange} required/>
 
-      <Label className='label2'>Password</Label>
-      <Input className='in2' type='password' placeholder='Palavra-passe' required value={password} onChange={handlePasswordChange}/>
+            <Label className='label2'>Email</Label>
+            <Input className='in2' type='email' placeholder='your.email@example.com' required value={email} onChange={handleEmailChange}/>
 
-      <Button className='btn1' onClick={handleFormSubmit}>
-        Iniciar Sessão
-      </Button>
+            <Label className='label2'>Password</Label>
+            <Input className='in2' type='password' placeholder='Palavra-passe' required value={password} onChange={handlePasswordChange}/>
 
-      <p className='reg2'>Já tens uma conta? <Link className='link2' to={"/login"}>Iniciar Sessão</Link></p>
-    </Container>
-  )
+            <Button className='btn1' onClick={handleFormSubmit}>
+                Iniciar Sessão
+            </Button>
+
+            <p className='reg2'>Já tens uma conta? <Link className='link2' to={"/login"}>Iniciar Sessão</Link></p>
+        </Container>
+    )
 }
