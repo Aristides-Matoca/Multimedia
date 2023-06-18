@@ -39,6 +39,7 @@ export default function Conta({handleShow}){
     const [day, setDay] = useState('10');
     const [month, setMonth] = useState(months[0]);
     const [year, setYear] = useState('2001');
+    const [country, setCountry] = useState('Angola');
 
     return (
         <Container className={css(styles.cont)}>
@@ -66,7 +67,7 @@ export default function Conta({handleShow}){
                         <Label className={css(styles.label)}>Gênero</Label>
                         <Input type="select" className={css(styles.input)} value={gender} onChange={(e) => setGender(e.target.value)}>
                            {genders.map((gender, index) => (
-                                <option key={index} value={gender}>{gender}</option>
+                                <option style={{background: 'none'}} key={index} value={gender}>{gender}</option>
                            ))}
                         </Input>
 
@@ -76,7 +77,7 @@ export default function Conta({handleShow}){
 
                             <Input type="select"  className={css(styles.input2)} value={month} onChange={(e) => setMonth(e.target.value)}>
                                 {months.map((month, index) => (
-                                    <option key={index} value={month}>{month}</option>
+                                    <option style={{background: 'none'}} key={index} value={month}>{month}</option>
                                 ))}
                             </Input>
 
@@ -84,7 +85,7 @@ export default function Conta({handleShow}){
                         </InputGroup>
 
                         <Label className={css(styles.label)}>País/Região</Label>
-                        <Input className={css(styles.input)} type='text' value='Angola'/>
+                        <Input className={css(styles.input)} type='text' value={country} onChange={(e) => setCountry(e.target.value)}/>
 
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
                         <Button className={css(styles.btn2)}>Guardar as alterações</Button>

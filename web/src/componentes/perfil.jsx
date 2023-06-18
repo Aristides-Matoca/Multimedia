@@ -5,7 +5,7 @@ import React, { useState, useRef } from 'react';
 import { BiUser } from "react-icons/bi"
 import { FiEdit2 } from "react-icons/fi"
 
-export default function Perfil({handleShow}){
+export default function Perfil(){
     //Tem a ver com upload de fotos
     const [profilePicture, setProfilePicture] = useState(null);
     const [isHovered, setIsHovered] = useState(false);

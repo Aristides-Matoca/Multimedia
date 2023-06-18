@@ -7,6 +7,7 @@ import AudioPlayer from '../componentes/ouvirAudios'
 import Reproducao from '../componentes/reproducao'
 import Conta from '../componentes/acount'
 import Perfil from '../componentes/perfil'
+import Upload from '../componentes/upload'
 import { StyleSheet, css } from 'aphrodite'
 import { IoIosNotifications } from "react-icons/io"
 import { TbSearch, TbSettings } from "react-icons/tb"
@@ -42,6 +43,7 @@ export default function Home() {
     Grupos: false,
     Conta: false,
     Perfil: false,
+    Upload: false,
   })
 
   const handleShow = (nav) => {
@@ -106,7 +108,7 @@ export default function Home() {
           <div className={css(styles.definition)} onClick={handleDefinitionsClick} ref={definitionsRef}>
             <p className={css(styles.cont)} onClick={() => handleShow('Conta')}>Minha Conta</p>
             <p className={css(styles.cont)} onClick={() => handleShow('Perfil')}>Perfil</p>
-            <p className={css(styles.cont)}>Upload</p>
+            <p className={css(styles.cont)} onClick={() => handleShow('Upload')}>Upload</p>
             <p className={css(styles.cont)}>Definições</p>
             <Link to={'/'}><p className={css(styles.cont2)}>Terminar Sessão</p></Link>
           </div>
@@ -121,7 +123,8 @@ export default function Home() {
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
               {nav === 'Ouvir' && <AudioPlayer songs={songs} onSongClick={setCurrentSongIndex}/>}
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
-              {nav === 'Perfil' && <Perfil handleShow={handleShow}/>}
+              {nav === 'Perfil' && <Perfil />}
+              {nav === 'Upload' && <Upload handleShow={handleShow}/>}
             </React.Fragment>
           )
         )}
