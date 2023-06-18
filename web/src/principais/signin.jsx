@@ -21,6 +21,28 @@ export default function SignIn(){
 
     const navigate = useNavigate();
 
+    function validatePassword(password) {
+        // Define the conditions for a valid password
+        const minLength = 8; // Minimum length
+        const hasUppercase = /[A-Z]/.test(password); // At least one uppercase letter
+        const hasLowercase = /[a-z]/.test(password); // At least one lowercase letter
+        const hasNumber = /[0-9]/.test(password); // At least one number
+        const hasSpecialChar = /[!@#$%^&*]/.test(password); // At least one special character
+      
+        // Check if the password meets all the conditions
+        if (
+          password.length >= minLength &&
+          hasUppercase &&
+          hasLowercase &&
+          hasNumber &&
+          hasSpecialChar
+        ) {
+          return true; // Password is valid
+        } else {
+          return false; // Password is invalid
+        }
+      }
+
     useEffect(() => {
         // Busca dados 
         axios
@@ -61,29 +83,37 @@ export default function SignIn(){
     const handleFormSubmit = event => {
         event.preventDefault();
 
-        // Verificar existência de usuários com o mesmo username ou email 
+        let pass = validatePassword(password);
         const nExiste = verificarUsuario();
-        if(!nExiste){
-            // MUDAR AQUI, APRESENTA A MENSAGEM AO USUÁRIO
-            alert("Username ou email já exitem.");
+
+        if(!pass){
+            alert("A password tem de ter pelo menos 8 caracteres, 1 letra maiúscula e minúscula, número e caractere especial.");
             navigate('/signin');
         }
         else{
-            // Criar um novo usuário
-            axios
-            .post(api+'/create', { username, email, password })
-            .then(response => {
-            const createdUser = response.data;
-            console.log('Created user:', createdUser);
-            setUsername('');
-            setEmail('');
-            setPassword('');
-            navigate('/home');
-            })
-            .catch(error => {
-            console.error('Error creating user:', error);
-            });
-        }        
+            if(!nExiste){
+                // Verificar existência de usuários com o mesmo username ou email 
+                // MUDAR AQUI, APRESENTA A MENSAGEM AO USUÁRIO
+                alert("Username ou email já exitem.");
+                navigate('/signin');
+            }
+            else{
+                // Criar um novo usuário
+                axios
+                .post(api+'/create', { username, email, password })
+                .then(response => {
+                const createdUser = response.data;
+                console.log('Created user:', createdUser);
+                setUsername('');
+                setEmail('');
+                setPassword('');
+                navigate('/home');
+                })
+                .catch(error => {
+                console.error('Error creating user:', error);
+                });
+            }  
+        }      
       };
     
 

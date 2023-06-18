@@ -80,10 +80,10 @@ const styles = StyleSheet.create({
 
     btn4:{
         background: 'none',
-        color: 'black',
+        color: 'white',
         paddingLeft: '20px',
         paddingRight: '20px', 
-        border: '1px solid black',
+        border: '1px solid white',
         ':hover': {
             background: 'black',
             color: 'white',
