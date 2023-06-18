@@ -3,7 +3,7 @@ import { json } from 'express';
 import cors from 'cors';
 
 //import Pessoa from './pessoaDB.js';
-import { UsuariosOn, Pessoa } from './config.js';
+import { UsuariosOn, Pessoa, storage } from './config.js';
 
 const app = express();
 app.use(express.json());

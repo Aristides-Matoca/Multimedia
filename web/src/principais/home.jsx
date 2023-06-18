@@ -229,8 +229,8 @@ const styles = StyleSheet.create({
   },
 
   notUser:{
-    transform: 'translate(2500%, -130%)',
-    marginRight: '8.5%',
+    transform: 'translate(2220%, -170%)',
+    marginRight: '5%',
     background: 'none',
     fontSize: '28px',
     color: 'rgba(255, 253, 245, 1)',

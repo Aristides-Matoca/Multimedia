@@ -9,7 +9,7 @@ export default function Homepage({handleShow}){
         <Row className={css(styles.row)}>
             <Nav vertical className={css(styles.nav1)}>
                 <div className={css(styles.div)}>
-                    <h2 className={css(styles.title)}>Top vídeos</h2>
+                    <h2 className={css(styles.title)}>Vídeos</h2>
                     <p className={css(styles.see)} onClick={() => handleShow('Video')}>Ver mais</p>
                 </div>
                 
@@ -40,7 +40,7 @@ export default function Homepage({handleShow}){
                 </Nav>
                 
                 <div className={css(styles.div)}>
-                    <h2 className={css(styles.title)}>Top áudios</h2>
+                    <h2 className={css(styles.title)}>Áudios</h2>
                     <p className={css(styles.see)} onClick={() => handleShow('Audio')}>Ver mais</p>
                 </div>
 
