@@ -5,8 +5,8 @@ import { FaPlay } from 'react-icons/fa'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom"
-import Swal from 'sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.js';
+//import Swal from 'sweetalert2';
+//import 'sweetalert2/dist/sweetalert2.min.js';
 
 
 export default function SignIn(){
