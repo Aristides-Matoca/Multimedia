@@ -5,9 +5,8 @@ import Image1 from '../img/imagem2.png'
 
 export default function Sobre(){
     return(
-        <Container className={css(styles.navBegin)}>
-            <Row>
-                <div className={css(styles.div0Begin)}>
+        <div className={css(styles.navBegin)}>
+                <div className={css(styles.aside1)}>
                     <h4 className={css(styles.text1)}>Sobre</h4>
                     <h1 className={css(styles.text2)}>A Ideia</h1>
                     <p className={css(styles.text3)}>
@@ -17,29 +16,56 @@ export default function Sobre(){
                     </p>
                 </div>
 
-                <div className={css(styles.divBegin)}>
+                <div className={css(styles.aside2)}>
                     <img className={css(styles.image)} src={Image1} alt="" width={'100%'} height={'100%'}/>
                 </div>
-            </Row>
-        </Container>
+        </div>
     )
 }
 
 const styles = StyleSheet.create({
     navBegin:{
-        background: 'none'
+        background: 'none',
+        width: "100%",
+        height: "100vh",
+        paddingTop: "5%",
+        top: 20,
+        left: 0,
+        zIndex: 1,
     },
 
     div0Begin:{
         fontFamily: 'Cormorant Cormorant',
         background: 'none',
         textAlign: 'left',
-        position: 'fixed',
+        position: 'absolute',
         color: 'white',
         height: '250%',
         width: '50%',
-        left: '27%',
-        top: '110%'
+        left: 0,
+        top: 0,
+    },
+
+    aside1:{
+        color: 'white',
+        background: 'none',
+        display: "inline-block",
+        transform: 'translate(-75%, 0)',
+        width: "40%",
+        textAlign: 'left',
+        fontFamily: 'Cormorant Cormorant',
+    },
+
+    aside2:{
+        background: 'none',
+        transform: 'translate(66%, 0)',
+        width: "60%",
+        position: "relative",
+        top: -300,
+        height: "100%",
+        left: 0,
+        zIndex: 1,
+        
     },
 
     text1:{
@@ -59,12 +85,14 @@ const styles = StyleSheet.create({
     },
 
     divBegin: {
-        position: 'fixed',
-        top: '-15%',
-        right: '-39%',
-        width: '75%',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        width: '50%',
         height: '382%',
-        background: 'none'
+        background: 'none',  
+        textAlign: 'rigth',
+        position: 'absolute',
     },
 
     image: {
