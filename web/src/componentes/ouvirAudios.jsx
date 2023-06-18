@@ -1,18 +1,15 @@
 import React from 'react';
 
-const Audio = ({ songs, onSongClick }) => {
+const AudioPlayer = ({ audios, selecionarAudio }) => {
   return (
     <div>
-      <h2>Lista de músicas</h2>
-      <ul>
-        {songs.map((song, index) => (
-          <li key={index} onClick={() => onSongClick(index)}>
-            {song.artist} - {song.title}
-          </li>
-        ))}
-      </ul>
+      {audios.map((audio, index) => (
+        <div key={index}>
+          <span>{audio.nome}</span>
+          <button onClick={() => selecionarAudio(index)}>Reproduzir</button>
+        </div>
+      ))}
     </div>
   );
 };
-
-export default Audio;
+export default AudioPlayer;

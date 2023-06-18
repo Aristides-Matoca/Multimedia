@@ -7,9 +7,9 @@ import { TbPlayerTrackPrevFilled as Prev, TbPlayerTrackNextFilled as Next } from
 import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Download, MdPauseCircle as Pause } from "react-icons/md"
 import React, { useState, useRef, useEffect } from 'react'
 
-export default function Reproducao({ songs, currentSongIndex }){
-
-    //Funções de áudio------------------------------------------------------------------------------------------------
+export default function Reproducao({ audioSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, audioRef }){
+/*
+    Funções de áudio------------------------------------------------------------------------------------------------
     const audioRef = useRef(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [currentTime, setCurrentTime] = useState(0)
@@ -49,16 +49,20 @@ export default function Reproducao({ songs, currentSongIndex }){
   
     const handleTimeUpdate = () => {
       setCurrentTime(audioRef.current.currentTime);
-    }
+    }*/
 
+    const handleReproduzir = () => {
+        reproduzir();
+    };
+
+    if (!audioSelecionado) {
+        return null;
+    }
+    
     return(
         <Nav className={css(styles.nav)}>
-            <audio
-                ref={audioRef}
-                src={currentSong.url}
-                onTimeUpdate={handleTimeUpdate}
-                onEnded={handleNext}
-            />
+            
+            <audio ref={audioRef} src={audioSelecionado.url} onClick={handleReproduzir} />
 
             <NavItem className={css(styles.item1)}>
                 <NavLink className={css(styles.foto)} disabled href="#">
@@ -68,8 +72,8 @@ export default function Reproducao({ songs, currentSongIndex }){
 
             <NavItem className={css(styles.item1)}>
                 <NavLink href="#" className={css(styles.item11)}>
-                    {currentSong.title} <br/>
-                    {currentSong.artist}
+                    {audioSelecionado.nome} <br/>
+                    {audioSelecionado.nome}
                 </NavLink>
             </NavItem>
 
@@ -86,19 +90,25 @@ export default function Reproducao({ songs, currentSongIndex }){
             </NavItem>
 
             <NavItem className={css(styles.item2)}>
-                <NavLink href="#" className={css(styles.item22)} onClick={handlePrevious}>
+                <NavLink href="#" className={css(styles.item22)} onClick={retroceder}>
                     <Prev className={css(styles.item23)}/>
                 </NavLink>
             </NavItem>
 
             <NavItem className={css(styles.item2)}>
-                <NavLink href="#" className={css(styles.item22)} onClick={handlePlayPause}>
-                    {isPlaying ? <Pause className={css(styles.item23)}/> : <Play className={css(styles.item23)}/>}
+                <NavLink href="#" className={css(styles.item22)}>
+
+                    {isPlaying ? (
+                        <Pause className={css(styles.item23)} onClick={pausar}/> 
+                    ) : (
+                        <Play className={css(styles.item23)} onClick={reproduzir}/>
+                    )}
+                    
                 </NavLink>
             </NavItem>
 
             <NavItem className={css(styles.item2)}>
-                <NavLink href="#" className={css(styles.item22)} onClick={handleNext}>
+                <NavLink href="#" className={css(styles.item22)} onClick={avancar}>
                 <Next className={css(styles.item23)}/>
                 </NavLink>
             </NavItem>
@@ -108,16 +118,20 @@ export default function Reproducao({ songs, currentSongIndex }){
                     <Volume className={css(styles.item32)}/>
                 </NavLink>
             </NavItem>
-            <input
+            
+        </Nav>
+    )
+}
+
+/*
+<input
                 type="range"
                 value={currentTime}
                 min="0"
                 max={audioRef.current && audioRef.current.duration}
                 onChange={(e) => setCurrentTime(e.target.value)}
             />
-        </Nav>
-    )
-}
+*/
 
 const styles = StyleSheet.create({
     nav:{

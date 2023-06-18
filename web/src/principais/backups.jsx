@@ -1,3 +1,253 @@
+/*Tudo sobre o Componente Reproducao
+
+import 'bootstrap/dist/css/bootstrap.min.css'
+import { StyleSheet, css } from 'aphrodite'
+import { RiHeart3Fill as Heart } from "react-icons/ri"
+import { Nav, NavItem, NavLink } from 'reactstrap'
+import Img from '../img/imagem1.png'
+import { TbPlayerTrackPrevFilled as Prev, TbPlayerTrackNextFilled as Next } from "react-icons/tb"
+import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Download, MdPauseCircle as Pause } from "react-icons/md"
+import React, { useState, useRef, useEffect } from 'react'
+
+export default function Reproducao({ songs, currentSongIndex }){
+
+    //Funções de áudio------------------------------------------------------------------------------------------------
+    const audioRef = useRef(null)
+    const [isPlaying, setIsPlaying] = useState(false)
+    const [currentTime, setCurrentTime] = useState(0)
+    const currentSong = songs[currentSongIndex]
+  
+    useEffect(() => {
+        if (isPlaying) {
+          audioRef.current.play()
+        } else {
+          audioRef.current.pause()
+        }
+    }, [isPlaying])
+    
+    useEffect(() => {
+        audioRef.current.currentTime = currentTime;
+    }, [currentTime])
+  
+    const handlePlayPause = () => {
+      setIsPlaying(!isPlaying);
+    }
+  
+    const handlePrevious = () => {
+        if (currentSongIndex > 0) {
+            setCurrentTime(0);
+            setIsPlaying(true);
+            setCurrentSongIndex(currentSongIndex - 1);
+        }
+    }
+  
+    const handleNext = () => {
+        if (currentSongIndex < songs.length - 1) {
+            setCurrentTime(0);
+            setIsPlaying(true);
+            setCurrentSongIndex(currentSongIndex + 1);
+          }
+    }
+  
+    const handleTimeUpdate = () => {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+
+    return(
+        <Nav className={css(styles.nav)}>
+            <audio
+                ref={audioRef}
+                src={currentSong.url}
+                onTimeUpdate={handleTimeUpdate}
+                onEnded={handleNext}
+            />
+
+            <NavItem className={css(styles.item1)}>
+                <NavLink className={css(styles.foto)} disabled href="#">
+                    <img className={css(styles.img)} href="#" src={Img} alt="Foto qualquer" />
+                </NavLink>
+            </NavItem>
+
+            <NavItem className={css(styles.item1)}>
+                <NavLink href="#" className={css(styles.item11)}>
+                    {currentSong.title} <br/>
+                    {currentSong.artist}
+                </NavLink>
+            </NavItem>
+
+            <NavItem className={css(styles.item2)}>
+                <NavLink href="#" className={css(styles.item21)}>
+                    <Heart className={css(styles.item21)}/>
+                </NavLink>
+            </NavItem>
+
+            <NavItem className={css(styles.item2)}>
+                <NavLink href="#" className={css(styles.item21)}>
+                    <Download className={css(styles.item21)}/>
+                </NavLink>
+            </NavItem>
+
+            <NavItem className={css(styles.item2)}>
+                <NavLink href="#" className={css(styles.item22)} onClick={handlePrevious}>
+                    <Prev className={css(styles.item23)}/>
+                </NavLink>
+            </NavItem>
+
+            <NavItem className={css(styles.item2)}>
+                <NavLink href="#" className={css(styles.item22)} onClick={handlePlayPause}>
+                    {isPlaying ? <Pause className={css(styles.item23)}/> : <Play className={css(styles.item23)}/>}
+                </NavLink>
+            </NavItem>
+
+            <NavItem className={css(styles.item2)}>
+                <NavLink href="#" className={css(styles.item22)} onClick={handleNext}>
+                <Next className={css(styles.item23)}/>
+                </NavLink>
+            </NavItem>
+
+            <NavItem className={css(styles.item3)}>
+                <NavLink href="#" className={css(styles.item32)}>
+                    <Volume className={css(styles.item32)}/>
+                </NavLink>
+            </NavItem>
+            <input
+                type="range"
+                value={currentTime}
+                min="0"
+                max={audioRef.current && audioRef.current.duration}
+                onChange={(e) => setCurrentTime(e.target.value)}
+            />
+        </Nav>
+    )
+}
+
+const styles = StyleSheet.create({
+    nav:{
+        color: 'white',
+        background: 'none',
+        fontFamily: 'Cormorant Garamond',
+    },
+
+    foto:{
+        transform: 'translate(5%, -27%)',
+        border: '1px solid grey',
+        borderRadius: '8px',
+        background: 'none',
+        height: '85%',
+        width: '30%'
+    },
+
+    img:{
+        background: 'none',
+        height: '100%',
+        width: '100%'
+    },
+
+    item1:{
+        background: 'none',
+        fontSize: '18px',
+        color: 'white'
+    },
+
+    item11:{
+        transform: 'translate(-300%, -20%)',
+        background: 'none',
+        color: 'white'
+    },
+
+    item2:{
+        transform: 'translate(-300%, 0%)',
+        background: 'none',
+        color: 'white',
+        fontSize: '25px'
+    },
+
+    item21:{
+        background: 'none',
+        color: 'white',
+        ':hover':{
+            color: 'rgba(255, 213, 0, 1)'
+        },
+    },
+
+    item22:{
+        //transform: 'translate(150%, 0%)',
+        background: 'none',
+        color: 'white',
+        border: '1px solid white'
+    },
+
+    item23:{
+        background: 'none',
+        color: 'white',
+        ':hover':{
+            color: 'rgba(255, 213, 0, 1)',
+            fontSize: '26px'
+        },
+        ':active':{
+            fontSize: '26px'
+        }
+    },
+
+    item3:{
+        background: 'none',
+        paddingLeft: '20%',
+        fontSize: '25px'
+    },
+
+    item32:{
+        background: 'none',
+        color: 'white'
+    }
+})
+*/
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+/*Tudo sobre o Componente OuvirAudios
+import React from 'react';
+
+const Audio = ({ songs, onSongClick }) => {
+  return (
+    <div>
+      <h2>Lista de músicas</h2>
+      <ul>
+        {songs.map((song, index) => (
+          <li key={index} onClick={() => onSongClick(index)}>
+            {song.artist} - {song.title}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Audio;
+*/
+
+
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+/*
 import React, { useState, useEffect, useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Audios from '../componentes/audios'
@@ -19,54 +269,14 @@ import KMW from '../audios/KMW-MeuSucesso.mp3'
 export default function Home() {
   
   //Funções de áudio--------------------------------------------------------------------------------------------------------
-
-  const [audios, setAudios] = useState([
-    { nome: 'NGA 1', url: NGA },
-    { nome: 'KMW 2', url: KMW },
-    { nome: 'NGA 3', url: NGA },
-  ]);
-
-  const [audioSelecionado, setAudioSelecionado] = useState(null);
-  const audioRef = useRef(null);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const selecionarAudio = (index) => {
-    setAudioSelecionado(audios[index]);
-    setIsPlaying(true);
-    //reproduzir()
-    //console.log('entrei3')
-  };
-
-  const pausar = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
-
-  const reproduzir = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-      setIsPlaying(true);
-      
-    }
-    
-    //console.log('entrei2')
-  };
-
-  const avancar = () => {
-    const currentIndex = audios.findIndex((audio) => audio === audioSelecionado);
-    const nextIndex = (currentIndex + 1) % audios.length; // Circular
-    setAudioSelecionado(audios[nextIndex]);
-    setIsPlaying(true);
-  };
-
-  const retroceder = () => {
-    const currentIndex = audios.findIndex((audio) => audio === audioSelecionado);
-    const previousIndex = (currentIndex - 1 + audios.length) % audios.length; // Circular
-    setAudioSelecionado(audios[previousIndex]);
-    setIsPlaying(true);
-  };
+  const songs = [
+    { artist: 'NGA', title: 'Dona', url: NGA },
+    { artist: 'MW', title: 'Meu',  url: KMW },
+    { artist: 'NGA', title: 'Dona', url: NGA }
+  ]
 
   //Funções de rotas----------------------------------------------------------------------------------------------------------------------
   const [navs, setNavs] = useState({
@@ -161,7 +371,7 @@ export default function Home() {
             <React.Fragment key={nav}>
               {nav === 'Inicio' && <Homepage handleShow={handleShow}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
-              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarAudio}/>}
+              {nav === 'Ouvir' && <AudioPlayer songs={songs} onSongClick={setCurrentSongIndex}/>}
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
               {nav === 'Perfil' && <Perfil />}
               {nav === 'Upload' && <Upload handleShow={handleShow}/>}
@@ -171,17 +381,11 @@ export default function Home() {
       </div>
 
       <footer className={css(styles.footer)}>
-        {audioSelecionado && (
-          <Reproducao
-            audioSelecionado={audioSelecionado}
-            pausar={pausar}
-            reproduzir={reproduzir}
-            avancar={avancar}
-            retroceder={retroceder}
-            isPlaying={isPlaying}
-            audioRef={audioRef}
-          />
-        )}
+        <Reproducao songs={songs}
+        currentSongIndex={currentSongIndex}
+        setCurrentSongIndex={setCurrentSongIndex}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}/>
       </footer>
     </Row>
   )
@@ -333,3 +537,4 @@ const styles = StyleSheet.create({
     width: '84.3%'
   }
 })
+*/
