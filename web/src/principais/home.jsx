@@ -33,9 +33,8 @@ export default function Home() {
   const selecionarAudio = (index) => {
     setAudioSelecionado(audios[index]);
     setIsPlaying(true);
-    //reproduzir()
-    //console.log('entrei3')
-  };
+    reproduzir()
+  };  
 
   const pausar = () => {
     if (audioRef.current) {
@@ -48,10 +47,7 @@ export default function Home() {
     if (audioRef.current) {
       audioRef.current.play();
       setIsPlaying(true);
-      
     }
-    
-    //console.log('entrei2')
   };
 
   const avancar = () => {
@@ -161,7 +157,7 @@ export default function Home() {
             <React.Fragment key={nav}>
               {nav === 'Inicio' && <Homepage handleShow={handleShow}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
-              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarAudio}/>}
+              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarAudio} audioRef={audioRef}/>}
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
               {nav === 'Perfil' && <Perfil />}
               {nav === 'Upload' && <Upload handleShow={handleShow}/>}
@@ -229,7 +225,7 @@ const styles = StyleSheet.create({
   },
 
   notUser:{
-    transform: 'translate(2220%, -170%)',
+    transform: 'translate(2500%, -170%)',
     marginRight: '5%',
     background: 'none',
     fontSize: '28px',
@@ -247,7 +243,7 @@ const styles = StyleSheet.create({
 
   definition:{
     position: 'absolute',
-    top: '65px',
+    top: '55px',
     right: '-44%',
     border: '1px solid #ccc',
     borderRadius: '5px',
