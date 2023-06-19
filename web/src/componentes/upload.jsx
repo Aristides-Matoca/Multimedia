@@ -126,7 +126,7 @@ export default function Upload({handleShow}){
                         <Input className={css(styles.input)} type='text' placeholder='Meu primeiro áudio'/>
 
                         <Label className={css(styles.label)}>Autor*</Label>
-                        <Input className={css(styles.input)} type='text' placeholder='Harry'/>
+                        <Input className={css(styles.input)} type='text' placeholder='Autor'/>
 
                         <Label className={css(styles.label)}>Estilo*</Label>
                         <Input type="select" className={css(styles.input)}>
