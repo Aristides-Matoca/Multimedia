@@ -161,15 +161,11 @@ export default function Reproducao({ audioSelecionado, pausar, reproduzir, avanc
             </NavItem>
 
             <div>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.05}
-          value={volume}
-          onChange={handleVolumeChange}
-        />
-      </div>
+                <input type="range" min={0} max={1} step={0.05}
+                    value={volume}
+                    onChange={handleVolumeChange}
+                />
+            </div>
             
         </Nav>
     )
