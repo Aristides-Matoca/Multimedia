@@ -5,8 +5,6 @@ import { FaPlay } from 'react-icons/fa'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom"
-//import Swal from 'sweetalert2';
-//import 'sweetalert2/dist/sweetalert2.min.js';
 
 
 export default function SignIn(){
@@ -40,7 +38,7 @@ export default function SignIn(){
     }
 
     function validateEmail(email) {
-        const emailPattern = /^201([0-9]{5}|[a-zA-Z])[a-zA-Z0-9]{0,}@isptec\.co\.ao$/;
+        const emailPattern = /^(20((1[2-9]\d{5})|(2[0-3]\d{5}))|[a-z]+\.[a-z]+)@isptec\.co\.ao$/
 
         return (emailPattern.test(email));
     }
@@ -90,11 +88,9 @@ export default function SignIn(){
         const nExiste = verificarUsuario();
 
         if(!em){
-            alert("Só são aceites estudantes do ISPTEC.");
+            alert("Só são aceites membros do ISPTEC.");
             navigate('/signin');
-        }
-
-        if(!pass){
+        } else if(!pass){
             alert("A password tem de ter pelo menos 8 caracteres, 1 letra maiúscula e minúscula, número e caractere especial.");
             navigate('/signin');
         }
