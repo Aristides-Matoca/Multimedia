@@ -92,9 +92,7 @@ export default function SignIn(){
         if(!em){
             alert("Só são aceites estudantes do ISPTEC.");
             navigate('/signin');
-        }
-
-        if(!pass){
+        } else if(!pass){
             alert("A password tem de ter pelo menos 8 caracteres, 1 letra maiúscula e minúscula, número e caractere especial.");
             navigate('/signin');
         }
