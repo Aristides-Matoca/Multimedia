@@ -3,9 +3,19 @@ import { Label, Input, InputGroup, InputGroupText, Container, Row, Nav, NavItem,
 import { StyleSheet, css } from 'aphrodite'
 import React, { useState, useRef } from 'react'
 import { AiOutlineCamera as Camera } from "react-icons/ai"
-import { FiEdit2 } from "react-icons/fi"
+import { FiEdit2 } from "react-icons/fi";
+import axios from 'axios';
+import { storage } from '../../backend/config';
 
 export default function Upload({handleShow}){
+
+    const api = "http://localhost:4000";
+
+    const [selectedFileImagem, setSelectedFileImagem] = useState(null);
+    const [nameI, setNameI] = useState(null);
+
+    const [tipo, setTipo] = useState('');
+
     //Tem a ver com upload de fotos
     const [profilePicture, setProfilePicture] = useState(null);
     const [isHovered, setIsHovered] = useState(false);
@@ -13,6 +23,8 @@ export default function Upload({handleShow}){
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        setSelectedFileImagem(e.target.files[0]);
+        setNameI(file.name);
         setProfilePicture(URL.createObjectURL(file));
     };
 
@@ -107,7 +119,7 @@ export default function Upload({handleShow}){
                                     ) : (isHovered ? <FiEdit2 className={css(styles.icon)}/> : <Camera className={css(styles.icon)}/>)}
                                 </InputGroupText>
                                 
-                                <Input type="file" onChange={handleFileChange} style={{ display: 'none' }} innerRef={fileInputRef}/>
+                                <Input type="file" onChange={handleFileChange} style={{ display: 'none' }} innerRef={fileInputRef} accept="image/*"/>
                             </InputGroup>
 
                             {profilePicture && (
@@ -116,27 +128,27 @@ export default function Upload({handleShow}){
                         </div>
 
                         <Label className={css(styles.label)}>Tipo*</Label>
-                        <Input type="select" className={css(styles.input)}>
+                        <Input type="select" className={css(styles.input)} value={tipo} onChange={(e) => setTipo(e.target.value)}>
                            {genders.map((gender, index) => (
                                 <option style={{background: 'none'}} key={index} value={gender}>{gender}</option>
                            ))}
                         </Input>
 
                         <Label className={css(styles.label)}>Título*</Label>
-                        <Input className={css(styles.input)} type='text' placeholder='Meu primeiro áudio'/>
+                        <Input className={css(styles.input)} type='text' placeholder='Meu primeiro áudio' value={titulo} onChange={(e) => setTitulo(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Autor*</Label>
-                        <Input className={css(styles.input)} type='text' placeholder='Autor'/>
+                        <Input className={css(styles.input)} type='text' placeholder='Autor' value={autor} onChange={(e) => setAutor(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Estilo*</Label>
-                        <Input type="select" className={css(styles.input)}>
+                        <Input type="select" className={css(styles.input)} value={estilo} onChange={(e) => setEstilo(e.target.value)}>
                            {estilos.map((estilo, index) => (
                                 <option style={{background: 'none'}} key={index} value={estilo}>{estilo}</option>
                            ))}
                         </Input>
 
                         <Label className={css(styles.label)}>Descrição</Label>
-                        <Input className={css(styles.input)} type='textarea' placeholder='Something else...'/>
+                        <Input className={css(styles.input)} type='textarea' placeholder='Something else...' value={descricao} onChange={(e) => set(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Data de lançamento*</Label>
                         <InputGroup className={css(styles.Inputg)}>
