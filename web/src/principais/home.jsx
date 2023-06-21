@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Audios from '../componentes/audios'
+import Videos from '../componentes/videos'
 import Navegator from '../componentes/nav'
 import Homepage from '../componentes/homepage'
 import AudioPlayer from '../componentes/ouvirAudios'
@@ -15,53 +16,105 @@ import { InputGroup, InputGroupText, Input, Row} from 'reactstrap'
 import { Link } from "react-router-dom"
 import NGA from '../audios/NGA-Dona.mp3'
 import KMW from '../audios/KMW-MeuSucesso.mp3'
+import V1 from '../videos/v1.mp4'
+import V2 from '../videos/v2.mp4'
+import V3 from '../videos/v4.mp4'
 
 export default function Home() {
   
   //Funções de áudio--------------------------------------------------------------------------------------------------------
 
   const [audios, setAudios] = useState([
-    { nome: 'NGA 1', url: NGA },
-    { nome: 'KMW 2', url: KMW },
-    { nome: 'NGA 3', url: NGA },
+    { tipo: 'Audio', nome: 'NGA 1', url: NGA },
+    { tipo: 'Audio', nome: 'KMW 2', url: KMW },
+    { tipo: 'Audio', nome: 'NGA 3', url: NGA },
   ]);
 
+  const [videos, setVideos] = useState([
+    { tipo: 'Video', nome: 'Video 1', url: V1 },
+    { tipo: 'Video', nome: 'Video 2', url: V2 },
+    { tipo: 'Video', nome: 'Video 3', url: V3 },
+  ]);
+
+  const [mediaSelecionado, setMediaSelecionado] = useState(null);
   const [audioSelecionado, setAudioSelecionado] = useState(null);
-  const audioRef = useRef(null);
+  const [videoSelecionado, setVideoSelecionado] = useState(null);
+  const [urlVideo, setUrlVideo] = useState(null);
+  const mediaRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const selecionarAudio = (index) => {
-    setAudioSelecionado(audios[index]);
-    setIsPlaying(true);
-    reproduzir()
-  };  
+  const selecionarMedia = (index, value) => {
+    if(value == 1){
+      setMediaSelecionado(audios[index]);
+      setAudioSelecionado(audios[index])
+      setVideoSelecionado(null)
+      reproduzir()
+    }
+    else if(value == 2){
+      setMediaSelecionado(videos[index]);
+      setVideoSelecionado(videos[index])
+      setUrlVideo(videos[index].url)
+      setAudioSelecionado(null)
+      reproduzir()
+    }
+  }; 
 
   const pausar = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
+    if (mediaRef.current && mediaRef.current.tagName === 'VIDEO') {
+      mediaRef.current.pause();
+      setIsPlaying(false);
+    }
+
+    else if (mediaRef.current && mediaRef.current.tagName === 'AUDIO') {
+      mediaRef.current.pause();
       setIsPlaying(false);
     }
   };
 
   const reproduzir = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
+    if (mediaRef.current && mediaRef.current.tagName === 'VIDEO') {
+      //console.log(mediaRef.current.src)
+      mediaRef.current.play();
+      setIsPlaying(true);
+    }
+
+    else if (mediaRef.current && mediaRef.current.tagName === 'AUDIO') {
+      console.log(mediaRef.current.tagName)
+      mediaRef.current.play();
       setIsPlaying(true);
     }
   };
 
   const avancar = () => {
-    const currentIndex = audios.findIndex((audio) => audio === audioSelecionado);
-    const nextIndex = (currentIndex + 1) % audios.length; // Circular
-    setAudioSelecionado(audios[nextIndex]);
-    setIsPlaying(true);
+    if(mediaSelecionado.tipo === 'Audio'){
+      const currentIndex = audios.findIndex((audio) => audio === mediaSelecionado);
+      const nextIndex = (currentIndex + 1) % audios.length; // Circular
+      setMediaSelecionado(audios[nextIndex]);
+      setIsPlaying(true);
+    }
+
+    else if(mediaSelecionado.tipo === 'Video'){
+      const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
+      const nextIndex = (currentIndex + 1) % videos.length; // Circular
+      setMediaSelecionado(videos[nextIndex]);
+      setIsPlaying(true);
+    }
   };
 
   const retroceder = () => {
-    const currentIndex = audios.findIndex((audio) => audio === audioSelecionado);
-    const previousIndex = (currentIndex - 1 + audios.length) % audios.length; // Circular
-    setAudioSelecionado(audios[previousIndex]);
-    setIsPlaying(true);
+    if(mediaSelecionado.tipo === 'Audio'){
+      const currentIndex = audios.findIndex((audio) => audio === mediaSelecionado);
+      const previousIndex = (currentIndex - 1 + audios.length) % audios.length; // Circular
+      setMediaSelecionado(audios[previousIndex]);
+      setIsPlaying(true);
+    }
+    
+    else if(mediaSelecionado.tipo === 'Video'){
+      const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
+      const previousIndex = (currentIndex - 1 + videos.length) % videos.length; // Circular
+      setMediaSelecionado(videos[previousIndex]);
+      setIsPlaying(true);
+    }
   };
 
   //Funções de rotas----------------------------------------------------------------------------------------------------------------------
@@ -139,7 +192,7 @@ export default function Home() {
         </InputGroup>
 
         <IoIosNotifications className={css(styles.notUser)}/>
-        <TbSettings className={css(styles.notUser)} onClick={handleClick} ref={iconRef}/>
+        <TbSettings ref={iconRef} className={css(styles.notUser)} onClick={handleClick} />
         {showDefinitions ? (
           <div className={css(styles.definition)} onClick={handleDefinitionsClick} ref={definitionsRef}>
             <p className={css(styles.cont)} onClick={() => handleShow('Conta')}>Minha Conta</p>
@@ -157,7 +210,8 @@ export default function Home() {
             <React.Fragment key={nav}>
               {nav === 'Inicio' && <Homepage handleShow={handleShow}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
-              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarAudio} audioRef={audioRef}/>}
+              {nav === 'Video' && <Videos videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} mediaSelecionado={mediaSelecionado}/>}
+              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia}/>}
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
               {nav === 'Perfil' && <Perfil />}
               {nav === 'Upload' && <Upload handleShow={handleShow}/>}
@@ -169,13 +223,24 @@ export default function Home() {
       <footer className={css(styles.footer)}>
         {audioSelecionado && (
           <Reproducao
-            audioSelecionado={audioSelecionado}
+            mediaSelecionado={mediaSelecionado}
             pausar={pausar}
             reproduzir={reproduzir}
             avancar={avancar}
             retroceder={retroceder}
             isPlaying={isPlaying}
-            audioRef={audioRef}
+            mediaRef={mediaRef}
+          />
+        )}
+        {videoSelecionado && (
+          <Reproducao
+            mediaSelecionado={mediaSelecionado}
+            pausar={pausar}
+            reproduzir={reproduzir}
+            avancar={avancar}
+            retroceder={retroceder}
+            isPlaying={isPlaying}
+            mediaRef={mediaRef}
           />
         )}
       </footer>

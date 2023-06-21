@@ -7,43 +7,46 @@ import { TbPlayerTrackPrevFilled as Prev, TbPlayerTrackNextFilled as Next } from
 import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Download, MdPauseCircle as Pause } from "react-icons/md"
 import React, {useState, useEffect, useRef} from 'react'
 
-export default function Reproducao({ audioSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, audioRef }){
+export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, mediaRef }){
 
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [isSeeking, setIsSeeking] = useState(false);
-    const [volume, setVolume] = useState(1);
+    const [volume, setVolume] = useState(0.75);
+    //const mediaRef = useRef(null);
 
     useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
-            audioRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
+        if (mediaRef.current) {
+            mediaRef.current.addEventListener('timeupdate', handleTimeUpdate);
+            mediaRef.current.addEventListener('loadedmetadata', handleLoadedMetadata);
         }
 
         return () => {
-            if (audioRef.current) {
-                audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
-                audioRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
+            if (mediaRef.current) {
+                mediaRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+                mediaRef.current.removeEventListener('loadedmetadata', handleLoadedMetadata);
             }
         };
-    }, [audioRef]);
+    }, [mediaRef]);
 
-    useEffect(() => {//UseEfect para avançar para próxima musica de forma automatica
-            if (formatTime(currentTime) === formatTime(duration)) {
+    useEffect(() => {//UseEfect para avançar para próxima a media de forma automatica
+        if (formatTime(currentTime) === formatTime(duration)) {
+            if(formatTime(duration) != '00:00'){
                 setTimeout(() => {
-                handleClickAvanco();
-            }, 100);
+                    handleClickAvanco();
+                }, 100);
+            }
         }
     }, [currentTime, duration]);
 
     const handleTimeUpdate = () => {
         if (!isSeeking) {
-            setCurrentTime(audioRef.current.currentTime);
+            setCurrentTime(mediaRef.current.currentTime);
         }
     };
 
     const handleLoadedMetadata = () => {
-        setDuration(audioRef.current.duration);
+        setDuration(mediaRef.current.duration);
     };
 
     const formatTime = (time) => {
@@ -55,22 +58,21 @@ export default function Reproducao({ audioSelecionado, pausar, reproduzir, avanc
     const handleSeek = (event) => {
         const seekTime = parseFloat(event.target.value);
         setCurrentTime(seekTime);
-        audioRef.current.currentTime = seekTime;
+        mediaRef.current.currentTime = seekTime;
     };
 
     const handleVolumeChange = (event) => {
         const volumeValue = parseFloat(event.target.value);
         setVolume(volumeValue);
-        audioRef.current.volume = volumeValue;
-      };
+        mediaRef.current.volume = volumeValue;
+    };
 
 
     //Avancar e recuar medias
     const handleClickAvanco = () => {
         avancar();
-        
         setTimeout(() => {
-          playMedia();
+            playMedia();
         }, 100);
     };
 
@@ -86,14 +88,18 @@ export default function Reproducao({ audioSelecionado, pausar, reproduzir, avanc
         reproduzir();
     };
 
-    if (!audioSelecionado) {
+    if (!mediaSelecionado) {
         return null;
     }
+    //console.log(mediaSelecionado.url)
     
     return(
         <Nav className={css(styles.nav)}>
-            
-            <audio ref={audioRef} src={audioSelecionado.url} />
+            {mediaSelecionado.tipo === 'Video' ? (
+                <video ref={mediaRef} src={mediaSelecionado.url} style={{display: 'none'}} />
+            ) : (
+                <audio ref={mediaRef} src={mediaSelecionado.url} />
+            )}
             
             <div>
                 <span>{formatTime(currentTime)}</span>
@@ -113,8 +119,8 @@ export default function Reproducao({ audioSelecionado, pausar, reproduzir, avanc
 
             <NavItem className={css(styles.item1)}>
                 <NavLink href="#" className={css(styles.item11)}>
-                    {audioSelecionado.nome} <br/>
-                    {audioSelecionado.nome}
+                    {mediaSelecionado.nome} <br />
+                    {mediaSelecionado.nome}
                 </NavLink>
             </NavItem>
 

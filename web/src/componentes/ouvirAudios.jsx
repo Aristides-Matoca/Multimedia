@@ -3,14 +3,14 @@ import React from 'react';
 const AudioPlayer = ({ audios, selecionarAudio }) => {
 
   const handleClick = (index) => {
-    selecionarAudio(index);
+    selecionarAudio(index, 1);
     setTimeout(() => {
       selectAudio(index);
     }, 100);
   };
 
   const selectAudio = (index) => {
-    selecionarAudio(index);
+    selecionarAudio(index, 1);
   };
 
   return (
