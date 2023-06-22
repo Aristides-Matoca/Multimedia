@@ -3,7 +3,7 @@ import { json } from 'express';
 import cors from 'cors';
 
 //import Pessoa from './pessoaDB.js';
-import { UsuariosOn, Pessoa, storage } from './config.js';
+import { UsuariosOn, Pessoa, storage, Upload } from './config.js';
 
 const app = express();
 app.use(express.json());
@@ -58,6 +58,13 @@ app.post("/delete", async(req, res)=>{
     const id = req.body.id;
     await Pessoa.doc(id).delete();
     res.send({msg: "Deleted"});
+})
+
+app.post("/upload", async(req, res)=>{
+    const data = req.body
+    console.log("Data of upload ", data)
+    await Upload.add(data);
+    res.send({msg: "File Added"})
 })
 
 app.listen(port, ()=>console.log("Up & Running *4000"))
