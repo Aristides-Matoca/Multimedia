@@ -5,11 +5,11 @@ import React, { useState, useRef } from 'react'
 import { AiOutlineCamera as Camera } from "react-icons/ai"
 import { FiEdit2 } from "react-icons/fi";
 import axios from 'axios';
-import { storage } from '../../backend/config';
+import { storage } from '../../backend/config'
 
 export default function Upload({handleShow}){
 
-    const api = "http://localhost:4000";
+    const api = 'http://localhost:4000';
 
     const [selectedFileImagem, setSelectedFileImagem] = useState(null);
     const [nameI, setName] = useState(null);
@@ -119,17 +119,22 @@ export default function Upload({handleShow}){
     ];
 
     const onFileUpload = () => {
+        
         if (selectedFile) {
           const storageRef = storage.ref();
           let path = "";
+          let db = "";
     
           if(tipoF=="video/*"){
             path= "videos/"+titulo;
+            db = "/videos";
           }
           else if(tipo=="Podcast"){
             path= "podcast/"+titulo;
+            db = "/podcast";
           }else{
             path= "audios/"+titulo;
+            db = "/audios";
           }
     
           const fileRef = storageRef.child(path);
@@ -161,10 +166,10 @@ export default function Upload({handleShow}){
                 } 
 
                 axios
-                  .post(api + '/upload', detalhes)
+                  .post(api + db, detalhes)
                   .then(response => {
                     const createdUser = response.data;
-                    console.log('Created file:', createdUser);
+                    console.log('Created file:', createdUser+" "+db);
                   })
                   .catch(error => {
                     console.error('Error creating user:', error);
@@ -207,10 +212,7 @@ export default function Upload({handleShow}){
                         </div>
 
                         <Label className={css(styles.label)}>Tipo*</Label>
-                        <Input type="select" className={css(styles.input)} value={tipo} onChange={(e) => {setTipo(e.target.value); if(tipo==="Vídeo"){
-                            setTipoF("video/*");}else{
-                                setTipoF("audio/*");
-                            }}}>
+                        <Input type="select" className={css(styles.input)} value={tipo} onChange={(e) => {setTipo(e.target.value); }}>
                            {genders.map((gender, index) => (
                                 <option style={{background: 'none'}} key={index} value={gender}>{gender}</option>
                            ))}
@@ -249,7 +251,12 @@ export default function Upload({handleShow}){
                         <Input className={css(styles.input)} type='textarea' placeholder='Something...' value={legenda} onChange={(e) => setLegenda(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Escolha o ficheiro*</Label>
-                        <Input className={css(styles.input)} type='file' onChange={onChangeHandler} accept={tipoF}/>
+                        <Input className={css(styles.input)} type='file' onClick={() => {if(tipo=='Vídeo'){
+                            setTipoF("video/*");
+                            alert(tipoF)
+                             }else{
+                                setTipoF("audio/*");
+                            }}} onChange={onChangeHandler} accept={tipoF}/>
 
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
                         <button id='btn btn-primary' className={css(styles.btn2)} onClick={onFileUpload}>Carregar</button>

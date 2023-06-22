@@ -3,7 +3,7 @@ import { json } from 'express';
 import cors from 'cors';
 
 //import Pessoa from './pessoaDB.js';
-import { UsuariosOn, Pessoa, storage, Upload } from './config.js';
+import { UsuariosOn, Pessoa, storage, Audios, Videos, Podcast } from './config.js';
 
 const app = express();
 app.use(express.json());
@@ -35,6 +35,7 @@ app.post("/create", async(req, res)=>{
     await Pessoa.add(data)
     res.send({msg: "User Added"})
 })
+
 // Enviar para usuáriosOn
 
 app.post("/addUOn", async(req, res)=>{
@@ -43,6 +44,37 @@ app.post("/addUOn", async(req, res)=>{
     await UsuariosOn.add(data)
     res.send({msg: "User Added"})
 })
+
+// Enviar ficheiro 
+
+app.post("/audios", async(req, res)=>{
+    const data = req.body
+    console.log("Data of upload ", data)
+    await Audios.add(data);
+    res.send({msg: "File Added"})
+})
+
+app.post("/videos", async(req, res)=>{
+    const data = req.body
+    console.log("Data of upload ", data)
+    await Videos.add(data);
+    res.send({msg: "File Added"})
+})
+
+app.post("/podcast", async(req, res)=>{
+    const data = req.body
+    console.log("Data of upload ", data)
+    await Podcast.add(data);
+    res.send({msg: "File Added"})
+})
+
+/*app.get("/download", async(req, res) => {
+    const snapshot = await Upload.get();
+    //const ids = snapshot.docs.map((doc) => doc.id);
+    //const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const list = snapshot.docs.map((doc) => doc.data());
+    res.send(list);
+})*/
 
 app.post("/update", async(req, res)=>{
     const id = req.body.id;
@@ -58,13 +90,6 @@ app.post("/delete", async(req, res)=>{
     const id = req.body.id;
     await Pessoa.doc(id).delete();
     res.send({msg: "Deleted"});
-})
-
-app.post("/upload", async(req, res)=>{
-    const data = req.body
-    console.log("Data of upload ", data)
-    await Upload.add(data);
-    res.send({msg: "File Added"})
 })
 
 app.listen(port, ()=>console.log("Up & Running *4000"))
