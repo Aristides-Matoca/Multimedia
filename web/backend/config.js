@@ -16,5 +16,6 @@ const firebaseConfig = {
 
   const db = firebase.firestore();
   export const UsuariosOn = db.collection("usuariosOn");
+  export const Upload = db.collection("upload");
 
   export const Pessoa = db.collection("pessoa");
