@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, css } from 'aphrodite'
 
-const Videos = ({videos, selecionarVideo, urlVideo, mediaRef, playPause}) => {
+const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
     const [videoSelecionado, setVideoSelecionado] = useState(null);
 
     const reproduzirVideo = (video, index) => {

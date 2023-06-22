@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Audios from '../componentes/audios'
 import Videos from '../componentes/videos'
+import Radios from '../componentes/radios'
 import Navegator from '../componentes/nav'
 import Homepage from '../componentes/homepage'
 import AudioPlayer from '../componentes/ouvirAudios'
@@ -39,16 +40,16 @@ export default function Home() {
   ]);
 
   const [radios, setRadios] = useState([
-    { tipo: 'Radio', nome: 'Rádio Mais', titulo: 'Dona', image: Img1, url: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
-    //{ tipo: 'Radio', nome: 'Rádio Escola', titulo: 'Meu Sucesso', image: Img2, url: 'https://radios.vpn.sapo.pt/AO/radio1.mp3' },
-    { tipo: 'Radio', nome: 'Rádio LAC', titulo: 'Dona 2', image: Img1, url: 'https://radios.vpn.sapo.pt/AO/radio14.mp3?1685629053605' },
+    { tipo: 'Radio', nome: 'Rádio Mais', titulo: 'Estação 1', image: Img1, url: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
+    { tipo: 'Radio', nome: 'Rádio Escola', titulo: 'Estação 2', image: Img2, url: 'https://radios.vpn.sapo.pt/AO/radio1.mp3' },
+    { tipo: 'Radio', nome: 'Rádio LAC', titulo: 'Estação 3', image: Img1, url: 'https://radios.vpn.sapo.pt/AO/radio14.mp3?1685629053605' },
   ]);
 
   const [mediaSelecionado, setMediaSelecionado] = useState(null);
   const [audioSelecionado, setAudioSelecionado] = useState(null);
   const [videoSelecionado, setVideoSelecionado] = useState(null);
+  const [radioSelecionado, setRadioSelecionado] = useState(null);
   const [urlVideo, setUrlVideo] = useState(null);
-  const [valuePlay, setValuePlay] = useState(null);
   const mediaRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -57,6 +58,7 @@ export default function Home() {
       setMediaSelecionado(audios[index]);
       setAudioSelecionado(audios[index])
       setVideoSelecionado(null)
+      setRadioSelecionado(null)
       reproduzir()
     }
     else if(value == 2){
@@ -64,37 +66,33 @@ export default function Home() {
       setVideoSelecionado(videos[index])
       setUrlVideo(videos[index].url)
       setAudioSelecionado(null)
-      setValuePlay('Play')
+      setRadioSelecionado(null)
+      reproduzir()
+    }
+    else if(value == 3){
+      setMediaSelecionado(radios[index]);
+      setRadioSelecionado(radios[index])
+      setVideoSelecionado(null)
+      setAudioSelecionado(null)
       reproduzir()
     }
   }; 
 
   const pausar = () => {
-    if (mediaRef.current && mediaRef.current.tagName === 'VIDEO') {
-      mediaRef.current.pause();
-      setValuePlay('Pause')
-      setIsPlaying(false);
-    }
-
-    else if (mediaRef.current && mediaRef.current.tagName === 'AUDIO') {
+    if (mediaRef.current) {
       mediaRef.current.pause();
       setIsPlaying(false);
     }
   };
 
   const reproduzir = () => {
-    if (mediaRef.current && mediaRef.current.tagName === 'VIDEO') {
-      mediaRef.current.play();
-      setValuePlay('Play')
-      setIsPlaying(true);
-    }
-
-    else if (mediaRef.current && mediaRef.current.tagName === 'AUDIO') {
+    if (mediaRef.current) {
       mediaRef.current.play();
       setIsPlaying(true);
     }
   };
 
+  //Avancar media
   const avancar = () => {
     if(mediaSelecionado.tipo === 'Audio'){
       const currentIndex = audios.findIndex((audio) => audio === mediaSelecionado);
@@ -110,8 +108,16 @@ export default function Home() {
       setUrlVideo(videos[nextIndex].url)
       setIsPlaying(true);
     }
+
+    else if(mediaSelecionado.tipo === 'Radio'){
+      const currentIndex = radios.findIndex((radio) => radio === mediaSelecionado);
+      const nextIndex = (currentIndex + 1) % radios.length; // Circular
+      setMediaSelecionado(radios[nextIndex]);
+      setIsPlaying(true);
+    }
   };
 
+  //Retroceder media
   const retroceder = () => {
     if(mediaSelecionado.tipo === 'Audio'){
       const currentIndex = audios.findIndex((audio) => audio === mediaSelecionado);
@@ -125,6 +131,13 @@ export default function Home() {
       const previousIndex = (currentIndex - 1 + videos.length) % videos.length; // Circular
       setMediaSelecionado(videos[previousIndex]);
       setUrlVideo(videos[previousIndex].url)
+      setIsPlaying(true);
+    }
+
+    else if(mediaSelecionado.tipo === 'Radio'){
+      const currentIndex = radios.findIndex((radio) => radio === mediaSelecionado);
+      const previousIndex = (currentIndex - 1 + radios.length) % radios.length; // Circular
+      setMediaSelecionado(radios[previousIndex]);
       setIsPlaying(true);
     }
   };
@@ -222,7 +235,8 @@ export default function Home() {
             <React.Fragment key={nav}>
               {nav === 'Inicio' && <Homepage handleShow={handleShow}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
-              {nav === 'Video' && <Videos videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} playPause={valuePlay}/>}
+              {nav === 'Video' && <Videos videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef}/>}
+              {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia}/>}
               {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia}/>}
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
               {nav === 'Perfil' && <Perfil />}
@@ -234,7 +248,7 @@ export default function Home() {
 
       <footer className={css(styles.footer)}>
         {audioSelecionado && (
-          <Reproducao className={css(styles.repro)}
+          <Reproducao
             mediaSelecionado={mediaSelecionado}
             pausar={pausar}
             reproduzir={reproduzir}
@@ -245,7 +259,18 @@ export default function Home() {
           />
         )}
         {videoSelecionado && (
-          <Reproducao className={css(styles.repro)}
+          <Reproducao
+            mediaSelecionado={mediaSelecionado}
+            pausar={pausar}
+            reproduzir={reproduzir}
+            avancar={avancar}
+            retroceder={retroceder}
+            isPlaying={isPlaying}
+            mediaRef={mediaRef}
+          />
+        )}
+        {radioSelecionado && (
+          <Reproducao
             mediaSelecionado={mediaSelecionado}
             pausar={pausar}
             reproduzir={reproduzir}
