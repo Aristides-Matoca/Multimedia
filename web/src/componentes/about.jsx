@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
         height: '382%',
         background: 'none',  
         textAlign: 'rigth',
-        position: 'absolute',
     },
 
     image: {
