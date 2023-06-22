@@ -3,35 +3,11 @@ import { StyleSheet, css } from 'aphrodite'
 
 const Videos = ({videos, selecionarVideo, urlVideo, mediaRef, playPause}) => {
     const [videoSelecionado, setVideoSelecionado] = useState(null);
-    //const [mediaElement, setMediaElement] = useState(null);
-    
-    useEffect(() => {
-        const mediaElement = mediaRef.current;
-        //const pyps = playPause;
-    
-        const handleLoadedMetadata = () => {
-            mediaElement.play();
-        };
-
-        /*const handlePause = () =>{
-            if(pyps === 'Pause'){
-                console.log('Entrei7')
-                //mediaElement.pause();
-            }
-        }*/
-
-        mediaElement.addEventListener('loadedmetadata', handleLoadedMetadata);
-        //mediaElement.addEventListener('pause', handlePause);
-    
-        return () => {
-            mediaElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
-            //mediaElement.addEventListener('pause', handlePause);
-        };
-    }, []); 
 
     const reproduzirVideo = (video, index) => {
         setVideoSelecionado(video);
         selecionarVideo(index, 2)
+        mediaRef.current.play()
 
         setTimeout(() => {
             selectVideo(index);
@@ -40,25 +16,13 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef, playPause}) => {
 
     const selectVideo = (index) => {
         selecionarVideo(index, 2);
+        mediaRef.current.play()
     };
-
-
-/*    if(playPause != 'Play'){
-        setTimeout(() => {
-            pauseVideo()
-        }, 100);
-    }
-
-    const pauseVideo = () => {
-        mediaRef.current.pause()
-        
-    }*/
-    //console.log(urlVideo)
 
     return (
         <div className={css(styles.videosContainer)}>
             <div className={css(styles.videoWrapper, videoSelecionado && styles.videoActive)}>
-                <video ref={mediaRef} src={urlVideo} className={css(styles.video)} />
+                <video ref={mediaRef} src={urlVideo} className={css(styles.video)} controls autoPlay/>
             </div>
 
             <div className={css(styles.listaVideos, videoSelecionado && styles.listaVideos2)}>
