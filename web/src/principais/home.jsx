@@ -14,6 +14,8 @@ import { IoIosNotifications } from "react-icons/io"
 import { TbSearch, TbSettings } from "react-icons/tb"
 import { InputGroup, InputGroupText, Input, Row} from 'reactstrap'
 import { Link } from "react-router-dom"
+import Img1 from '../img/imagem1.png'
+import Img2 from '../img/imagem2.png'
 import NGA from '../audios/NGA-Dona.mp3'
 import KMW from '../audios/KMW-MeuSucesso.mp3'
 import V1 from '../videos/v1.mp4'
@@ -25,15 +27,21 @@ export default function Home() {
   //Funções de áudio--------------------------------------------------------------------------------------------------------
 
   const [audios, setAudios] = useState([
-    { tipo: 'Audio', nome: 'NGA 1', url: NGA },
-    { tipo: 'Audio', nome: 'KMW 2', url: KMW },
-    { tipo: 'Audio', nome: 'NGA 3', url: NGA },
+    { tipo: 'Audio', nome: 'NGA 1', titulo: 'Dona', image: Img1, url: NGA },
+    { tipo: 'Audio', nome: 'Most Wanted', titulo: 'Meu Sucesso', image: Img2, url: KMW },
+    { tipo: 'Audio', nome: 'NGA 3', titulo: 'Dona 2', image: Img1, url: NGA },
   ]);
 
   const [videos, setVideos] = useState([
-    { tipo: 'Video', nome: 'Video 1', url: V1 },
-    { tipo: 'Video', nome: 'Video 2', url: V2 },
-    { tipo: 'Video', nome: 'Video 3', url: V3 },
+    { tipo: 'Video', nome: 'Video 1', titulo: 'Exemplo de video 1', image: Img2, url: V1 },
+    { tipo: 'Video', nome: 'Video 2', titulo: 'Exemplo de video 2', image: Img1, url: V2 },
+    { tipo: 'Video', nome: 'Video 3', titulo: 'Exemplo de video 3', image: Img2, url: V3 },
+  ]);
+
+  const [radios, setRadios] = useState([
+    { tipo: 'Radio', nome: 'Rádio Mais', titulo: 'Dona', image: Img1, url: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
+    //{ tipo: 'Radio', nome: 'Rádio Escola', titulo: 'Meu Sucesso', image: Img2, url: 'https://radios.vpn.sapo.pt/AO/radio1.mp3' },
+    { tipo: 'Radio', nome: 'Rádio LAC', titulo: 'Dona 2', image: Img1, url: 'https://radios.vpn.sapo.pt/AO/radio14.mp3?1685629053605' },
   ]);
 
   const [mediaSelecionado, setMediaSelecionado] = useState(null);
@@ -226,7 +234,7 @@ export default function Home() {
 
       <footer className={css(styles.footer)}>
         {audioSelecionado && (
-          <Reproducao
+          <Reproducao className={css(styles.repro)}
             mediaSelecionado={mediaSelecionado}
             pausar={pausar}
             reproduzir={reproduzir}
@@ -237,7 +245,7 @@ export default function Home() {
           />
         )}
         {videoSelecionado && (
-          <Reproducao
+          <Reproducao className={css(styles.repro)}
             mediaSelecionado={mediaSelecionado}
             pausar={pausar}
             reproduzir={reproduzir}
@@ -351,12 +359,12 @@ const styles = StyleSheet.create({
 
   home:{
     //border: '1px solid red',
-    transform: 'translate(-39%, -54%)',
+    transform: 'translate(-39%, -51%)',
     fontFamily: 'Cormorant Garamond',
     paddingTop: '1.3%',
     background: 'none',
     position: 'fixed',
-    height: '71%',
+    height: '73%',
     width: '82%',
     flexGrow: '1',
     overflowY: 'auto',
@@ -390,11 +398,12 @@ const styles = StyleSheet.create({
   },
 
   footer:{
-    transform: 'translate(-39.5%, 193%)',
+    transform: 'translate(-39.5%, 257%)',
     background: 'rgb(10,10,10)',
     paddingTop: '50px',
     position: 'fixed',
-    height: '17%',
-    width: '84.3%'
-  }
+    height: '14%',
+    width: '84.3%',
+    overflow: 'hidden',
+  },
 })

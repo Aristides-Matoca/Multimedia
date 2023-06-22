@@ -61,9 +61,29 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     };
 
     const handleVolumeChange = (event) => {
-        const volumeValue = parseFloat(event.target.value);
-        setVolume(volumeValue);
-        mediaRef.current.volume = volumeValue;
+        if(mediaSelecionado.tipo === 'Audio'){
+            const volumeValue = parseFloat(event.target.value);
+            setVolume(volumeValue);
+            mediaRef.current.volume = volumeValue;
+        }
+        else{
+            setVolume(0);
+            mediaRef.current.volume = 0;
+        }
+    };
+
+    const fazerDownload = async (mediaSelecionado) => {
+        try {
+            const response = await fetch(mediaSelecionado.url);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = mediaSelecionado.nome + ' - ' + mediaSelecionado.titulo;
+            link.click();
+        } catch (error) {
+            console.error('Erro ao fazer o download:', error);
+        }
     };
 
 
@@ -98,79 +118,82 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
             ) : (
                 <audio ref={mediaRef} src={mediaSelecionado.url} />
             )}
-            
-            <div>
-                <span>{formatTime(currentTime)}</span>
-                <input type="range" min={0} max={duration} value={currentTime}
-                    onChange={handleSeek}
-                    onMouseDown={() => setIsSeeking(true)}
-                    onMouseUp={() => setIsSeeking(false)}
-                />
-                <span>{formatTime(duration)}</span>
-            </div>
 
             <NavItem className={css(styles.item1)}>
-                <NavLink className={css(styles.foto)} disabled href="#">
-                    <img className={css(styles.img)} href="#" src={Img} alt="Foto qualquer" />
+                <NavLink href="#" className={css(styles.foto)}>
+                    <img className={css(styles.img)} href="#" src={mediaSelecionado.image} alt="Foto qualquer" />
                 </NavLink>
             </NavItem>
 
-            <NavItem className={css(styles.item1)}>
-                <NavLink href="#" className={css(styles.item11)}>
-                    {mediaSelecionado.nome} <br />
-                    {mediaSelecionado.nome}
-                </NavLink>
-            </NavItem>
-
-            <NavItem className={css(styles.item2)}>
-                <NavLink href="#" className={css(styles.item21)}>
-                    <Heart className={css(styles.item21)}/>
-                </NavLink>
+            <NavItem className={css(styles.titles)}>
+                {mediaSelecionado.titulo} <br />
+                <span className={css(styles.artista)}>{mediaSelecionado.nome}</span>
             </NavItem>
 
             <NavItem className={css(styles.item2)}>
-                <NavLink href="#" className={css(styles.item21)}>
-                    <Download className={css(styles.item21)}/>
-                </NavLink>
+                <Heart className={css(styles.item21)}/>
+            </NavItem>
+ 
+            <NavItem className={css(styles.item2)}>
+                <Prev className={css(styles.item23)} onClick={() => handleClickRecuo()}/>
             </NavItem>
 
             <NavItem className={css(styles.item2)}>
-                <NavLink href="#" className={css(styles.item22)} onClick={() => handleClickRecuo()}>
-                    <Prev className={css(styles.item23)}/>
-                </NavLink>
+                {isPlaying ? (
+                    <Pause className={css(styles.iconPlay)} onClick={pausar}/> 
+                ) : (
+                    <Play className={css(styles.iconPlay)} onClick={reproduzir}/>
+                )}
             </NavItem>
 
             <NavItem className={css(styles.item2)}>
-                <NavLink href="#" className={css(styles.item22)}>
-
-                    {isPlaying ? (
-                        <Pause className={css(styles.item23)} onClick={pausar}/> 
-                    ) : (
-                        <Play className={css(styles.item23)} onClick={reproduzir}/>
-                    )}
-                    
-                </NavLink>
+                <Next className={css(styles.item23)} onClick={() => handleClickAvanco()}/>
             </NavItem>
 
             <NavItem className={css(styles.item2)}>
-                <NavLink href="#" className={css(styles.item22)} onClick={() => handleClickAvanco()}>
-                <Next className={css(styles.item23)}/>
-                </NavLink>
+                <Download className={css(styles.item21)} onClick={() => fazerDownload(mediaSelecionado)}/>
             </NavItem>
 
-            <NavItem className={css(styles.item3)}>
-                <NavLink href="#" className={css(styles.item32)}>
-                    <Volume className={css(styles.item32)}/>
-                </NavLink>
-            </NavItem>
+            {mediaSelecionado.tipo === 'Video' ? (
+                <div className={css(styles.progress)}>
+                    <input type="range" min={0} max={0} className={css(styles.range)} disabled />
+                </div>
+            ) : (
+                <div className={css(styles.progress)}>
+                    <span className={css(styles.time)}>{formatTime(currentTime)}</span>
+                    <input type="range" min={0} max={duration} value={currentTime}
+                        onChange={handleSeek}
+                        onMouseDown={() => setIsSeeking(true)}
+                        onMouseUp={() => setIsSeeking(false)}
+                        className={css(styles.range)}
+                    />
+                    <span className={css(styles.time)}>{formatTime(duration)}</span>
+                </div>
+            )}
 
-            <div>
-                <input type="range" min={0} max={1} step={0.05}
-                    value={volume}
-                    onChange={handleVolumeChange}
-                />
-            </div>
-            
+            {mediaSelecionado.tipo === 'Video' ? (
+                <NavItem className={css(styles.item3)}>
+                    <NavLink href="#" className={css(styles.item32)}>
+                        <Volume className={css(styles.icone)}/>
+                        <input type="range" min={0} max={1} step={0.05} disabled
+                            value={volume}
+                            onChange={handleVolumeChange}
+                            className={css(styles.volume)} 
+                        />
+                    </NavLink>
+                </NavItem>
+            ) : (
+                <NavItem className={css(styles.item3)}>
+                    <NavLink href="#" className={css(styles.item32)}>
+                        <Volume className={css(styles.icone)}/>
+                        <input type="range" min={0} max={1} step={0.05}
+                            value={volume}
+                            onChange={handleVolumeChange}
+                            className={css(styles.volume)}
+                        />
+                    </NavLink>
+                </NavItem>
+            )}
         </Nav>
     )
 }
@@ -196,43 +219,63 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
 
 const styles = StyleSheet.create({
     nav:{
+        transform: 'translate(0%, -49%)',
         color: 'white',
         background: 'none',
         fontFamily: 'Cormorant Garamond',
+        height: '190%',
     },
 
     foto:{
-        transform: 'translate(5%, -27%)',
         border: '1px solid grey',
         borderRadius: '8px',
         background: 'none',
-        height: '85%',
-        width: '30%'
+        height: '102%',
+        width: '10%',
+        overflow: 'hidden',
+        position: 'fixed'
     },
 
     img:{
         background: 'none',
-        height: '100%',
+        height: '99%',
         width: '100%'
     },
 
     item1:{
         background: 'none',
         fontSize: '18px',
-        color: 'white'
+        color: 'white',
+        width: '10.7%',
     },
 
-    item11:{
-        transform: 'translate(-300%, -20%)',
+    titles:{
         background: 'none',
-        color: 'white'
+        paddingTop: '2%',
+        textAlign: 'justify',
+        fontSize: '16px',
+        color: 'white',
+        width: '17%',
+        overflow: 'hidden',
+    },
+
+    artista:{
+        fontSize: '14px',
+        background: 'none',
+        ':hover':{
+            cursor: 'pointer',
+            textDecoration: 'underline'
+        }
     },
 
     item2:{
-        transform: 'translate(-300%, 0%)',
+        transform: 'translate(330%, 20%)',
         background: 'none',
         color: 'white',
-        fontSize: '25px'
+        fontSize: '25px',
+        height: '40%',
+        margin: '0.5% 0 0 0%',
+        width: '4.2%'
     },
 
     item21:{
@@ -243,11 +286,13 @@ const styles = StyleSheet.create({
         },
     },
 
-    item22:{
-        //transform: 'translate(150%, 0%)',
+    iconPlay:{
         background: 'none',
         color: 'white',
-        border: '1px solid white'
+        fontSize: '40px',
+        ':hover':{
+            color: 'rgba(255, 213, 0, 1)',
+        }
     },
 
     item23:{
@@ -255,21 +300,48 @@ const styles = StyleSheet.create({
         color: 'white',
         ':hover':{
             color: 'rgba(255, 213, 0, 1)',
-            fontSize: '26px'
-        },
-        ':active':{
-            fontSize: '26px'
         }
     },
 
-    item3:{
+    progress:{
+        transform: 'translate(-41.5%, 275%)',
         background: 'none',
-        paddingLeft: '1%',
-        fontSize: '25px'
+        height: '22%',
+        width: '42%'
+    },
+
+    time:{
+        fontSize: '12px',
+        background: 'none',
+        paddingTop: '100%'
+    },
+
+    range:{
+        width: '86%',
+        height: '25%',
+        margin: '0 1% 0 1%'
+    },
+
+    item3:{
+        transform: 'translate(580%, -72%)',
+        background: 'none',
+        fontSize: '25px',
+        height: '100%',
     },
 
     item32:{
         background: 'none',
-        color: 'white'
+        color: 'white',
+        paddingTop: '15%'
+    },
+
+    icone: {
+        background: 'none',
+        color: 'white',
+    },
+
+    volume:{
+        transform: 'translate(0%, -70%)',
+        height: '5.1px',
     }
 })
