@@ -5,7 +5,7 @@ import { Nav, NavItem, NavLink } from 'reactstrap'
 import Img from '../img/imagem1.png'
 import { TbPlayerTrackPrevFilled as Prev, TbPlayerTrackNextFilled as Next } from "react-icons/tb"
 import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Download, MdPauseCircle as Pause } from "react-icons/md"
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 
 export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, mediaRef }){
 
@@ -13,7 +13,6 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     const [duration, setDuration] = useState(0);
     const [isSeeking, setIsSeeking] = useState(false);
     const [volume, setVolume] = useState(0.75);
-    //const mediaRef = useRef(null);
 
     useEffect(() => {
         if (mediaRef.current) {
@@ -91,7 +90,6 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     if (!mediaSelecionado) {
         return null;
     }
-    //console.log(mediaSelecionado.url)
     
     return(
         <Nav className={css(styles.nav)}>

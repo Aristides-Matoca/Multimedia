@@ -40,6 +40,7 @@ export default function Home() {
   const [audioSelecionado, setAudioSelecionado] = useState(null);
   const [videoSelecionado, setVideoSelecionado] = useState(null);
   const [urlVideo, setUrlVideo] = useState(null);
+  const [valuePlay, setValuePlay] = useState(null);
   const mediaRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -55,6 +56,7 @@ export default function Home() {
       setVideoSelecionado(videos[index])
       setUrlVideo(videos[index].url)
       setAudioSelecionado(null)
+      setValuePlay('Play')
       reproduzir()
     }
   }; 
@@ -62,6 +64,7 @@ export default function Home() {
   const pausar = () => {
     if (mediaRef.current && mediaRef.current.tagName === 'VIDEO') {
       mediaRef.current.pause();
+      setValuePlay('Pause')
       setIsPlaying(false);
     }
 
@@ -73,13 +76,12 @@ export default function Home() {
 
   const reproduzir = () => {
     if (mediaRef.current && mediaRef.current.tagName === 'VIDEO') {
-      //console.log(mediaRef.current.src)
       mediaRef.current.play();
+      setValuePlay('Play')
       setIsPlaying(true);
     }
 
     else if (mediaRef.current && mediaRef.current.tagName === 'AUDIO') {
-      console.log(mediaRef.current.tagName)
       mediaRef.current.play();
       setIsPlaying(true);
     }
@@ -97,6 +99,7 @@ export default function Home() {
       const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
       const nextIndex = (currentIndex + 1) % videos.length; // Circular
       setMediaSelecionado(videos[nextIndex]);
+      setUrlVideo(videos[nextIndex].url)
       setIsPlaying(true);
     }
   };
@@ -113,6 +116,7 @@ export default function Home() {
       const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
       const previousIndex = (currentIndex - 1 + videos.length) % videos.length; // Circular
       setMediaSelecionado(videos[previousIndex]);
+      setUrlVideo(videos[previousIndex].url)
       setIsPlaying(true);
     }
   };
@@ -210,7 +214,7 @@ export default function Home() {
             <React.Fragment key={nav}>
               {nav === 'Inicio' && <Homepage handleShow={handleShow}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
-              {nav === 'Video' && <Videos videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} mediaSelecionado={mediaSelecionado}/>}
+              {nav === 'Video' && <Videos videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} playPause={valuePlay}/>}
               {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia}/>}
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
               {nav === 'Perfil' && <Perfil />}

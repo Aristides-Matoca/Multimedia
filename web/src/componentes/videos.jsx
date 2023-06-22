@@ -1,15 +1,36 @@
-import React, {useRef, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, css } from 'aphrodite'
 
-const Videos = ({videos, selecionarVideo, urlVideo, mediaRef, mediaSelecionado}) => {
-    //const videoRef = useRef(null);
+const Videos = ({videos, selecionarVideo, urlVideo, mediaRef, playPause}) => {
     const [videoSelecionado, setVideoSelecionado] = useState(null);
+    //const [mediaElement, setMediaElement] = useState(null);
+    
+    useEffect(() => {
+        const mediaElement = mediaRef.current;
+        //const pyps = playPause;
+    
+        const handleLoadedMetadata = () => {
+            mediaElement.play();
+        };
+
+        /*const handlePause = () =>{
+            if(pyps === 'Pause'){
+                console.log('Entrei7')
+                //mediaElement.pause();
+            }
+        }*/
+
+        mediaElement.addEventListener('loadedmetadata', handleLoadedMetadata);
+        //mediaElement.addEventListener('pause', handlePause);
+    
+        return () => {
+            mediaElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
+            //mediaElement.addEventListener('pause', handlePause);
+        };
+    }, []); 
 
     const reproduzirVideo = (video, index) => {
         setVideoSelecionado(video);
-        //videoRef.current.src = video.url;
-        //videoRef.current.play();
-
         selecionarVideo(index, 2)
 
         setTimeout(() => {
@@ -21,9 +42,18 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef, mediaSelecionado})
         selecionarVideo(index, 2);
     };
 
-    
-    console.log(urlVideo)
-    //console.log(mediaSelecionado.url)
+
+/*    if(playPause != 'Play'){
+        setTimeout(() => {
+            pauseVideo()
+        }, 100);
+    }
+
+    const pauseVideo = () => {
+        mediaRef.current.pause()
+        
+    }*/
+    //console.log(urlVideo)
 
     return (
         <div className={css(styles.videosContainer)}>
