@@ -12,21 +12,42 @@ export default function Upload({handleShow}){
     const api = "http://localhost:4000";
 
     const [selectedFileImagem, setSelectedFileImagem] = useState(null);
-    const [nameI, setNameI] = useState(null);
+    const [nameI, setName] = useState(null);
 
     const [tipo, setTipo] = useState('');
+    const [tipoF, setTipoF] = useState('');
+    const [titulo, setTitulo] = useState('');
+    const [autor, setAutor] = useState('');
+    const [est, setEstilo] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [dia, setDia] = useState('');
+    const [mes, setMes] = useState('');
+    const [ano, setAno] = useState('');
+    const [legenda, setLegenda] = useState('');
+    const [size, setSize] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const [detalhes, setDetalhes] = useState(null);
+
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     //Tem a ver com upload de fotos
     const [profilePicture, setProfilePicture] = useState(null);
     const [isHovered, setIsHovered] = useState(false);
     const fileInputRef = useRef(null);
 
-    const handleFileChange = (e) => {
+    const handleFileChangeI = (e) => {
         const file = e.target.files[0];
         setSelectedFileImagem(e.target.files[0]);
-        setNameI(file.name);
+        setName(file.name);
         setProfilePicture(URL.createObjectURL(file));
     };
+
+    const onChangeHandler = event => {
+        setSelectedFile(event.target.files[0]);
+        const file = event.target.files[0];
+        setSize(file.size);
+      };
 
     const handleSelectFile = () => {
         if (fileInputRef.current) {
@@ -97,6 +118,64 @@ export default function Upload({handleShow}){
         'Dezembro',
     ];
 
+    const onFileUpload = () => {
+        if (selectedFile) {
+          const storageRef = storage.ref();
+          let path = "";
+    
+          if(tipoF=="video/*"){
+            path= "videos/"+titulo;
+          }
+          else if(tipo=="Podcast"){
+            path= "podcast/"+titulo;
+          }else{
+            path= "audios/"+titulo;
+          }
+    
+          const fileRef = storageRef.child(path);
+          const imageRef = storageRef.child("imagens/");
+    
+          const uploadTask = fileRef.put(selectedFile);
+          uploadTask.on('state_changed', 
+            snapshot => {
+              const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+              setUploadProgress(progress);
+            },
+            error => {
+              console.error('Error uploading file to Firebase Storage:', error);
+            },
+            () => {
+              uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+                
+                if (selectedFileImagem){
+                    imageRef.put(selectedFileImagem).then(() => {
+                        imageRef.getDownloadURL().then((imageDownloadURL) => {
+                          // Update the previously saved database entry with the image download URL
+                          setDetalhes({downloadURL,tipo,titulo, autor,est,descricao,dia,mes,ano,legenda,size,imageDownloadURL});
+                        });
+                      }).catch((imageError) => {
+                        console.error("Error uploading image file:", imageError);
+                      });
+                } else{
+                    setDetalhes({downloadURL,tipo,titulo, autor,est,descricao,dia,mes,ano,legenda,size});
+                } 
+
+                axios
+                  .post(api + '/upload', detalhes)
+                  .then(response => {
+                    const createdUser = response.data;
+                    console.log('Created file:', createdUser);
+                  })
+                  .catch(error => {
+                    console.error('Error creating user:', error);
+                  });
+              });
+            }
+          );
+          console.log('Selected file:', selectedFile);
+        }
+      };
+
     return (
         <Container className={css(styles.cont)}>
             <Row className={css(styles.row)}>
@@ -119,7 +198,7 @@ export default function Upload({handleShow}){
                                     ) : (isHovered ? <FiEdit2 className={css(styles.icon)}/> : <Camera className={css(styles.icon)}/>)}
                                 </InputGroupText>
                                 
-                                <Input type="file" onChange={handleFileChange} style={{ display: 'none' }} innerRef={fileInputRef} accept="image/*"/>
+                                <Input type="file" onChange={handleFileChangeI} style={{ display: 'none' }} innerRef={fileInputRef} accept="image/*"/>
                             </InputGroup>
 
                             {profilePicture && (
@@ -128,7 +207,10 @@ export default function Upload({handleShow}){
                         </div>
 
                         <Label className={css(styles.label)}>Tipo*</Label>
-                        <Input type="select" className={css(styles.input)} value={tipo} onChange={(e) => setTipo(e.target.value)}>
+                        <Input type="select" className={css(styles.input)} value={tipo} onChange={(e) => {setTipo(e.target.value); if(tipo==="Vídeo"){
+                            setTipoF("video/*");}else{
+                                setTipoF("audio/*");
+                            }}}>
                            {genders.map((gender, index) => (
                                 <option style={{background: 'none'}} key={index} value={gender}>{gender}</option>
                            ))}
@@ -141,36 +223,37 @@ export default function Upload({handleShow}){
                         <Input className={css(styles.input)} type='text' placeholder='Autor' value={autor} onChange={(e) => setAutor(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Estilo*</Label>
-                        <Input type="select" className={css(styles.input)} value={estilo} onChange={(e) => setEstilo(e.target.value)}>
+                        <Input type="select" className={css(styles.input)} value={est} onChange={(e) => setEstilo(e.target.value)}>
                            {estilos.map((estilo, index) => (
                                 <option style={{background: 'none'}} key={index} value={estilo}>{estilo}</option>
                            ))}
                         </Input>
 
                         <Label className={css(styles.label)}>Descrição</Label>
-                        <Input className={css(styles.input)} type='textarea' placeholder='Something else...' value={descricao} onChange={(e) => set(e.target.value)}/>
+                        <Input className={css(styles.input)} type='textarea' placeholder='Something else...' value={descricao} onChange={(e) => setDescricao(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Data de lançamento*</Label>
                         <InputGroup className={css(styles.Inputg)}>
-                            <Input  className={css(styles.input2)} placeholder='Dia'/>
+                        <Input  className={css(styles.input2)} placeholder='Dia' value={dia} onChange={(e) => setDia(e.target.value)}/>
 
-                            <Input type="select"  className={css(styles.input2)} >
+                        <Input type="select"  className={css(styles.input2)} value={mes} onChange={(e) => setMes(e.target.value)} >
                                 {months.map((month, index) => (
                                     <option style={{background: 'none'}} key={index} value={month}>{month}</option>
                                 ))}
                             </Input>
 
-                            <Input  className={css(styles.input2)} placeholder='Ano'/>
+                            <Input className={css(styles.input2)} placeholder='Ano' value={ano} onChange={(e) => setAno(e.target.value)}/>
                         </InputGroup>
 
                         <Label className={css(styles.label)}>Legenda</Label>
-                        <Input className={css(styles.input)} type='textarea' placeholder='Something...'/>
+                        <Input className={css(styles.input)} type='textarea' placeholder='Something...' value={legenda} onChange={(e) => setLegenda(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Escolha o ficheiro*</Label>
-                        <Input className={css(styles.input)} type='file'/>
+                        <Input className={css(styles.input)} type='file' onChange={onChangeHandler} accept={tipoF}/>
 
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
-                        <button id='btn btn-primary' className={css(styles.btn2)}>Carregar</button>
+                        <button id='btn btn-primary' className={css(styles.btn2)} onClick={onFileUpload}>Carregar</button>
+                        {uploadProgress > 0 && <p>Progress: {uploadProgress}%</p>}
                     </TabPane>
                 </TabContent>
             </Row>
