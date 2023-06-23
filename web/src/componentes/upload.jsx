@@ -27,7 +27,6 @@ export default function Upload({handleShow}){
     const [size, setSize] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
 
-    const [detalhes, setDetalhes] = useState(null);
 
     const [uploadProgress, setUploadProgress] = useState(0);
 
@@ -119,6 +118,8 @@ export default function Upload({handleShow}){
     ];
 
     const onFileUpload = () => {
+
+        let detalhes={};
         
         if (selectedFile) {
           const storageRef = storage.ref();
@@ -138,7 +139,7 @@ export default function Upload({handleShow}){
           }
     
           const fileRef = storageRef.child(path);
-          const imageRef = storageRef.child("imagens/");
+          const imageRef = storageRef.child("imagens/"+titulo);
     
           const uploadTask = fileRef.put(selectedFile);
           uploadTask.on('state_changed', 
@@ -155,31 +156,35 @@ export default function Upload({handleShow}){
                 if (selectedFileImagem){
                     imageRef.put(selectedFileImagem).then(() => {
                         imageRef.getDownloadURL().then((imageDownloadURL) => {
+                            alert(imageDownloadURL);
                           // Update the previously saved database entry with the image download URL
-                          setDetalhes({downloadURL,tipo,titulo, autor,est,descricao,dia,mes,ano,legenda,size,imageDownloadURL});
+                          enviar(db,{downloadURL,imageDownloadURL,tipo,titulo, autor,est,descricao,dia,mes,ano,legenda,size});
                         });
                       }).catch((imageError) => {
                         console.error("Error uploading image file:", imageError);
                       });
                 } else{
-                    setDetalhes({downloadURL,tipo,titulo, autor,est,descricao,dia,mes,ano,legenda,size});
+                    enviar(db,{downloadURL,tipo,titulo, autor,est,descricao,dia,mes,ano,legenda,size});
                 } 
 
-                axios
-                  .post(api + db, detalhes)
-                  .then(response => {
-                    const createdUser = response.data;
-                    console.log('Created file:', createdUser+" "+db);
-                  })
-                  .catch(error => {
-                    console.error('Error creating user:', error);
-                  });
               });
             }
           );
           console.log('Selected file:', selectedFile);
         }
       };
+
+      function enviar(db, info){
+        axios
+        .post(api + db, info)
+        .then(response => {
+        const createdUser = response.data;
+        console.log('Created file:', createdUser+" "+db);
+        })
+        .catch(error => {
+        console.error('Error creating user:', error);
+        });
+      }
 
     return (
         <Container className={css(styles.cont)}>
@@ -253,7 +258,6 @@ export default function Upload({handleShow}){
                         <Label className={css(styles.label)}>Escolha o ficheiro*</Label>
                         <Input className={css(styles.input)} type='file' onClick={() => {if(tipo=='Vídeo'){
                             setTipoF("video/*");
-                            alert(tipoF)
                              }else{
                                 setTipoF("audio/*");
                             }}} onChange={onChangeHandler} accept={tipoF}/>
