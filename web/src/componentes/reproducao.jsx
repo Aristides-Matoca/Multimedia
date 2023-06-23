@@ -28,13 +28,16 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     }, [mediaRef]);
 
     useEffect(() => {//UseEfect para avançar para próxima a media de forma automatica
-        if (formatTime(currentTime) === formatTime(duration)) {
-            if(formatTime(duration) != '00:00'){
-                setTimeout(() => {
-                    handleClickAvanco();
-                }, 100);
+        if(mediaSelecionado.tipo === 'Audio'){
+            if (formatTime(currentTime) === formatTime(duration)) {
+                if(formatTime(duration) != '00:00'){
+                    setTimeout(() => {
+                        handleClickAvanco();
+                    }, 100);
+                }
             }
         }
+        
     }, [currentTime, duration]);
 
     const handleTimeUpdate = () => {
@@ -85,7 +88,6 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
         }
     };
 
-
     //Avancar e recuar medias
     const handleClickAvanco = () => {
         avancar();
@@ -113,7 +115,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     return(
         <Nav className={css(styles.nav)}>
             {mediaSelecionado.tipo === 'Video' ? (
-                <video ref={mediaRef} src={mediaSelecionado.url} style={{display: 'none'}} />
+                <video ref={mediaRef} src={mediaSelecionado.url} muted style={{display: 'none'}} />
             ) : (
                 <audio ref={mediaRef} src={mediaSelecionado.url} />
             )}
@@ -136,14 +138,20 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
             <NavItem className={css(styles.item2)}>
                 <Prev className={css(styles.item23)} onClick={() => handleClickRecuo()}/>
             </NavItem>
-
-            <NavItem className={css(styles.item2)}>
-                {isPlaying ? (
-                    <Pause className={css(styles.iconPlay)} onClick={pausar}/> 
-                ) : (
-                    <Play className={css(styles.iconPlay)} onClick={reproduzir}/>
-                )}
-            </NavItem>
+            
+            {mediaSelecionado.tipo === 'Radio' || mediaSelecionado.tipo === 'Audio' ? (
+                <NavItem className={css(styles.item2)}>
+                    {isPlaying ? (
+                        <Pause className={css(styles.iconPlay)} onClick={pausar}/> 
+                    ) : (
+                        <Play className={css(styles.iconPlay)} onClick={reproduzir}/>
+                    )}
+                </NavItem>
+            ) : (
+                <NavItem className={css(styles.item2)}>
+                    <Play className={css(styles.disable)}/> 
+                </NavItem>
+            )}
 
             <NavItem className={css(styles.item2)}>
                 <Next className={css(styles.item23)} onClick={() => handleClickAvanco()}/>
@@ -280,7 +288,7 @@ const styles = StyleSheet.create({
         fontSize: '25px',
         height: '40%',
         margin: '0.5% 0 0 0%',
-        width: '4.2%'
+        width: '4.2%',
     },
 
     item21:{
@@ -289,6 +297,13 @@ const styles = StyleSheet.create({
         ':hover':{
             color: 'rgba(255, 213, 0, 1)'
         },
+    },
+
+    disable:{
+        background: 'none',
+        color: 'white',
+        fontSize: '40px',
+        opacity: '0.6'
     },
 
     iconPlay:{
