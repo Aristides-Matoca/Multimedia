@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
 import { RiHeart3Fill as Heart } from "react-icons/ri"
 import { Nav, NavItem, NavLink } from 'reactstrap'
-import Img from '../img/imagem1.png'
 import { TbPlayerTrackPrevFilled as Prev, TbPlayerTrackNextFilled as Next } from "react-icons/tb"
 import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Download, MdPauseCircle as Pause } from "react-icons/md"
 import React, {useState, useEffect} from 'react'
@@ -61,7 +60,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     };
 
     const handleVolumeChange = (event) => {
-        if(mediaSelecionado.tipo === 'Audio'){
+        if(mediaSelecionado.tipo === 'Audio' || mediaSelecionado.tipo === 'Radio'){
             const volumeValue = parseFloat(event.target.value);
             setVolume(volumeValue);
             mediaRef.current.volume = volumeValue;
@@ -150,11 +149,17 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 <Next className={css(styles.item23)} onClick={() => handleClickAvanco()}/>
             </NavItem>
 
-            <NavItem className={css(styles.item2)}>
-                <Download className={css(styles.item21)} onClick={() => fazerDownload(mediaSelecionado)}/>
-            </NavItem>
-
-            {mediaSelecionado.tipo === 'Video' ? (
+            {mediaSelecionado.tipo === 'Radio' ? (
+               <NavItem className={css(styles.item2)}>
+                    <Download className={css(styles.item21)} />
+                </NavItem>
+            ) : (
+                <NavItem className={css(styles.item2)}>
+                    <Download className={css(styles.item21)} onClick={() => fazerDownload(mediaSelecionado)}/>
+                </NavItem>
+            )}
+            
+            {mediaSelecionado.tipo === 'Video' || mediaSelecionado.tipo === 'Radio' ? (
                 <div className={css(styles.progress)}>
                     <input type="range" min={0} max={0} className={css(styles.range)} disabled />
                 </div>
