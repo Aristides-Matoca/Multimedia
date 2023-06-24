@@ -6,7 +6,7 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
     const [videoSelecionado, setVideoSelecionado] = useState(null);
     const [videoPlayingIndex, setVideoPlayingIndex] = useState(null)
 
-    const handleClick = (video, index) => {
+    const reproduzirVideo = (video, index) => {
         if (videoPlayingIndex === index) {
             setVideoPlayingIndex(null); // Pausa o áudio se o mesmo já estiver sendo reproduzido
           } else {
@@ -26,6 +26,29 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
         mediaRef.current.play()
     };
 
+    useEffect(() => {
+      const videoElement = mediaRef.current;
+  
+      const handleDownload = () => {
+        const sourceElement = videoElement.querySelector('source');
+        const videoURL = sourceElement.src;
+  
+        const link = document.createElement('a');
+        link.href = videoURL;
+        link.download = videoSelecionado.titulo+'.mp4'; // Set the desired filename with the appropriate extension
+        link.click();
+      };
+  
+      videoElement.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        handleDownload();
+      });
+  
+      return () => {
+        videoElement.removeEventListener('contextmenu', handleDownload);
+      };
+    }, []);
+
     return (
         <div className={css(styles.videosContainer)}>
             <div className={css(styles.videoWrapper, videoSelecionado && styles.videoActive)}>
@@ -36,11 +59,11 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
             <div className={css(styles.listaVideos, videoSelecionado && styles.listaVideos2)}>
                 <h3 className={css(styles.title)}>Vídeos</h3>
                 {videos.map((video, index) => (
-                    <div key={index} className={css(styles.lista)}>
+                     <div key={index} onClick={() => reproduzirVideo(video, index)} className={css(styles.lista)}>
                          <span style={{background: 'none'}}>{index+1}</span>
                         <span style={{background: 'none'}}>{video.titulo} - {video.description}</span>
 
-                        <span style={{background: 'none'}} onClick={() => handleClick(video, index)}>
+                        <span style={{background: 'none'}} onClick={() => handleClick(index)}>
                             {videoPlayingIndex === index ? (
                             <Pause className={css(styles.icone)}/>
                             ) : (
