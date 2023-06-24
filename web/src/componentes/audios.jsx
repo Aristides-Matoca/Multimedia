@@ -7,115 +7,98 @@ export default function Audios({handleShow}){
     return (
         <Row className={css(styles.row)}>
             <Nav vertical className={css(styles.nav1)}>
-                <h2 className={css(styles.title)}>Playlists mais ouvidas</h2>
+
+                <div className={css(styles.divtitles)}>
+                    <h2 className={css(styles.title)}>Playlists mais ouvidas</h2>
+                </div>
                 
                 <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item1)}>
-                        <NavLink href="#" className={css(styles.item11)} onClick={() => handleShow('Ouvir')}>
-                            <img className={css(styles.img)} src={Img} alt="Beyonce"/>
-                            PlayList 1
-                        </NavLink>
+                    <NavItem className={css(styles.item1)} onClick={() => handleShow('Ouvir')}>
+                        <img className={css(styles.img)} src={Img} alt="Beyonce"/>
+                        <span className={css(styles.name)}>Playlist 1</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item1)}>
-                        <NavLink href="#" className={css(styles.item11)}>
-                            <img className={css(styles.img)} src={Img} alt="Ariana"/>
-                            PlayList 2
-                        </NavLink>
+                        <img className={css(styles.img)} src={Img} alt="Ariana"/>
+                        <span className={css(styles.name)}>Playlist 2</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item1)}>
-                        <NavLink href="#" className={css(styles.item11)}>
-                            <img className={css(styles.img)} src={Img} alt="Kendrick"/>
-                            PlayList 3
-                        </NavLink>
+                        <img className={css(styles.img)} src={Img} alt="Kendrick"/>
+                        <span className={css(styles.name)}>Playlist 3</span>
+                    </NavItem>
+                </Nav>
+
+                <div className={css(styles.divtitles)}>
+                    <h2 className={css(styles.title)}>Álbuns mais ouvidos</h2>
+                    <span className={css(styles.vermais)}>Ver mais</span>
+                </div>
+
+                <Nav className={css(styles.nav)}>
+                    <NavItem className={css(styles.item1)}>
+                        <img className={css(styles.img)} src={Img} alt="Beyonce"/>
+                        <span className={css(styles.name)}>Álbum 1</span>
+                    </NavItem>
+
+                    <NavItem className={css(styles.item1)}>
+                        <img className={css(styles.img)} src={Img} alt="Ariana"/>
+                        <span className={css(styles.name)}>Álbum 2</span>
+                    </NavItem>
+
+                    <NavItem className={css(styles.item1)}>
+                        <img className={css(styles.img)} src={Img} alt="Kendrick"/>
+                        <span className={css(styles.name)}>Álbum 3</span>
                     </NavItem>
                 </Nav>
                 
-                <h2 className={css(styles.title)}>Álbuns mais ouvidos</h2>
-                <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item1)}>
-                        <NavLink href="#" className={css(styles.item11)}>
-                            <img className={css(styles.img)} src={Img} alt="Beyonce"/>
-                            Álbum 1
-                        </NavLink>
-                    </NavItem>
-
-                    <NavItem className={css(styles.item1)}>
-                        <NavLink href="#" className={css(styles.item11)}>
-                            <img className={css(styles.img)} src={Img} alt="Ariana"/>
-                            Álbum 2
-                        </NavLink>
-                    </NavItem>
-
-                    <NavItem className={css(styles.item1)}>
-                        <NavLink href="#" className={css(styles.item11)}>
-                            <img className={css(styles.img)} src={Img} alt="Kendrick"/>
-                            Álbum 3
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-
-                <h2 className={css(styles.title)}>Artistas mais ouvidos</h2>
-                <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item2)}>
-                        <NavLink href="#" className={css(styles.item21)}>
+                <Nav className={css(styles.nav2)}>
+                <div className={css(styles.divtitles)}>
+                    <h2 className={css(styles.title)}>Artistas mais ouvidos</h2>
+                    <span className={css(styles.vermais)}>Ver mais</span>
+                </div>
+                    <Row className={css(styles.row2)}>
+                        <NavItem className={css(styles.item2)}>
                             <img className={css(styles.img2)} src={Img} alt="Beyonce"/><br />
                             Beyonce
-                        </NavLink>
-                    </NavItem>
+                        </NavItem>
 
-                    <NavItem className={css(styles.item2)}>
-                        <NavLink href="#" className={css(styles.item21)}>
+                        <NavItem className={css(styles.item2)}>
                             <img className={css(styles.img2)} src={Img} alt="Ariana"/><br />
                             Kendrick Lamar
-                        </NavLink>
-                    </NavItem>
+                        </NavItem>
 
-                    <NavItem className={css(styles.item2)}>
-                        <NavLink href="#" className={css(styles.item21)}>
+                        <NavItem className={css(styles.item2)}>
                             <img className={css(styles.img2)} src={Img} alt="Kendrick"/><br />
                             Ariana Grande
-                        </NavLink>
-                    </NavItem>
+                        </NavItem>
 
-                    <NavItem className={css(styles.item2)}>
-                        <NavLink href="#" className={css(styles.item21)}>
+                        <NavItem className={css(styles.item2)}>
                             <img className={css(styles.img2)} src={Img} alt="Kendrick"/><br />
-                            Other
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-
-                <h2 className={css(styles.title)}>Artistas mais ouvidos</h2>
-                <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item2)}>
-                        <NavLink href="#" className={css(styles.item21)}>
+                            Other 1
+                        </NavItem>
+                    </Row>
+                
+                    <Row className={css(styles.row2)}>
+                        <NavItem className={css(styles.item2)}>
                             <img className={css(styles.img2)} src={Img} alt="Beyonce"/><br />
                             Beyonce
-                        </NavLink>
-                    </NavItem>
+                        </NavItem>
 
-                    <NavItem className={css(styles.item2)}>
-                        <NavLink href="#" className={css(styles.item21)}>
+                        <NavItem className={css(styles.item2)}>
                             <img className={css(styles.img2)} src={Img} alt="Ariana"/><br />
                             Kendrick Lamar
-                        </NavLink>
-                    </NavItem>
+                        </NavItem>
 
-                    <NavItem className={css(styles.item2)}>
-                        <NavLink href="#" className={css(styles.item21)}>
+                        <NavItem className={css(styles.item2)}>
                             <img className={css(styles.img2)} src={Img} alt="Kendrick"/><br />
                             Ariana Grande
-                        </NavLink>
-                    </NavItem>
+                        </NavItem>
 
-                    <NavItem className={css(styles.item2)}>
-                        <NavLink href="#" className={css(styles.item21)}>
+                        <NavItem className={css(styles.item2)}>
                             <img className={css(styles.img2)} src={Img} alt="Kendrick"/><br />
-                            Other
-                        </NavLink>
-                    </NavItem>
+                            Other 2
+                        </NavItem>
+                    </Row>
                 </Nav>
             </Nav>
         </Row>
@@ -125,89 +108,119 @@ export default function Audios({handleShow}){
 const styles = StyleSheet.create({
     row:{
         background: 'none',
+        color: 'white'
     },
 
     nav1:{
         background: 'none',
         paddingLeft: '27px',
         width: '100%',
-        //border: '1px solid black',
+        height: '100%',
+        justifyContent: 'space-between',
     },
 
-    nav:{
-        background: 'none',
-        width: '100%',
-        height: '11.5%',
-        marginBottom: '2%',
+    divtitles:{
+        background: 'black',
+        borderTopLeftRadius: '6px',
+        borderTopRightRadius: '6px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '1% 1.6% 0 1.5%',
+
     },
 
     title:{
-        marginLeft: '1.9%',
-        background: 'none',
+        background: 'black',
         textAlign: 'left',
         fontSize: '27px',
     },
 
-    item1:{
-        marginLeft: '20px',
+    vermais:{
         background: 'none',
-        width: '26%',
-        height: '100%',
-        marginRight: '5%'
-    },
-
-
-    item11:{
-        border: '1px solid grey',
-        background: 'none',
-        height: '100%',
-        color: 'black',
-        width: '100%',
-        display: 'inline-flex',
-        borderRadius: '5px',
         ':hover':{
-            background: 'rgba(255, 253, 245, 1)',
+            cursor: 'pointer',
             textDecoration: 'underline'
         }
     },
 
+    nav:{
+        background: 'black',
+        padding: '2% 1.5% 2% 1.5%',
+        margin: '-0.5% 0 1% 0',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottomLeftRadius: '6px',
+        borderBottomRightRadius: '6px',
+    },
+
+    item1:{
+        background: 'rgb(36,36,36)',
+        width: '30%',
+        borderRadius: '5px',
+        display: 'flex',
+        alignItems: 'inherit',
+        ':hover':{
+            background: 'rgb(157,157,157)',
+            cursor: 'pointer'
+        }
+    },
+
     img:{
-        transform: 'translate(-19%, -12%)',
         width: '33%',
-        height: '129%',
+        height: '100%',
         background: 'none',
         borderTopLeftRadius: '5px',
         borderBottomLeftRadius: '5px',
-        border: '1px solid grey',
+        boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.5)',
+    },
+
+    name: {
+        background: 'none',
+        marginLeft: '6%',
+        fontSize: '22px'
+    },
+
+    nav2:{
+        width: '100%',
+        background: 'black',
+        //height: '56%',
+        padding: '1% 1.5% 2% 1.5%',
+        margin: '0% 0 -1.5% 0',
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        gridGap: '10px',
+        borderRadius: '6px',
+    },
+
+    row2:{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '1% 1.5% 1% 1.5%',
+        background: 'none'
     },
 
     item2:{
-        marginLeft: '20px',
-        background: 'none',
-        width: '19%',
-        height: '100%',
-        marginRight: '3.8%'
-    },
-
-    item21:{
-        background: 'none',
-        color: 'black',
-        height: '230%',
+        background: 'rgb(36,36,36)',
+        width: '20%',
+        //height: '100%',
         borderRadius: '5px',
+        padding: '1% 1.5% 2% 1.5%',
         ':hover':{
-            textDecoration: 'underline'
+            textDecoration: 'underline',
+            background: 'rgb(157,157,157)',
+            cursor: 'pointer'
         }
     },
 
     img2:{
         width: '100%',
-        height: '100%',
+        height: '80%',
         background: 'none',
-        borderTopLeftRadius: '5px',
-        borderTopRightRadius: '5px',
-        border: '1px solid grey',
-        ':hover':{
-            background: 'rgba(255, 253, 245, 1)'
-        }
+        borderRadius: '5px',
+        boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.5)',
+        marginBottom: '5%'
     },
 })
