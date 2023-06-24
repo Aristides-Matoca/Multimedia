@@ -27,6 +27,22 @@ app.get("/on", async(req, res) => {
     res.send(list);
 })
 
+app.get("/audio", async(req, res) => {
+    const snapshot = await Audios.get();
+    //const ids = snapshot.docs.map((doc) => doc.id);
+    //const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const list = snapshot.docs.map((doc) => doc.data());
+    res.send(list);
+})
+
+app.get("/video", async(req, res) => {
+    const snapshot = await Videos.get();
+    //const ids = snapshot.docs.map((doc) => doc.id);
+    //const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const list = snapshot.docs.map((doc) => doc.data());
+    res.send(list);
+})
+
 // Enviar a colecção
 // Enviar para Pessoa
 app.post("/create", async(req, res)=>{

@@ -26,18 +26,42 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
         mediaRef.current.play()
     };
 
+    useEffect(() => {
+        const videoElement = mediaRef.current;
+    
+        const handleDownload = () => {
+          const sourceElement = videoElement.querySelector('source');
+          const videoURL = sourceElement.src;
+    
+          const link = document.createElement('a');
+          link.href = videoURL;
+          link.download = videoSelecionado.titulo+'.mp4'; // Set the desired filename with the appropriate extension
+          link.click();
+        };
+    
+        videoElement.addEventListener('contextmenu', (event) => {
+          event.preventDefault();
+          handleDownload();
+        });
+    
+        return () => {
+          videoElement.removeEventListener('contextmenu', handleDownload);
+        };
+      }, []);
+
     return (
         <div className={css(styles.videosContainer)}>
             <div className={css(styles.videoWrapper, videoSelecionado && styles.videoActive)}>
-                <video ref={mediaRef} src={urlVideo} className={css(styles.video)} controls autoPlay/>
+            <video ref={mediaRef} src={urlVideo} className={css(styles.video)} controls autoPlay>
+            </video>
             </div>
 
             <div className={css(styles.listaVideos, videoSelecionado && styles.listaVideos2)}>
                 <h3 className={css(styles.title)}>Vídeos</h3>
                 {videos.map((video, index) => (
                     <div key={index} onClick={() => reproduzirVideo(video, index)} className={css(styles.lista)}>
-                        <span style={{background: 'none'}}>{index+1}</span>
-                        <span style={{background: 'none'}}>{video.nome} - {video.titulo}</span>
+                         <span style={{background: 'none'}}>{index+1}</span>
+                        <span style={{background: 'none'}}>{video.titulo} - {video.legenda}</span>
 
                         <span style={{background: 'none'}} onClick={() => handleClick(index)}>
                             {videoPlayingIndex === index ? (

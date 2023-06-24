@@ -5,6 +5,7 @@ import { Nav, NavItem, NavLink } from 'reactstrap'
 import { TbPlayerTrackPrevFilled as Prev, TbPlayerTrackNextFilled as Next } from "react-icons/tb"
 import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Download, MdPauseCircle as Pause } from "react-icons/md"
 import React, {useState, useEffect} from 'react'
+import { storage } from '../../backend/config'
 
 export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, mediaRef }){
 
@@ -12,6 +13,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     const [duration, setDuration] = useState(0);
     const [isSeeking, setIsSeeking] = useState(false);
     const [volume, setVolume] = useState(0.75);
+    const [tipo, setTipo] = useState("");
 
     useEffect(() => {
         if (mediaRef.current) {
@@ -75,18 +77,49 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     };
 
     const fazerDownload = async (mediaSelecionado) => {
-        try {
-            const response = await fetch(mediaSelecionado.url);
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = mediaSelecionado.nome + ' - ' + mediaSelecionado.titulo;
-            link.click();
-        } catch (error) {
-            console.error('Erro ao fazer o download:', error);
+        if(mediaSelecionado.tipo=="Vídeo"){
+            setTipo("mp4");
         }
-    };
+        else{
+            setTipo("mp3");
+        }
+        try {
+            const proxyUrl = 'http://127.0.0.1:5173/proxy?url=' + encodeURIComponent(mediaSelecionado.downloadURL);
+            const response = await fetch(proxyUrl);
+            const blob = await response.blob();
+
+            const videoURL = mediaSelecionado.downloadURL;
+
+            const link = document.createElement('a');
+            link.href = videoURL;
+            link.download = 'video.mp4'; // Set the desired filename with the appropriate extension
+            link.click();
+          } catch (error) {
+            console.error('Error ao fazer o download:', error);
+          
+          };
+        /*
+        try {
+          // Make a request to the proxy server
+          const proxyUrl = 'http://127.0.0.1:5173/proxy?url=' + encodeURIComponent(mediaSelecionado.downloadURL);
+          const response = await fetch(proxyUrl);
+          const blob = await response.blob();
+      
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(mediaSelecionado.downloadURL);
+          link.download = mediaSelecionado.titulo + '.mp4';
+          link.setAttribute('type', 'video/mp4');
+      
+          // Programmatically trigger the click event
+          link.dispatchEvent(new MouseEvent('click'));
+      
+          // Clean up the link element and the object URL
+          URL.revokeObjectURL(link.href);
+          link.remove();
+        } catch (error) {
+          console.error('Erro ao fazer o download:', error);
+        }*/
+      };
 
     //Avancar e recuar medias
     const handleClickAvanco = () => {
@@ -115,20 +148,20 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     return(
         <Nav className={css(styles.nav)}>
             {mediaSelecionado.tipo === 'Video' ? (
-                <video ref={mediaRef} src={mediaSelecionado.url} muted style={{display: 'none'}} />
+                <video ref={mediaRef} src={mediaSelecionado.downloadURL} muted style={{display: 'none'}} />
             ) : (
-                <audio ref={mediaRef} src={mediaSelecionado.url} />
+                <audio ref={mediaRef} src={mediaSelecionado.downloadURL} />
             )}
 
             <NavItem className={css(styles.item1)}>
                 <NavLink href="#" className={css(styles.foto)}>
-                    <img className={css(styles.img)} href="#" src={mediaSelecionado.image} alt="Foto qualquer" />
+                    <img className={css(styles.img)} href="#" src={mediaSelecionado.imageDownloadURL} alt="Foto qualquer" />
                 </NavLink>
             </NavItem>
 
             <NavItem className={css(styles.titles)}>
                 {mediaSelecionado.titulo} <br />
-                <span className={css(styles.artista)}>{mediaSelecionado.nome}</span>
+                <span className={css(styles.artista)}>{mediaSelecionado.titulo}</span>
             </NavItem>
 
             <NavItem className={css(styles.item2)}>

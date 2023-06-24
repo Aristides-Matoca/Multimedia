@@ -153,10 +153,12 @@ export default function Upload({handleShow}){
             () => {
               uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
                 
+    
+
                 if (selectedFileImagem){
                     imageRef.put(selectedFileImagem).then(() => {
                         imageRef.getDownloadURL().then((imageDownloadURL) => {
-                            alert(imageDownloadURL);
+                            //alert(imageDownloadURL);
                           // Update the previously saved database entry with the image download URL
                           enviar(db,{downloadURL,imageDownloadURL,tipo,titulo, autor,est,descricao,dia,mes,ano,legenda,size});
                         });

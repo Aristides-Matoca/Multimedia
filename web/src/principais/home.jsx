@@ -14,6 +14,7 @@ import { StyleSheet, css } from 'aphrodite'
 import { IoIosNotifications } from "react-icons/io"
 import { TbSearch, TbSettings } from "react-icons/tb"
 import { InputGroup, InputGroupText, Input, Row} from 'reactstrap'
+import axios from 'axios';
 import { Link } from "react-router-dom"
 import Img1 from '../img/imagem1.png'
 import Img2 from '../img/imagem2.png'
@@ -33,11 +34,7 @@ export default function Home() {
     { tipo: 'Audio', nome: 'NGA 3', titulo: 'Dona 2', image: Img1, url: NGA },
   ]);
 
-  const [videos, setVideos] = useState([
-    { tipo: 'Video', nome: 'Video 1', titulo: 'Exemplo de video 1', image: Img2, url: V1 },
-    { tipo: 'Video', nome: 'Video 2', titulo: 'Exemplo de video 2', image: Img1, url: V2 },
-    { tipo: 'Video', nome: 'Video 3', titulo: 'Exemplo de video 3', image: Img2, url: V3 },
-  ]);
+  const [videos, setVideos] = useState(null);
 
   const [radios, setRadios] = useState([
     { tipo: 'Radio', nome: 'Rádio Mais', titulo: 'Estação 1', image: Img1, url: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
@@ -54,6 +51,20 @@ export default function Home() {
   const [urlVideo, setUrlVideo] = useState(null);
   const mediaRef = useRef(null);
 
+  const api = "http://localhost:4000";
+
+  useEffect(() => {
+    // Fetch the uploads from Firestore or your backend API
+    axios.get(api + "/video")
+      .then(response => {
+        const uploadsData = response.data;
+        setVideos(uploadsData);
+      })
+      .catch(error => {
+        console.error('Error fetching uploads:', error);
+      });
+  }, []);
+
   const selecionarMedia = (index, value, playPause) => {
     if(value == 1){
       setMediaSelecionado(audios[index]);
@@ -69,7 +80,7 @@ export default function Home() {
     else if(value == 2){
       setMediaSelecionado(videos[index]);
       setVideoSelecionado(videos[index])
-      setUrlVideo(videos[index].url)
+      setUrlVideo(videos[index].downloadURL)
       setAudioSelecionado(null)
       setRadioSelecionado(null)
       reproduzir()
@@ -116,7 +127,7 @@ export default function Home() {
       const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
       const nextIndex = (currentIndex + 1) % videos.length; // Circular
       setMediaSelecionado(videos[nextIndex]);
-      setUrlVideo(videos[nextIndex].url)
+      setUrlVideo(videos[nextIndex].downloadURL)
       setIsPlaying(true);
     }
 
@@ -142,7 +153,7 @@ export default function Home() {
       const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
       const previousIndex = (currentIndex - 1 + videos.length) % videos.length; // Circular
       setMediaSelecionado(videos[previousIndex]);
-      setUrlVideo(videos[previousIndex].url)
+      setUrlVideo(videos[previousIndex].downloadURL)
       setIsPlaying(true);
     }
 
