@@ -186,7 +186,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
 
             {mediaSelecionado.tipo == 'Radio' ? (
                <NavItem className={css(styles.item2)}>
-                    <Download className={css(styles.item21)} />
+                    <Download className={css(styles.disableDown)} />
                 </NavItem>
             ) : (
                 <NavItem className={css(styles.item2)}>
@@ -305,6 +305,12 @@ const styles = StyleSheet.create({
         ':hover':{
             color: 'rgba(255, 213, 0, 1)'
         },
+    },
+
+    disableDown:{
+        background: 'none',
+        color: 'white',
+        opacity: '0.6'
     },
 
     disable:{

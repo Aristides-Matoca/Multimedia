@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import { MdPlayCircle as Play, MdPauseCircle as Pause } from "react-icons/md"
 
@@ -6,7 +6,7 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
     const [videoSelecionado, setVideoSelecionado] = useState(null);
     const [videoPlayingIndex, setVideoPlayingIndex] = useState(null)
 
-    const reproduzirVideo = (video, index) => {
+    const handleClick = (video, index) => {
         if (videoPlayingIndex === index) {
             setVideoPlayingIndex(null); // Pausa o áudio se o mesmo já estiver sendo reproduzido
           } else {
@@ -36,11 +36,11 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
             <div className={css(styles.listaVideos, videoSelecionado && styles.listaVideos2)}>
                 <h3 className={css(styles.title)}>Vídeos</h3>
                 {videos.map((video, index) => (
-                    <div key={index} onClick={() => reproduzirVideo(video, index)} className={css(styles.lista)}>
+                    <div key={index} className={css(styles.lista)}>
                          <span style={{background: 'none'}}>{index+1}</span>
                         <span style={{background: 'none'}}>{video.titulo} - {video.description}</span>
 
-                        <span style={{background: 'none'}} onClick={() => handleClick(index)}>
+                        <span style={{background: 'none'}} onClick={() => handleClick(video, index)}>
                             {videoPlayingIndex === index ? (
                             <Pause className={css(styles.icone)}/>
                             ) : (
