@@ -28,13 +28,13 @@ export default function Home() {
   
   //Funções de áudio--------------------------------------------------------------------------------------------------------
 
-  const [audios, setAudios] = useState([
-    { tipo: 'Audio', nome: 'NGA 1', titulo: 'Dona', image: Img1, url: NGA },
-    { tipo: 'Audio', nome: 'Most Wanted', titulo: 'Meu Sucesso', image: Img2, url: KMW },
-    { tipo: 'Audio', nome: 'NGA 3', titulo: 'Dona 2', image: Img1, url: NGA },
-  ]);
+  const [audios, setAudios] = useState(null);
+
+  //const [podcasts, setPodcasts] = useState(null);
 
   const [videos, setVideos] = useState(null);
+
+  //const [radios, setRadios] = useState(null);
 
   const [radios, setRadios] = useState([
     { tipo: 'Radio', nome: 'Rádio Mais', titulo: 'Estação 1', image: Img1, url: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
@@ -65,6 +65,20 @@ export default function Home() {
       });
   }, []);
 
+ /* useEffect(() => {
+    // Fetch the uploads from Firestore or your backend API
+      axios.get(api + "/podcasts")
+        .then(response => {
+          const uploadsData = response.data;
+          setPodcasts(uploadsData);
+        })
+        .catch(error => {
+          console.error('Error fetching uploads:', error);
+        });
+    }, []);*/
+
+
+
   const selecionarMedia = (index, value, playPause) => {
     if(value == 1){
       setMediaSelecionado(audios[index]);
@@ -80,7 +94,7 @@ export default function Home() {
     else if(value == 2){
       setMediaSelecionado(videos[index]);
       setVideoSelecionado(videos[index])
-      setUrlVideo(videos[index].downloadURL)
+      setUrlVideo(videos[index].videoURL)
       setAudioSelecionado(null)
       setRadioSelecionado(null)
       reproduzir()
@@ -127,7 +141,7 @@ export default function Home() {
       const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
       const nextIndex = (currentIndex + 1) % videos.length; // Circular
       setMediaSelecionado(videos[nextIndex]);
-      setUrlVideo(videos[nextIndex].downloadURL)
+      setUrlVideo(videos[nextIndex].videoURL)
       setIsPlaying(true);
     }
 
@@ -153,7 +167,7 @@ export default function Home() {
       const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
       const previousIndex = (currentIndex - 1 + videos.length) % videos.length; // Circular
       setMediaSelecionado(videos[previousIndex]);
-      setUrlVideo(videos[previousIndex].downloadURL)
+      setUrlVideo(videos[previousIndex].videoURL)
       setIsPlaying(true);
     }
 

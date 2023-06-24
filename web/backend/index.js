@@ -3,7 +3,7 @@ import { json } from 'express';
 import cors from 'cors';
 
 //import Pessoa from './pessoaDB.js';
-import { UsuariosOn, Pessoa, storage, Audios, Videos, Podcast } from './config.js';
+import { UsuariosOn, Pessoa, storage, Audios, Videos } from './config.js';
 
 const app = express();
 app.use(express.json());
@@ -43,6 +43,14 @@ app.get("/video", async(req, res) => {
     res.send(list);
 })
 
+/*app.get("/podcasts", async(req, res) => {
+    const snapshot = await Podcast.get();
+    //const ids = snapshot.docs.map((doc) => doc.id);
+    //const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const list = snapshot.docs.map((doc) => doc.data());
+    res.send(list);
+})*/
+
 // Enviar a colecção
 // Enviar para Pessoa
 app.post("/create", async(req, res)=>{
@@ -77,12 +85,12 @@ app.post("/videos", async(req, res)=>{
     res.send({msg: "File Added"})
 })
 
-app.post("/podcast", async(req, res)=>{
+/*app.post("/podcast", async(req, res)=>{
     const data = req.body
     console.log("Data of upload ", data)
     await Podcast.add(data);
     res.send({msg: "File Added"})
-})
+})*/
 
 /*app.get("/download", async(req, res) => {
     const snapshot = await Upload.get();

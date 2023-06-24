@@ -79,46 +79,40 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     const fazerDownload = async (mediaSelecionado) => {
         if(mediaSelecionado.tipo=="Vídeo"){
             setTipo("mp4");
+            try {
+                const proxyUrl = 'http://127.0.0.1:5173/proxy?url=' + encodeURIComponent(mediaSelecionado.videoURL);
+                const response = await fetch(proxyUrl);
+                const blob = await response.blob();
+    
+                const videoURL = mediaSelecionado.videoURL;
+    
+                const link = document.createElement('a');
+                link.href = videoURL;
+                link.download = 'video.mp4'; // Set the desired filename with the appropriate extension
+                link.click();
+              } catch (error) {
+                console.error('Error ao fazer o download:', error);
+              
+              };
         }
         else{
             setTipo("mp3");
+            try {
+                const proxyUrl = 'http://127.0.0.1:5173/proxy?url=' + encodeURIComponent(mediaSelecionado.audioURL);
+                const response = await fetch(proxyUrl);
+                const blob = await response.blob();
+    
+                const audioURL = mediaSelecionado.audioURL;
+    
+                const link = document.createElement('a');
+                link.href = audioURL;
+                link.download = 'video.mp4'; // Set the desired filename with the appropriate extension
+                link.click();
+              } catch (error) {
+                console.error('Error ao fazer o download:', error);
+              
+              };
         }
-        try {
-            const proxyUrl = 'http://127.0.0.1:5173/proxy?url=' + encodeURIComponent(mediaSelecionado.downloadURL);
-            const response = await fetch(proxyUrl);
-            const blob = await response.blob();
-
-            const videoURL = mediaSelecionado.downloadURL;
-
-            const link = document.createElement('a');
-            link.href = videoURL;
-            link.download = 'video.mp4'; // Set the desired filename with the appropriate extension
-            link.click();
-          } catch (error) {
-            console.error('Error ao fazer o download:', error);
-          
-          };
-        /*
-        try {
-          // Make a request to the proxy server
-          const proxyUrl = 'http://127.0.0.1:5173/proxy?url=' + encodeURIComponent(mediaSelecionado.downloadURL);
-          const response = await fetch(proxyUrl);
-          const blob = await response.blob();
-      
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(mediaSelecionado.downloadURL);
-          link.download = mediaSelecionado.titulo + '.mp4';
-          link.setAttribute('type', 'video/mp4');
-      
-          // Programmatically trigger the click event
-          link.dispatchEvent(new MouseEvent('click'));
-      
-          // Clean up the link element and the object URL
-          URL.revokeObjectURL(link.href);
-          link.remove();
-        } catch (error) {
-          console.error('Erro ao fazer o download:', error);
-        }*/
       };
 
     //Avancar e recuar medias
@@ -148,9 +142,9 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     return(
         <Nav className={css(styles.nav)}>
             {mediaSelecionado.tipo === 'Video' ? (
-                <video ref={mediaRef} src={mediaSelecionado.downloadURL} muted style={{display: 'none'}} />
+                <video ref={mediaRef} src={mediaSelecionado.videoURL} muted style={{display: 'none'}} />
             ) : (
-                <audio ref={mediaRef} src={mediaSelecionado.downloadURL} />
+                <audio ref={mediaRef} src={mediaSelecionado.audioURL} />
             )}
 
             <NavItem className={css(styles.item1)}>
@@ -172,7 +166,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 <Prev className={css(styles.item23)} onClick={() => handleClickRecuo()}/>
             </NavItem>
             
-            {mediaSelecionado.tipo === 'Radio' || mediaSelecionado.tipo === 'Audio' ? (
+            {mediaSelecionado.tipo == 'Radio' || mediaSelecionado.tipo == 'Audio' ? (
                 <NavItem className={css(styles.item2)}>
                     {isPlaying ? (
                         <Pause className={css(styles.iconPlay)} onClick={pausar}/> 
@@ -190,7 +184,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 <Next className={css(styles.item23)} onClick={() => handleClickAvanco()}/>
             </NavItem>
 
-            {mediaSelecionado.tipo === 'Radio' ? (
+            {mediaSelecionado.tipo == 'Radio' ? (
                <NavItem className={css(styles.item2)}>
                     <Download className={css(styles.item21)} />
                 </NavItem>
@@ -200,7 +194,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 </NavItem>
             )}
             
-            {mediaSelecionado.tipo === 'Video' || mediaSelecionado.tipo === 'Radio' ? (
+            {mediaSelecionado.tipo == 'Video' || mediaSelecionado.tipo == 'Radio' ? (
                 <div className={css(styles.progress)}>
                     <input type="range" min={0} max={0} className={css(styles.range)} disabled />
                 </div>
@@ -217,7 +211,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 </div>
             )}
 
-            {mediaSelecionado.tipo === 'Video' ? (
+            {mediaSelecionado.tipo == 'Video' ? (
                 <NavItem className={css(styles.item3)}>
                     <NavLink href="#" className={css(styles.item32)}>
                         <Volume className={css(styles.icone)}/>
@@ -243,25 +237,6 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
         </Nav>
     )
 }
-
-    /*//Reproduz músicas de forma aleatória, tem de estar na componenete Home
-    const [posicaoAtual, setPosicaoAtual] = useState(0);
-
-    const avancar = () => {
-        setPosicaoAtual((prevPosicao) => {
-            const novaPosicao = prevPosicao + 1;
-            setAudioSelecionado(audios[posicaoAtual]);
-            return novaPosicao >= audios.length ? 0 : novaPosicao;
-        });
-    };
-
-    const retroceder = () => {
-        setPosicaoAtual((prevPosicao) => {
-            const novaPosicao = prevPosicao - 1;
-            setAudioSelecionado(audios[posicaoAtual]);
-            return novaPosicao < 0 ? audios.length - 1 : novaPosicao;
-        });
-    };*/
 
 const styles = StyleSheet.create({
     nav:{

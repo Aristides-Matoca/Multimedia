@@ -19,7 +19,7 @@ export default function Upload({handleShow}){
     const [titulo, setTitulo] = useState('');
     const [autor, setAutor] = useState('');
     const [est, setEstilo] = useState('');
-    const [descricao, setDescricao] = useState('');
+    const [description, setDescricao] = useState('');
     const [dia, setDia] = useState('');
     const [mes, setMes] = useState('');
     const [ano, setAno] = useState('');
@@ -125,24 +125,29 @@ export default function Upload({handleShow}){
           const storageRef = storage.ref();
           let path = "";
           let db = "";
-    
-          if(tipoF=="video/*"){
+
+          if(tipoF==="video/*"){
+            setTitulo(titulo.concat(".mp4"));
             path= "videos/"+titulo;
             db = "/videos";
           }
-          else if(tipo=="Podcast"){
+          else if(tipo==="Podcast"){
+            setTitulo(titulo.concat(".mp3"));
             path= "podcast/"+titulo;
             db = "/podcast";
-          }else{
+          }
+          else{
+            setTitulo(titulo.concat(".mp3"));
             path= "audios/"+titulo;
             db = "/audios";
           }
-    
           const fileRef = storageRef.child(path);
           const imageRef = storageRef.child("imagens/"+titulo);
-    
           const uploadTask = fileRef.put(selectedFile);
-          uploadTask.on('state_changed', 
+          
+          if(tipoF==="video/*"){
+            
+            uploadTask.on('state_changed', 
             snapshot => {
               const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
               setUploadProgress(progress);
@@ -151,27 +156,82 @@ export default function Upload({handleShow}){
               console.error('Error uploading file to Firebase Storage:', error);
             },
             () => {
-              uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
-                
-    
-
+              uploadTask.snapshot.ref.getDownloadURL().then(videoURL => {
                 if (selectedFileImagem){
                     imageRef.put(selectedFileImagem).then(() => {
                         imageRef.getDownloadURL().then((imageDownloadURL) => {
                             //alert(imageDownloadURL);
                           // Update the previously saved database entry with the image download URL
-                          enviar(db,{downloadURL,imageDownloadURL,tipo,titulo, autor,est,descricao,dia,mes,ano,legenda,size});
+                          enviar(db,{videoURL,imageDownloadURL,tipo,titulo, autor,est,description,dia,mes,ano,legenda,size});
                         });
                       }).catch((imageError) => {
                         console.error("Error uploading image file:", imageError);
                       });
                 } else{
-                    enviar(db,{downloadURL,tipo,titulo, autor,est,descricao,dia,mes,ano,legenda,size});
+                    enviar(db,{videoURL,tipo,titulo, autor,est,description,dia,mes,ano,legenda,size});
                 } 
-
               });
             }
           );
+          }
+          else if(tipo==="Podcast"){
+            
+            uploadTask.on('state_changed', 
+            snapshot => {
+              const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+              setUploadProgress(progress);
+            },
+            error => {
+              console.error('Error uploading file to Firebase Storage:', error);
+            },
+            () => {
+              uploadTask.snapshot.ref.getDownloadURL().then(audioURL => {
+                if (selectedFileImagem){
+                    imageRef.put(selectedFileImagem).then(() => {
+                        imageRef.getDownloadURL().then((imageDownloadURL) => {
+                            //alert(imageDownloadURL);
+                          // Update the previously saved database entry with the image download URL
+                          enviar(db,{audioURL,imageDownloadURL,tipo,titulo, autor,est,description,dia,mes,ano,legenda,size});
+                        });
+                      }).catch((imageError) => {
+                        console.error("Error uploading image file:", imageError);
+                      });
+                } else{
+                    enviar(db,{audioURL,tipo,titulo, autor,est,description,dia,mes,ano,legenda,size});
+                } 
+              });
+            }
+          );
+          }else{
+            
+            uploadTask.on('state_changed', 
+            snapshot => {
+              const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+              setUploadProgress(progress);
+            },
+            error => {
+              console.error('Error uploading file to Firebase Storage:', error);
+            },
+            () => {
+              uploadTask.snapshot.ref.getDownloadURL().then(podcastURL => {
+                if (selectedFileImagem){
+                    imageRef.put(selectedFileImagem).then(() => {
+                        imageRef.getDownloadURL().then((imageDownloadURL) => {
+                            //alert(imageDownloadURL);
+                          // Update the previously saved database entry with the image download URL
+                          enviar(db,{podcastURL,imageDownloadURL,tipo,titulo, autor,est,description,dia,mes,ano,legenda,size});
+                        });
+                      }).catch((imageError) => {
+                        console.error("Error uploading image file:", imageError);
+                      });
+                } else{
+                    enviar(db,{podcastURL,tipo,titulo, autor,est,description,dia,mes,ano,legenda,size});
+                } 
+              });
+            }
+          );
+          }
+          alert("Enviado!");
           console.log('Selected file:', selectedFile);
         }
       };
@@ -239,7 +299,7 @@ export default function Upload({handleShow}){
                         </Input>
 
                         <Label className={css(styles.label)}>Descrição</Label>
-                        <Input className={css(styles.input)} type='textarea' placeholder='Something else...' value={descricao} onChange={(e) => setDescricao(e.target.value)}/>
+                        <Input className={css(styles.input)} type='textarea' placeholder='Something else...' value={description} onChange={(e) => setDescricao(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Data de lançamento*</Label>
                         <InputGroup className={css(styles.Inputg)}>
