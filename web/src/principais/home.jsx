@@ -46,9 +46,10 @@ export default function Home() {
   const [audioSelecionado, setAudioSelecionado] = useState(null);
   const [videoSelecionado, setVideoSelecionado] = useState(null);
   const [radioSelecionado, setRadioSelecionado] = useState(null);
+  //const [trocarMedia, setTrocarMedia] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [urlVideo, setUrlVideo] = useState(null);
   const mediaRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   const api = "http://localhost:4000";
 
@@ -64,13 +65,17 @@ export default function Home() {
       });
   }, []);
 
-  const selecionarMedia = (index, value) => {
+  const selecionarMedia = (index, value, playPause) => {
     if(value == 1){
       setMediaSelecionado(audios[index]);
       setAudioSelecionado(audios[index])
       setVideoSelecionado(null)
       setRadioSelecionado(null)
-      reproduzir()
+      if(playPause == 11)
+        reproduzir()
+      else if(playPause == 12){
+        pausar()
+      }
     }
     else if(value == 2){
       setMediaSelecionado(videos[index]);
@@ -85,7 +90,11 @@ export default function Home() {
       setRadioSelecionado(radios[index])
       setVideoSelecionado(null)
       setAudioSelecionado(null)
-      reproduzir()
+      if(playPause == 11)
+        reproduzir()
+      else if(playPause == 12){
+        pausar()
+      }
     }
   }; 
 
@@ -100,6 +109,7 @@ export default function Home() {
     if (mediaRef.current) {
       mediaRef.current.play();
       setIsPlaying(true);
+      //setTrocarMedia(0)
     }
   };
 
@@ -110,6 +120,7 @@ export default function Home() {
       const nextIndex = (currentIndex + 1) % audios.length; // Circular
       setMediaSelecionado(audios[nextIndex]);
       setIsPlaying(true);
+      //setTrocarMedia(1)
     }
 
     else if(mediaSelecionado.tipo === 'Video'){
@@ -135,6 +146,7 @@ export default function Home() {
       const previousIndex = (currentIndex - 1 + audios.length) % audios.length; // Circular
       setMediaSelecionado(audios[previousIndex]);
       setIsPlaying(true);
+      //setTrocarMedia(-1)
     }
     
     else if(mediaSelecionado.tipo === 'Video'){
@@ -247,8 +259,8 @@ export default function Home() {
               {nav === 'Inicio' && <Homepage handleShow={handleShow}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
               {nav === 'Video' && <Videos videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef}/>}
-              {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia}/>}
-              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia}/>}
+              {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying}/>}
+              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying}/>}
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
               {nav === 'Perfil' && <Perfil />}
               {nav === 'Upload' && <Upload handleShow={handleShow}/>}
@@ -400,7 +412,7 @@ const styles = StyleSheet.create({
     paddingTop: '1.3%',
     background: 'none',
     position: 'fixed',
-    height: '73%',
+    height: '72%',
     width: '82%',
     flexGrow: '1',
     overflowY: 'auto',

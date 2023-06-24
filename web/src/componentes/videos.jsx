@@ -1,12 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, css } from 'aphrodite'
+import { MdPlayCircle as Play, MdPauseCircle as Pause } from "react-icons/md"
 
 const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
     const [videoSelecionado, setVideoSelecionado] = useState(null);
+    const [videoPlayingIndex, setVideoPlayingIndex] = useState(null)
 
     const reproduzirVideo = (video, index) => {
+        if (videoPlayingIndex === index) {
+            setVideoPlayingIndex(null); // Pausa o áudio se o mesmo já estiver sendo reproduzido
+          } else {
+            setVideoPlayingIndex(index); // Reproduz o áudio selecionado
+        }
         setVideoSelecionado(video);
-        selecionarVideo(index, 2)
+        selecionarVideo(index, 2, 0)
         mediaRef.current.play()
 
         setTimeout(() => {
@@ -15,7 +22,7 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
     };
 
     const selectVideo = (index) => {
-        selecionarVideo(index, 2);
+        selecionarVideo(index, 2, 0);
         mediaRef.current.play()
     };
 
@@ -53,7 +60,16 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
                 <h3 className={css(styles.title)}>Vídeos</h3>
                 {videos.map((video, index) => (
                     <div key={index} onClick={() => reproduzirVideo(video, index)} className={css(styles.lista)}>
-                        {video.titulo}
+                         <span style={{background: 'none'}}>{index+1}</span>
+                        <span style={{background: 'none'}}>{video.titulo} - {video.legenda}</span>
+
+                        <span style={{background: 'none'}} onClick={() => handleClick(index)}>
+                            {videoPlayingIndex === index ? (
+                            <Pause className={css(styles.icone)}/>
+                            ) : (
+                            <Play className={css(styles.icone)}/>
+                            )}
+                        </span>
                     </div>
                 ))}
             </div>
@@ -88,7 +104,8 @@ const styles = StyleSheet.create({
     listaVideos: {
       width: '100%',
       border: '1px solid grey',
-      borderRadius: '8px',
+      borderTopLeftRadius: '8px',
+      borderTopRightRadius: '8px',
       color: 'white',
       background: 'black'
     },
@@ -96,7 +113,8 @@ const styles = StyleSheet.create({
     listaVideos2: {
         width: '23%',
         border: '0.5px solid grey',
-        borderRadius: '8px',
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
         color: 'white',
         background: 'black'
       },
@@ -105,14 +123,29 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: '8px',
         borderTopRightRadius: '8px',
         background: 'rgb(33,33,33)',
-        padding: '10px 0 10px 0'
+        padding: '10px 0 10px 0',
+        fontSize: '25px'
     },
 
     lista: {
         background: 'none',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '0.5% 5% 0.5% 5%',
         ':hover':{
+            background: 'rgb(36,36,36)',
+            borderRadius: '6px',
             cursor: 'pointer'
+        },
+          ':active':{
+            background: 'rgb(36,36,36)'
         }
+    },
+
+    icone: {
+        background: 'none', 
+        fontSize: '29px',
     }
 });
 
