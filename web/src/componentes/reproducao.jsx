@@ -5,7 +5,8 @@ import { Nav, NavItem, NavLink } from 'reactstrap'
 import { TbPlayerTrackPrevFilled as Prev, TbPlayerTrackNextFilled as Next } from "react-icons/tb"
 import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Download, MdPauseCircle as Pause } from "react-icons/md"
 import React, {useState, useEffect} from 'react'
-import { storage } from '../../backend/config'
+//import firebase from 'firebase/app';
+import firebase from 'firebase';
 
 export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, mediaRef }){
 
@@ -13,7 +14,6 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     const [duration, setDuration] = useState(0);
     const [isSeeking, setIsSeeking] = useState(false);
     const [volume, setVolume] = useState(0.75);
-    const [tipo, setTipo] = useState("");
 
     useEffect(() => {
         if (mediaRef.current) {
@@ -30,7 +30,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     }, [mediaRef]);
 
     useEffect(() => {//UseEfect para avançar para próxima a media de forma automatica
-        if(mediaSelecionado.tipo === 'Audio'){
+        if(mediaSelecionado.tipo === 'Áudio'){
             if (formatTime(currentTime) === formatTime(duration)) {
                 if(formatTime(duration) != '00:00'){
                     setTimeout(() => {
@@ -65,7 +65,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     };
 
     const handleVolumeChange = (event) => {
-        if(mediaSelecionado.tipo === 'Audio' || mediaSelecionado.tipo === 'Radio'){
+        if(mediaSelecionado.tipo === 'Áudio' || mediaSelecionado.tipo === 'Radio'){
             const volumeValue = parseFloat(event.target.value);
             setVolume(volumeValue);
             mediaRef.current.volume = volumeValue;
@@ -76,44 +76,32 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
         }
     };
 
+    const fazerDownloadProvisorio = (mediaSelecionado) => {
+        const audioWindow = window.open('', '_blank');
+
+        const audioElement = document.createElement('audio');
+        audioElement.src = mediaSelecionado.audioURL;
+        audioElement.controls = true;
+
+        audioWindow.document.body.appendChild(audioElement);
+    };
+
     const fazerDownload = async (mediaSelecionado) => {
-        if(mediaSelecionado.tipo=="Vídeo"){
-            setTipo("mp4");
-            try {
-                const proxyUrl = 'http://127.0.0.1:5173/proxy?url=' + encodeURIComponent(mediaSelecionado.videoURL);
-                const response = await fetch(proxyUrl);
-                const blob = await response.blob();
-    
-                const videoURL = mediaSelecionado.videoURL;
-    
-                const link = document.createElement('a');
-                link.href = videoURL;
-                link.download = 'video.mp4'; // Set the desired filename with the appropriate extension
-                link.click();
-              } catch (error) {
-                console.error('Error ao fazer o download:', error);
-              
-              };
+
+        try {
+            const storageRef = firebase.storage().ref();
+            const fileRef = storageRef.child(mediaSelecionado.audioURL);
+
+            const url = await fileRef.getDownloadURL();
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${mediaSelecionado.legenda} - ${mediaSelecionado.titulo}`;
+            link.click();
+
+        } catch (error) {
+            console.error('Erro ao fazer o download:', error);
         }
-        else{
-            setTipo("mp3");
-            try {
-                const proxyUrl = 'http://127.0.0.1:5173/proxy?url=' + encodeURIComponent(mediaSelecionado.audioURL);
-                const response = await fetch(proxyUrl);
-                const blob = await response.blob();
-    
-                const audioURL = mediaSelecionado.audioURL;
-    
-                const link = document.createElement('a');
-                link.href = audioURL;
-                link.download = 'video.mp4'; // Set the desired filename with the appropriate extension
-                link.click();
-              } catch (error) {
-                console.error('Error ao fazer o download:', error);
-              
-              };
-        }
-      };
+    };
 
     //Avancar e recuar medias
     const handleClickAvanco = () => {
@@ -141,7 +129,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     
     return(
         <Nav className={css(styles.nav)}>
-            {mediaSelecionado.tipo === 'Video' ? (
+            {mediaSelecionado.tipo === 'Vídeo' ? (
                 <video ref={mediaRef} src={mediaSelecionado.videoURL} muted style={{display: 'none'}} />
             ) : (
                 <audio ref={mediaRef} src={mediaSelecionado.audioURL} />
@@ -166,7 +154,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 <Prev className={css(styles.item23)} onClick={() => handleClickRecuo()}/>
             </NavItem>
             
-            {mediaSelecionado.tipo == 'Radio' || mediaSelecionado.tipo == 'Audio' ? (
+            {mediaSelecionado.tipo == 'Radio' || mediaSelecionado.tipo == 'Áudio' ? (
                 <NavItem className={css(styles.item2)}>
                     {isPlaying ? (
                         <Pause className={css(styles.iconPlay)} onClick={pausar}/> 
@@ -184,17 +172,17 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 <Next className={css(styles.item23)} onClick={() => handleClickAvanco()}/>
             </NavItem>
 
-            {mediaSelecionado.tipo == 'Radio' ? (
+            {mediaSelecionado.tipo != 'Áudio' ? (
                <NavItem className={css(styles.item2)}>
                     <Download className={css(styles.disableDown)} />
                 </NavItem>
             ) : (
                 <NavItem className={css(styles.item2)}>
-                    <Download className={css(styles.item21)} onClick={() => fazerDownload(mediaSelecionado)}/>
+                    <Download className={css(styles.item21)} onClick={() => fazerDownloadProvisorio(mediaSelecionado)}/>
                 </NavItem>
             )}
             
-            {mediaSelecionado.tipo == 'Video' || mediaSelecionado.tipo == 'Radio' ? (
+            {mediaSelecionado.tipo == 'Vídeo' || mediaSelecionado.tipo == 'Radio' ? (
                 <div className={css(styles.progress)}>
                     <input type="range" min={0} max={0} className={css(styles.range)} disabled />
                 </div>
@@ -211,7 +199,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 </div>
             )}
 
-            {mediaSelecionado.tipo == 'Video' ? (
+            {mediaSelecionado.tipo == 'Vídeo' ? (
                 <NavItem className={css(styles.item3)}>
                     <NavLink href="#" className={css(styles.item32)}>
                         <Volume className={css(styles.icone)}/>

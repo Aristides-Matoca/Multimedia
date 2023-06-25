@@ -1,17 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, css } from 'aphrodite'
-import { MdPlayCircle as Play, MdPauseCircle as Pause } from "react-icons/md"
 
 const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
     const [videoSelecionado, setVideoSelecionado] = useState(null);
-    const [videoPlayingIndex, setVideoPlayingIndex] = useState(null)
 
     const reproduzirVideo = (video, index) => {
-        if (videoPlayingIndex === index) {
-            setVideoPlayingIndex(null); // Pausa o áudio se o mesmo já estiver sendo reproduzido
-          } else {
-            setVideoPlayingIndex(index); // Reproduz o áudio selecionado
-        }
+
         setVideoSelecionado(video);
         selecionarVideo(index, 2, 0)
         mediaRef.current.play()
@@ -26,29 +20,6 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
         mediaRef.current.play()
     };
 
-    useEffect(() => {
-      const videoElement = mediaRef.current;
-  
-      const handleDownload = () => {
-        const sourceElement = videoElement.querySelector('source');
-        const videoURL = sourceElement.src;
-  
-        const link = document.createElement('a');
-        link.href = videoURL;
-        link.download = videoSelecionado.titulo+'.mp4'; // Set the desired filename with the appropriate extension
-        link.click();
-      };
-  
-      videoElement.addEventListener('contextmenu', (event) => {
-        event.preventDefault();
-        handleDownload();
-      });
-  
-      return () => {
-        videoElement.removeEventListener('contextmenu', handleDownload);
-      };
-    }, []);
-
     return (
         <div className={css(styles.videosContainer)}>
             <div className={css(styles.videoWrapper, videoSelecionado && styles.videoActive)}>
@@ -60,15 +31,10 @@ const Videos = ({videos, selecionarVideo, urlVideo, mediaRef}) => {
                 <h3 className={css(styles.title)}>Vídeos</h3>
                 {videos.map((video, index) => (
                      <div key={index} onClick={() => reproduzirVideo(video, index)} className={css(styles.lista)}>
-                         <span style={{background: 'none'}}>{index+1}</span>
+                        <span style={{background: 'none'}}>{index+1}</span>
                         <span style={{background: 'none'}}>{video.titulo} - {video.description}</span>
 
-                        <span style={{background: 'none'}} onClick={() => handleClick(index)}>
-                            {videoPlayingIndex === index ? (
-                            <Pause className={css(styles.icone)}/>
-                            ) : (
-                            <Play className={css(styles.icone)}/>
-                            )}
+                        <span style={{background: 'none'}}>
                         </span>
                     </div>
                 ))}
@@ -132,7 +98,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '0.5% 5% 0.5% 5%',
+        padding: '1.2% 2% 1.2% 2%',
+        margin: '0 3% 0 3%',
         ':hover':{
             background: 'rgb(36,36,36)',
             borderRadius: '6px',

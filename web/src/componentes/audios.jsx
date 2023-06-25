@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
-import { Row, Nav, NavItem, NavLink } from 'reactstrap'
+import { Row, Nav, NavItem } from 'reactstrap'
 import Img from '../img/imagem2.png'
 
 export default function Audios({handleShow}){

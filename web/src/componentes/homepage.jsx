@@ -1,10 +1,23 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
-import { Row, Nav, NavItem, NavLink } from 'reactstrap';
+import { Row, Nav, NavItem } from 'reactstrap';
 import Img from '../img/imagem2.png'
 import React from 'react';
 
-export default function Homepage({handleShow}){
+export default function Homepage({handleShow, selecionarMedia}){
+
+    const handleClick = (index, pos) => {
+    
+        selecionarMedia(index, pos, 11);
+        setTimeout(() => {
+          selectMedia(index, pos);
+        }, 100);
+      };
+    
+      const selectMedia = (index, pos) => {
+        selecionarMedia(index, pos, 11);
+      };
+
     return (
         <Row className={css(styles.row)}>
             <Nav vertical className={css(styles.nav1)}>
@@ -65,21 +78,21 @@ export default function Homepage({handleShow}){
 
                 <div className={css(styles.divtitles)}>
                     <h2 className={css(styles.title)}>Rádios</h2>
-                    <span className={css(styles.vermais)}onClick={() => handleShow('Audio')}>Ver mais</span>
+                    <span className={css(styles.vermais)}onClick={() => handleShow('Radio')}>Ver mais</span>
                 </div>
 
                 <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item3)}>
+                    <NavItem className={css(styles.item3)} onClick={() => handleClick(0, 3)}>
                         <img className={css(styles.img3)} src={Img} alt="Radio Mais"/> <br/>
                         <span className={css(styles.name)}>Radio Mais</span>
                     </NavItem>
 
-                    <NavItem className={css(styles.item3)}>
+                    <NavItem className={css(styles.item3)} onClick={() => handleClick(1, 3)}>
                         <img className={css(styles.img3)} src={Img} alt="Radio Escola"/> <br/>
                         <span className={css(styles.name)}>Radio Escola</span>
                     </NavItem>
 
-                    <NavItem className={css(styles.item3)}>
+                    <NavItem className={css(styles.item3)} onClick={() => handleClick(2, 3)}>
                         <img className={css(styles.img3)} src={Img} alt="Radio LAC"/>
                         <span className={css(styles.name)}>Radio LAC</span>
                         
@@ -88,7 +101,7 @@ export default function Homepage({handleShow}){
 
                 <div className={css(styles.divtitles)}>
                     <h2 className={css(styles.title)}>Podcasts</h2>
-                    <span className={css(styles.vermais)}onClick={() => handleShow('Audio')}>Ver mais</span>
+                    <span className={css(styles.vermais)}onClick={() => handleShow('Podcast')}>Ver mais</span>
                 </div>
 
                 <Nav className={css(styles.nav)}>

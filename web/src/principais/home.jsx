@@ -18,11 +18,6 @@ import axios from 'axios';
 import { Link } from "react-router-dom"
 import Img1 from '../img/imagem1.png'
 import Img2 from '../img/imagem2.png'
-import NGA from '../audios/NGA-Dona.mp3'
-import KMW from '../audios/KMW-MeuSucesso.mp3'
-import V1 from '../videos/v1.mp4'
-import V2 from '../videos/v2.mp4'
-import V3 from '../videos/v4.mp4'
 
 export default function Home() {
   
@@ -93,8 +88,10 @@ export default function Home() {
 
   const selecionarMedia = (index, value, playPause) => {
     if(value == 1){
+      audios[index].tipo = 'Áudio'
       setMediaSelecionado(audios[index]);
       setAudioSelecionado(audios[index])
+      //console.log(audios[index].audioURL),
       setVideoSelecionado(null)
       setRadioSelecionado(null)
       if(playPause == 11)
@@ -104,6 +101,7 @@ export default function Home() {
       }
     }
     else if(value == 2){
+      videos[index].tipo = 'Vídeo'
       setMediaSelecionado(videos[index]);
       setVideoSelecionado(videos[index])
       setUrlVideo(videos[index].videoURL)
@@ -141,7 +139,7 @@ export default function Home() {
 
   //Avancar media
   const avancar = () => {
-    if(mediaSelecionado.tipo === 'Audio'){
+    if(mediaSelecionado.tipo === 'Áudio'){
       const currentIndex = audios.findIndex((audio) => audio === mediaSelecionado);
       const nextIndex = (currentIndex + 1) % audios.length; // Circular
       setMediaSelecionado(audios[nextIndex]);
@@ -149,7 +147,7 @@ export default function Home() {
       //setTrocarMedia(1)
     }
 
-    else if(mediaSelecionado.tipo === 'Video'){
+    else if(mediaSelecionado.tipo === 'Vídeo'){
       const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
       const nextIndex = (currentIndex + 1) % videos.length; // Circular
       setMediaSelecionado(videos[nextIndex]);
@@ -167,7 +165,7 @@ export default function Home() {
 
   //Retroceder media
   const retroceder = () => {
-    if(mediaSelecionado.tipo === 'Audio'){
+    if(mediaSelecionado.tipo === 'Áudio'){
       const currentIndex = audios.findIndex((audio) => audio === mediaSelecionado);
       const previousIndex = (currentIndex - 1 + audios.length) % audios.length; // Circular
       setMediaSelecionado(audios[previousIndex]);
@@ -175,7 +173,7 @@ export default function Home() {
       //setTrocarMedia(-1)
     }
     
-    else if(mediaSelecionado.tipo === 'Video'){
+    else if(mediaSelecionado.tipo === 'Vídeo'){
       const currentIndex = videos.findIndex((video) => video === mediaSelecionado);
       const previousIndex = (currentIndex - 1 + videos.length) % videos.length; // Circular
       setMediaSelecionado(videos[previousIndex]);
@@ -282,7 +280,7 @@ export default function Home() {
         {Object.entries(navs).map(([nav, show]) =>
           show && (
             <React.Fragment key={nav}>
-              {nav === 'Inicio' && <Homepage handleShow={handleShow}/>}
+              {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
               {nav === 'Video' && <Videos videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef}/>}
               {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying}/>}
