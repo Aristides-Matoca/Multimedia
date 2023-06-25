@@ -16,7 +16,7 @@ const firebaseConfig = {
 
   const db = firebase.firestore();
   export const UsuariosOn = db.collection("usuariosOn");
-  export const Audios = db.collection("audios");
+  export const Audios = db.collection("audio");
   export const Videos = db.collection("videos");
   //export const Podcast = db.collection("podcast");
   export const Pessoa = db.collection("pessoa");

@@ -37,9 +37,9 @@ export default function Home() {
   //const [radios, setRadios] = useState(null);
 
   const [radios, setRadios] = useState([
-    { tipo: 'Radio', nome: 'Rádio Mais', titulo: 'Estação 1', image: Img1, url: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
-    { tipo: 'Radio', nome: 'Rádio Escola', titulo: 'Estação 2', image: Img2, url: 'https://radios.vpn.sapo.pt/AO/radio1.mp3' },
-    { tipo: 'Radio', nome: 'Rádio LAC', titulo: 'Estação 3', image: Img1, url: 'https://radios.vpn.sapo.pt/AO/radio14.mp3?1685629053605' },
+    { tipo: 'Radio', nome: 'Rádio Mais', titulo: 'Estação 1', image: Img1, audioURL: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
+    { tipo: 'Radio', nome: 'Rádio Escola', titulo: 'Estação 2', image: Img2, audioURL: 'https://radios.vpn.sapo.pt/AO/radio1.mp3' },
+    { tipo: 'Radio', nome: 'Rádio LAC', titulo: 'Estação 3', image: Img1, audioURL: 'https://radios.vpn.sapo.pt/AO/radio14.mp3?1685629053605' },
   ]);
 
   const [mediaSelecionado, setMediaSelecionado] = useState(null);
@@ -59,6 +59,18 @@ export default function Home() {
       .then(response => {
         const uploadsData = response.data;
         setVideos(uploadsData);
+      })
+      .catch(error => {
+        console.error('Error fetching uploads:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // Fetch the uploads from Firestore or your backend API
+    axios.get(api + "/audio")
+      .then(response => {
+        const uploadsData = response.data;
+        setAudios(uploadsData);
       })
       .catch(error => {
         console.error('Error fetching uploads:', error);

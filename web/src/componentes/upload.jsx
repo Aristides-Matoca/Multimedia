@@ -131,16 +131,18 @@ export default function Upload({handleShow}){
             path= "videos/"+titulo;
             db = "/videos";
           }
-          else if(tipo==="Podcast"){
-            setTitulo(titulo.concat(".mp3"));
-            path= "podcast/"+titulo;
-            db = "/podcast";
-          }
           else{
             setTitulo(titulo.concat(".mp3"));
-            path= "audios/"+titulo;
-            db = "/audios";
-          }
+            if(tipo=="Áudio"){
+                path= "audios/"+titulo;
+                db = "/audios";
+                
+            }
+            else{
+                path= "podcast/"+titulo;
+                db = "/podcast";
+            }
+          } 
           const fileRef = storageRef.child(path);
           const imageRef = storageRef.child("imagens/"+titulo);
           const uploadTask = fileRef.put(selectedFile);
@@ -174,7 +176,7 @@ export default function Upload({handleShow}){
             }
           );
           }
-          else if(tipo==="Podcast"){
+          else if(tipo==="Áudio"){
             
             uploadTask.on('state_changed', 
             snapshot => {
@@ -231,7 +233,6 @@ export default function Upload({handleShow}){
             }
           );
           }
-          alert("Enviado!");
           console.log('Selected file:', selectedFile);
         }
       };
