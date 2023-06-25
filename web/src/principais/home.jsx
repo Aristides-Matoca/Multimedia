@@ -18,6 +18,9 @@ import axios from 'axios';
 import { Link } from "react-router-dom"
 import Img1 from '../img/imagem1.png'
 import Img2 from '../img/imagem2.png'
+import Group from '../componentes/group'
+import CriarGrupo from '../componentes/criarGrupo'
+import ValidarAcesso from '../componentes/validarAcesso'
 
 export default function Home() {
   
@@ -45,6 +48,8 @@ export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [urlVideo, setUrlVideo] = useState(null);
   const mediaRef = useRef(null);
+
+  const [grupoName, setGrupoName] = useState("");
 
   const api = "http://localhost:4000";
 
@@ -205,6 +210,8 @@ export default function Home() {
     Conta: false,
     Perfil: false,
     Upload: false,
+    CriarGrupo: false,
+    Grupo: false,
   })
 
   const handleShow = (nav) => {
@@ -214,6 +221,10 @@ export default function Home() {
       newNavs[key] = key === nav;
     })
     setNavs(newNavs)
+  }
+
+  const name = (nome) => {
+    setGrupoName(nome);
   }
 
   //Funções de Configuranções------------------------------------------------------------------
@@ -288,6 +299,9 @@ export default function Home() {
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
               {nav === 'Perfil' && <Perfil />}
               {nav === 'Upload' && <Upload handleShow={handleShow}/>}
+              {nav === 'Grupos' && <Group handleShow={handleShow} name={name}/>}
+              {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow}/>}
+              {nav === 'Grupo' && <ValidarAcesso handleShow={handleShow} nome={grupoName}/>}
             </React.Fragment>
           )
         )}

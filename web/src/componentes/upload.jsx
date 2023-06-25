@@ -271,7 +271,7 @@ export default function Upload({handleShow}){
                                     ) : (isHovered ? <FiEdit2 className={css(styles.icon)}/> : <Camera className={css(styles.icon)}/>)}
                                 </InputGroupText>
                                 
-                                <Input type="file" onChange={handleFileChangeI} style={{ display: 'none' }} innerRef={fileInputRef} accept="image/*"/>
+                                <Input type="file" onChange={handleFileChangeI} style={{ display: 'none' }} innerRef={fileInputRef} accept="image/*" required/>
                             </InputGroup>
 
                             {profilePicture && (
@@ -280,20 +280,20 @@ export default function Upload({handleShow}){
                         </div>
 
                         <Label className={css(styles.label)}>Tipo*</Label>
-                        <Input type="select" className={css(styles.input)} value={tipo} onChange={(e) => {setTipo(e.target.value); }}>
+                        <Input type="select" className={css(styles.input)} value={tipo} onChange={(e) => {setTipo(e.target.value); }} required>
                            {genders.map((gender, index) => (
                                 <option style={{background: 'none'}} key={index} value={gender}>{gender}</option>
                            ))}
                         </Input>
 
                         <Label className={css(styles.label)}>Título*</Label>
-                        <Input className={css(styles.input)} type='text' placeholder='Meu primeiro áudio' value={titulo} onChange={(e) => setTitulo(e.target.value)}/>
+                        <Input className={css(styles.input)} type='text' placeholder='Meu primeiro áudio' value={titulo} onChange={(e) => setTitulo(e.target.value)} required/>
 
                         <Label className={css(styles.label)}>Autor*</Label>
-                        <Input className={css(styles.input)} type='text' placeholder='Autor' value={autor} onChange={(e) => setAutor(e.target.value)}/>
+                        <Input className={css(styles.input)} type='text' placeholder='Autor' value={autor} onChange={(e) => setAutor(e.target.value)} required/>
 
                         <Label className={css(styles.label)}>Estilo*</Label>
-                        <Input type="select" className={css(styles.input)} value={est} onChange={(e) => setEstilo(e.target.value)}>
+                        <Input type="select" className={css(styles.input)} value={est} onChange={(e) => setEstilo(e.target.value)} required>
                            {estilos.map((estilo, index) => (
                                 <option style={{background: 'none'}} key={index} value={estilo}>{estilo}</option>
                            ))}
@@ -304,15 +304,15 @@ export default function Upload({handleShow}){
 
                         <Label className={css(styles.label)}>Data de lançamento*</Label>
                         <InputGroup className={css(styles.Inputg)}>
-                        <Input  className={css(styles.input2)} placeholder='Dia' value={dia} onChange={(e) => setDia(e.target.value)}/>
+                        <Input  className={css(styles.input2)} placeholder='Dia' value={dia} onChange={(e) => setDia(e.target.value)} required/>
 
-                        <Input type="select"  className={css(styles.input2)} value={mes} onChange={(e) => setMes(e.target.value)} >
+                        <Input type="select"  className={css(styles.input2)} value={mes} onChange={(e) => setMes(e.target.value)} required >
                                 {months.map((month, index) => (
                                     <option style={{background: 'none'}} key={index} value={month}>{month}</option>
                                 ))}
                             </Input>
 
-                            <Input className={css(styles.input2)} placeholder='Ano' value={ano} onChange={(e) => setAno(e.target.value)}/>
+                            <Input className={css(styles.input2)} placeholder='Ano' value={ano} onChange={(e) => setAno(e.target.value)} required/>
                         </InputGroup>
 
                         <Label className={css(styles.label)}>Legenda</Label>
@@ -323,7 +323,7 @@ export default function Upload({handleShow}){
                             setTipoF("video/*");
                              }else{
                                 setTipoF("audio/*");
-                            }}} onChange={onChangeHandler} accept={tipoF}/>
+                            }}} onChange={onChangeHandler} accept={tipoF} required/>
 
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
                         <button id='btn btn-primary' className={css(styles.btn2)} onClick={onFileUpload}>Carregar</button>
