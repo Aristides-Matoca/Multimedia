@@ -48,8 +48,8 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying }) => {
             <span style={{background: 'none'}}>{index+1}</span>
 
             <div className={css(styles.titles)}>
-              <span style={{background: 'none'}}>{audio.titulo}</span><br />
-              <span className={css(styles.artista)}>{audio.nome}</span>
+              <span style={{background: 'none'}}>{audio.legenda}</span><br />
+              <span className={css(styles.artista)}>{audio.titulo}</span>
             </div>
           </div>
 
