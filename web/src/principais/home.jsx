@@ -18,11 +18,9 @@ import axios from 'axios';
 import { Link } from "react-router-dom"
 import Img1 from '../img/imagem1.png'
 import Img2 from '../img/imagem2.png'
-import NGA from '../audios/NGA-Dona.mp3'
-import KMW from '../audios/KMW-MeuSucesso.mp3'
-import V1 from '../videos/v1.mp4'
-import V2 from '../videos/v2.mp4'
-import V3 from '../videos/v4.mp4'
+import Group from '../componentes/group'
+import CriarGrupo from '../componentes/criarGrupo'
+import ValidarAcesso from '../componentes/validarAcesso'
 
 export default function Home() {
   
@@ -50,6 +48,8 @@ export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [urlVideo, setUrlVideo] = useState(null);
   const mediaRef = useRef(null);
+
+  const [grupoName, setGrupoName] = useState("");
 
   const api = "http://localhost:4000";
 
@@ -207,6 +207,8 @@ export default function Home() {
     Conta: false,
     Perfil: false,
     Upload: false,
+    CriarGrupo: false,
+    Grupo: false,
   })
 
   const handleShow = (nav) => {
@@ -216,6 +218,10 @@ export default function Home() {
       newNavs[key] = key === nav;
     })
     setNavs(newNavs)
+  }
+
+  const name = (nome) => {
+    setGrupoName(nome);
   }
 
   //Funções de Configuranções------------------------------------------------------------------
@@ -290,6 +296,9 @@ export default function Home() {
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
               {nav === 'Perfil' && <Perfil />}
               {nav === 'Upload' && <Upload handleShow={handleShow}/>}
+              {nav === 'Grupos' && <Group handleShow={handleShow} name={name}/>}
+              {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow}/>}
+              {nav === 'Grupo' && <ValidarAcesso handleShow={handleShow} nome={grupoName}/>}
             </React.Fragment>
           )
         )}

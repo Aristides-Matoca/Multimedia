@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@sweetalert2/themes": "^5.0.15",
     "aphrodite": "^2.4.0",
     "axios": "^1.4.0",
@@ -16,6 +17,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "firebase": "^8.10.0",
+    "fluent-ffmpeg": "^2.1.2",
     "g": "^2.0.1",
     "howler": "^2.2.3",
     "mime": "^3.0.0",
