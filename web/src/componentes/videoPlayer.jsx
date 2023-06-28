@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, css } from 'aphrodite'
 
-const Videos = ({handleShow, videos, selecionarVideo}) => {
+const VideoPlayer = ({videos, selecionarVideo, urlVideo, mediaRef, indexVideo}) => {
+
+    useEffect(() => {
+        if(indexVideo != null){
+            mediaRef.current.play()
+        }
+      }, []);
 
     const reproduzirVideo = (index) => {
-        
-        handleShow('Assistir')
         selecionarVideo(index, 2, 0)
+        mediaRef.current.play()
 
         setTimeout(() => {
             selectVideo(index);
@@ -15,10 +20,16 @@ const Videos = ({handleShow, videos, selecionarVideo}) => {
 
     const selectVideo = (index) => {
         selecionarVideo(index, 2, 0);
+        mediaRef.current.play()
     };
 
     return (
         <div className={css(styles.videosContainer)}>
+            <div className={css(styles.videoActive)}>
+            <video ref={mediaRef} src={urlVideo} className={css(styles.video)} controls autoPlay>
+            </video>
+            </div>
+
             <div className={css(styles.listaVideos)}>
                 <h3 className={css(styles.title)}>Vídeos</h3>
                 {videos.map((video, index) => (
@@ -40,14 +51,27 @@ const styles = StyleSheet.create({
       background: 'none'
     },
 
-    listaVideos: {
-      width: '100%',
-      border: '1px solid grey',
-      borderTopLeftRadius: '8px',
-      borderTopRightRadius: '8px',
-      color: 'white',
-      background: 'black'
+    videoActive: {
+      display: 'block',
+      width: '71%',
+      background: 'none',
+      transform: 'translate(-3%, 0%)',
     },
+
+    video: {
+        width: '100%',
+        height: '100%',
+        background: 'none',
+    },
+
+    listaVideos: {
+        width: '23%',
+        border: '0.5px solid grey',
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
+        color: 'white',
+        background: 'black'
+      },
 
     title:{
         borderTopLeftRadius: '8px',
@@ -80,4 +104,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Videos;
+export default VideoPlayer;

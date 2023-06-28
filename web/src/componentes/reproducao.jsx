@@ -136,8 +136,8 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
             )}
 
             <NavItem className={css(styles.item1)}>
-                <NavLink href="#" className={css(styles.foto)}>
-                    <img className={css(styles.img)} href="#" src={mediaSelecionado.imageDownloadURL} alt="Foto qualquer" />
+                <NavLink href="#" className={css(styles.foto)} disabled>
+                    <img className={css(styles.img)} href="#" src={mediaSelecionado.imageDownloadURL} alt="Image" />
                 </NavLink>
             </NavItem>
 
@@ -236,18 +236,18 @@ const styles = StyleSheet.create({
     },
 
     foto:{
-        border: '1px solid grey',
+        marginTop: '0.7%',
         borderRadius: '8px',
-        background: 'none',
-        height: '102%',
-        width: '10%',
+        background: 'rgb(36,36,36)',
+        height: '85%',
+        width: '8%',
         overflow: 'hidden',
         position: 'fixed'
     },
 
     img:{
         background: 'none',
-        height: '99%',
+        height: '100%',
         width: '100%'
     },
 
@@ -259,12 +259,12 @@ const styles = StyleSheet.create({
     },
 
     titles:{
+        margin: '2.2% 0 0 -2%',
         background: 'none',
-        paddingTop: '2%',
         textAlign: 'justify',
         fontSize: '16px',
         color: 'white',
-        width: '17%',
+        width: '20%',
         overflow: 'hidden',
     },
 

@@ -36,7 +36,7 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying }) => {
 
         <div className={css(styles.spans)}>
           <span style={{background: 'none'}}>#</span>
-          <span className={css(styles.titles)}>Título</span>
+          <span style={{marginLeft: '4%', background: 'none'}}>Título</span>
         </div>
 
         <span style={{background: 'none', marginRight: '-1.5%'}}>Reproduzir</span>
@@ -46,6 +46,7 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying }) => {
 
           <div className={css(styles.spans)}>
             <span style={{background: 'none'}}>{index+1}</span>
+            <img src={audio.imageDownloadURL} className={css(styles.img)} alt="" />
 
             <div className={css(styles.titles)}>
               <span style={{background: 'none'}}>{audio.legenda}</span><br />
@@ -124,15 +125,22 @@ const styles = StyleSheet.create({
     width: '40%'
   },
 
+  img:{
+    width: '10%',
+    height: '8%',
+    marginLeft: '4%',
+    background: 'rgb(36,36,36)'
+  },
+
   titles:{
-    marginLeft: '6%',
+    marginLeft: '3%',
     background: 'none',
+    textAlign: 'justify'
   },
 
   artista:{
     background: 'none',
     fontSize: '14px',
-    marginLeft: '-13%',
 
     ':hover':{
       cursor: 'pointer',

@@ -6,6 +6,7 @@ import Radios from '../componentes/radios'
 import Navegator from '../componentes/nav'
 import Homepage from '../componentes/homepage'
 import AudioPlayer from '../componentes/ouvirAudios'
+import VideoPlayer from '../componentes/videoPlayer'
 import Reproducao from '../componentes/reproducao'
 import Conta from '../componentes/acount'
 import Perfil from '../componentes/perfil'
@@ -16,16 +17,15 @@ import { TbSearch, TbSettings } from "react-icons/tb"
 import { InputGroup, InputGroupText, Input, Row} from 'reactstrap'
 import axios from 'axios';
 import { Link } from "react-router-dom"
-import Img1 from '../img/imagem1.png'
-import Img2 from '../img/imagem2.png'
+import videologo from '../img/videologo.png'
+import audiologo from '../img/audiologo.png'
+import radiologo from '../img/radiologo.png'
 import Group from '../componentes/group'
 import CriarGrupo from '../componentes/criarGrupo'
 import ValidarAcesso from '../componentes/validarAcesso'
 
 export default function Home() {
   
-  //Funções de áudio--------------------------------------------------------------------------------------------------------
-
   const [audios, setAudios] = useState(null);
 
   //const [podcasts, setPodcasts] = useState(null);
@@ -35,16 +35,16 @@ export default function Home() {
   //const [radios, setRadios] = useState(null);
 
   const [radios, setRadios] = useState([
-    { tipo: 'Radio', nome: 'Rádio Mais', titulo: 'Estação 1', image: Img1, audioURL: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
-    { tipo: 'Radio', nome: 'Rádio Escola', titulo: 'Estação 2', image: Img2, audioURL: 'https://radios.vpn.sapo.pt/AO/radio1.mp3' },
-    { tipo: 'Radio', nome: 'Rádio LAC', titulo: 'Estação 3', image: Img1, audioURL: 'https://radios.vpn.sapo.pt/AO/radio14.mp3?1685629053605' },
+    { tipo: 'Radio', titulo: 'Rádio Mais', legenda: 'Estação 1', imageDownloadURL: radiologo, audioURL: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
+    { tipo: 'Radio', titulo: 'Rádio Escola', legenda: 'Estação 2', imageDownloadURL: radiologo, audioURL: 'https://radios.vpn.sapo.pt/AO/radio1.mp3' },
+    { tipo: 'Radio', titulo: 'Rádio LAC', legenda: 'Estação 3', imageDownloadURL: radiologo, audioURL: 'https://radios.vpn.sapo.pt/AO/radio14.mp3?1685629053605' },
   ]);
 
   const [mediaSelecionado, setMediaSelecionado] = useState(null);
   const [audioSelecionado, setAudioSelecionado] = useState(null);
   const [videoSelecionado, setVideoSelecionado] = useState(null);
   const [radioSelecionado, setRadioSelecionado] = useState(null);
-  //const [trocarMedia, setTrocarMedia] = useState(0);
+  const [indexVideo, setIndexVideo] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [urlVideo, setUrlVideo] = useState(null);
   const mediaRef = useRef(null);
@@ -87,16 +87,16 @@ export default function Home() {
         .catch(error => {
           console.error('Error fetching uploads:', error);
         });
-    }, []);*/
-
-
+  }, []);*/
 
   const selecionarMedia = (index, value, playPause) => {
     if(value == 1){
       audios[index].tipo = 'Áudio'
+      if(audios[index].imageDownloadURL == null){
+        audios[index].imageDownloadURL = audiologo
+      }
       setMediaSelecionado(audios[index]);
       setAudioSelecionado(audios[index])
-      //console.log(audios[index].audioURL),
       setVideoSelecionado(null)
       setRadioSelecionado(null)
       if(playPause == 11)
@@ -107,6 +107,10 @@ export default function Home() {
     }
     else if(value == 2){
       videos[index].tipo = 'Vídeo'
+      if(videos[index].imageDownloadURL == null){
+        videos[index].imageDownloadURL = videologo
+      }
+
       setMediaSelecionado(videos[index]);
       setVideoSelecionado(videos[index])
       setUrlVideo(videos[index].videoURL)
@@ -119,6 +123,7 @@ export default function Home() {
       setRadioSelecionado(radios[index])
       setVideoSelecionado(null)
       setAudioSelecionado(null)
+      setIndexVideo(index)
       if(playPause == 11)
         reproduzir()
       else if(playPause == 12){
@@ -203,6 +208,7 @@ export default function Home() {
     Podcast: false,
     Radio: false,
     Video: false,
+    Assistir: false,
     Albuns: false,
     Playlist: false,
     Gostos: false,
@@ -291,9 +297,10 @@ export default function Home() {
         {Object.entries(navs).map(([nav, show]) =>
           show && (
             <React.Fragment key={nav}>
-              {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia}/>}
+              {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia} videos={videos} radios={radios}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow}/>}
-              {nav === 'Video' && <Videos videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef}/>}
+              {nav === 'Video' && <Videos handleShow={handleShow} videos={videos} selecionarVideo={selecionarMedia}/>}
+              {nav === 'Assistir' && <VideoPlayer videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} indexVideo={indexVideo}/>}
               {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying}/>}
               {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying}/>}
               {nav === 'Conta' && <Conta handleShow={handleShow}/>}
@@ -445,13 +452,13 @@ const styles = StyleSheet.create({
 
   home:{
     //border: '1px solid red',
-    transform: 'translate(-39%, -51%)',
+    transform: 'translate(-39.5%, -51%)',
     fontFamily: 'Cormorant Garamond',
     paddingTop: '1.3%',
     background: 'none',
     position: 'fixed',
     height: '72%',
-    width: '82%',
+    width: '83.5%',
     flexGrow: '1',
     overflowY: 'auto',
     overflowX: 'hidden',
