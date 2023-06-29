@@ -77,6 +77,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: '8px',
     borderTopRightRadius: '8px',
     background: 'black',
+    width: '101.4%',
+    marginLeft: '-0.8%',
   },
 
   playlist:{

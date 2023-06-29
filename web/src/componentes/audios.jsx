@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '1% 1.6% 0 1.5%',
+        margin: '0% -0.5% 0% -2.1%',
 
     },
 
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
     nav:{
         background: 'black',
         padding: '2% 1.5% 2% 1.5%',
-        margin: '-0.5% 0 1% 0',
+        margin: '-0.5% -0.5% 0.5% -2.1%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -185,9 +186,8 @@ const styles = StyleSheet.create({
     nav2:{
         width: '100%',
         background: 'black',
-        //height: '56%',
         padding: '1% 1.5% 2% 1.5%',
-        margin: '0% 0 -1.5% 0',
+        margin: '0% -4% -1.5% -2.2%',
         display: 'grid',
         gridTemplateColumns: '1fr',
         gridGap: '10px',

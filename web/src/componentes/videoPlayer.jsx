@@ -48,14 +48,17 @@ const styles = StyleSheet.create({
     videosContainer: {
       display: 'flex',
       justifyContent: 'center',
-      background: 'none'
+      background: 'none',
+      width: '101.3%',
+      height: '100%',
+      marginLeft: '-0.8%',
     },
 
     videoActive: {
       display: 'block',
-      width: '71%',
+      width: '72%',
       background: 'none',
-      transform: 'translate(-3%, 0%)',
+      transform: 'translate(-0.5%, 0%)',
     },
 
     video: {
@@ -65,7 +68,7 @@ const styles = StyleSheet.create({
     },
 
     listaVideos: {
-        width: '23%',
+        width: '27%',
         border: '0.5px solid grey',
         borderTopLeftRadius: '8px',
         borderTopRightRadius: '8px',

@@ -54,7 +54,9 @@ export default function Homepage({handleShow, selecionarMedia, videos, radios}){
                 <Nav className={css(styles.nav)}>
                     {selectedVideos.map((video, index) => (
                         <NavItem key={index} className={css(styles.item1)} onClick={() => handleClick(index, 2)}>
-                            <img className={css(styles.img)} src={video.imageDownloadURL} alt="Image"/> <br/>
+                            <div className={css(styles.foto)}>
+                                <img className={css(styles.img)} src={video.imageDownloadURL} alt="Image"/> <br/>
+                            </div>
                             {video.description}<br />
                             {video.description}
                         </NavItem>
@@ -248,13 +250,20 @@ const styles = StyleSheet.create({
         }
     },
 
-    img:{
+    foto:{
         width: '100%',
-        height: '91%',
+        height: '100%',
         background: 'none',
         borderRadius: '5px',
         boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.5)',
-        marginBottom: '5%'
+        marginBottom: '5%',
+    },
+
+    img:{
+        width: '100%',
+        height: '100%',
+        background: 'none',
+        borderRadius: '5px',
     },
 
     item3:{
