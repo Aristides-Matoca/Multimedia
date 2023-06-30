@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
       width: '101%',
       marginLeft: '-0.5%',
     },
-
+//Qualquer
     listaVideos: {
         width: '100%',
         //border: '1px solid grey',
