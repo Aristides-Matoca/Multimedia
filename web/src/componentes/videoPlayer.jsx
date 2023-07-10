@@ -34,9 +34,10 @@ const VideoPlayer = ({videos, selecionarVideo, urlVideo, mediaRef, indexVideo}) 
                 <h3 className={css(styles.title)}>Vídeos</h3>
                 {videos.map((video, index) => (
                      <div key={index} onClick={() => reproduzirVideo(index)} className={css(styles.lista)}>
-                        <span style={{background: 'none'}}>{index+1}</span>
-                        <span style={{background: 'none'}}>{video.titulo} - {video.description}</span>
-                        <span style={{background: 'none'}}></span>
+                        <div style={{ background: 'none' }}>
+                            <span style={{ background: 'none' }}>{index + 1}</span> - 
+                            <span style={{ background: 'none' }}> {video.description}</span>
+                        </div>
                     </div>
                 ))}
             </div>

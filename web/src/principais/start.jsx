@@ -4,13 +4,13 @@ import Begin from '../componentes/begin'
 import Sobre from '../componentes/about'
 import Menu from '../componentes/menu'
 
-export default function Start(){
+export default function Start({ handleShow }){
 
     return(
         <>
-            <Menu/>
+            <Menu handleShow={handleShow}/>
+            
             <div className={css(styles.divBegin)}> <Begin/> </div>
-
             <div className={css(styles.divBegin)}> <Sobre/> </div>
         </>
     )

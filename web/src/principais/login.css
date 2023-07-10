@@ -14,6 +14,10 @@
     transform: translate(-562px, -115px);
 }
 
+.header1:hover{
+    cursor: pointer;
+}
+
 .header1>h3{
     background: none;
     font-size: 23.3px;
@@ -51,16 +55,6 @@
     border-radius: 10px;
     margin-bottom: 12%;
     width: 80%;
-}
-
-.btn-link{
-    color: white;
-    background: none;
-    text-decoration: none;
-}
-
-.btn-link:hover{
-    color: white;
 }
 
 .reg{

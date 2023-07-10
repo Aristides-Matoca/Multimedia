@@ -49,8 +49,8 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying }) => {
             <img src={audio.imageDownloadURL} className={css(styles.img)} alt="" />
 
             <div className={css(styles.titles)}>
-              <span style={{background: 'none'}}>{audio.legenda}</span><br />
-              <span className={css(styles.artista)}>{audio.titulo}</span>
+              <span style={{background: 'none'}}>{audio.titulo}</span><br />
+              <span className={css(styles.artista)}>{audio.autor}</span>
             </div>
           </div>
 

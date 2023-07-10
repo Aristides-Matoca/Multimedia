@@ -16,7 +16,6 @@ import { IoIosNotifications } from "react-icons/io"
 import { TbSearch, TbSettings } from "react-icons/tb"
 import { InputGroup, InputGroupText, Input, Row} from 'reactstrap'
 import axios from 'axios';
-import { Link } from "react-router-dom"
 import videologo from '../img/videologo.png'
 import audiologo from '../img/audiologo.png'
 import radiologo from '../img/radiologo.png'
@@ -24,7 +23,7 @@ import Group from '../componentes/group'
 import CriarGrupo from '../componentes/criarGrupo'
 import ValidarAcesso from '../componentes/validarAcesso'
 
-export default function Home() {
+export default function Home({ handleShow2, username }) {
   
   const [audios, setAudios] = useState(null);
 
@@ -95,6 +94,8 @@ export default function Home() {
       if(audios[index].imageDownloadURL == null){
         audios[index].imageDownloadURL = audiologo
       }
+
+      //if()
       setMediaSelecionado(audios[index]);
       setAudioSelecionado(audios[index])
       setVideoSelecionado(null)
@@ -288,7 +289,7 @@ export default function Home() {
             <p className={css(styles.cont)} onClick={() => handleShow('Perfil')}>Perfil</p>
             <p className={css(styles.cont)} onClick={() => handleShow('Upload')}>Upload</p>
             <p className={css(styles.cont)}>Definições</p>
-            <Link to={'/'}><p className={css(styles.cont2)}>Terminar Sessão</p></Link>
+            <p className={css(styles.cont2)} onClick={() => handleShow2('Start')}>Terminar Sessão</p>
           </div>
         ) : null}
       </header>
@@ -303,9 +304,9 @@ export default function Home() {
               {nav === 'Assistir' && <VideoPlayer videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} indexVideo={indexVideo}/>}
               {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying}/>}
               {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying}/>}
-              {nav === 'Conta' && <Conta handleShow={handleShow}/>}
-              {nav === 'Perfil' && <Perfil />}
-              {nav === 'Upload' && <Upload handleShow={handleShow}/>}
+              {nav === 'Conta' && <Conta handleShow={handleShow} username={username}/>}
+              {nav === 'Perfil' && <Perfil username={username} />}
+              {nav === 'Upload' && <Upload handleShow={handleShow} username={username}/>}
               {nav === 'Grupos' && <Group handleShow={handleShow} name={name}/>}
               {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow}/>}
               {nav === 'Grupo' && <ValidarAcesso handleShow={handleShow} nome={grupoName}/>}

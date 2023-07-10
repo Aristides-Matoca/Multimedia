@@ -2,9 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
 import { Nav, Button} from 'reactstrap'
 import { FaPlay } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
 
-export default function Menu({showHome, showAbout}){
+export default function Menu({handleShow}){
 
     return (
         <Nav className={css(styles.nav1)} justified>
@@ -14,8 +13,8 @@ export default function Menu({showHome, showAbout}){
             </aside>
 
             <aside className={css(styles.aside2)}>
-                <Link className={css(styles.links)} to={"/login"}><Button className={css(styles.btn4)}>Login</Button></Link>
-                <Link className={css(styles.links)} to={"/signin"}><Button className={css(styles.btn3)}>Criar Conta</Button></Link>
+                <Button className={css(styles.btn4)} onClick={() => handleShow('Login')}>Login</Button>
+                <Button className={css(styles.btn3)} onClick={() => handleShow('SignIn')}>Criar Conta</Button>
             </aside>
         </Nav>
     )
@@ -48,21 +47,6 @@ const styles = StyleSheet.create({
         display: 'inline',
     },
 
-    ul1:{
-        background: 'none',
-        fontSize: '17px',
-
-    },
-
-    link1:{
-        background: 'none',
-        marginRight: '50px',
-        color: 'white',
-        ':hover':{
-            textDecoration: 'underline'
-        }
-    },
-
     aside2:{
         background: 'none',
         transform: 'translate(470%, 0)'
@@ -90,8 +74,4 @@ const styles = StyleSheet.create({
             border: '1px solid transparent',
         }
     },
-
-    links:{
-        background: 'none'
-    }
 })

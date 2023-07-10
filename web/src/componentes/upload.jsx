@@ -7,7 +7,7 @@ import { FiEdit2 } from "react-icons/fi";
 import axios from 'axios';
 import { storage } from '../../backend/config'
 
-export default function Upload({handleShow}){
+export default function Upload({handleShow, username}){
 
     const api = 'http://localhost:4000';
 
@@ -17,7 +17,7 @@ export default function Upload({handleShow}){
     const [tipo, setTipo] = useState('');
     const [tipoF, setTipoF] = useState('');
     const [titulo, setTitulo] = useState('');
-    const [autor, setAutor] = useState('');
+    const [autor, setAutor] = useState(username);
     const [est, setEstilo] = useState('');
     const [description, setDescricao] = useState('');
     const [dia, setDia] = useState('');
@@ -290,7 +290,7 @@ export default function Upload({handleShow}){
                         <Input className={css(styles.input)} type='text' placeholder='Meu primeiro áudio' value={titulo} onChange={(e) => setTitulo(e.target.value)} required/>
 
                         <Label className={css(styles.label)}>Autor*</Label>
-                        <Input className={css(styles.input)} type='text' placeholder='Autor' value={autor} onChange={(e) => setAutor(e.target.value)} required/>
+                        <Input className={css(styles.input)} type='text' value={autor} onChange={(e) => setAutor(e.target.value)} required/>
 
                         <Label className={css(styles.label)}>Estilo*</Label>
                         <Input type="select" className={css(styles.input)} value={est} onChange={(e) => setEstilo(e.target.value)} required>

@@ -3,7 +3,7 @@ import { Label, Input, InputGroup, Button, Container, Row, Nav, NavItem, NavLink
 import { StyleSheet, css } from 'aphrodite'
 import React, { useState } from 'react';
 
-export default function Conta({handleShow}){
+export default function Conta({handleShow, username}){
     const [activeTab, setActiveTab] = useState('1');
 
     const toggleTab = tab => {
@@ -33,7 +33,7 @@ export default function Conta({handleShow}){
         'Dezembro',
     ];
 
-    const [user, setUser] = useState('Aristides Matoca');
+    const [user, setUser] = useState(username);
     const [email, setEmail] = useState('my.email@example.com');
     const [gender, setGender] = useState(genders[0]);
     const [day, setDay] = useState('10');
@@ -87,6 +87,7 @@ export default function Conta({handleShow}){
                         <Label className={css(styles.label)}>País/Região</Label>
                         <Input className={css(styles.input)} type='text' value={country} onChange={(e) => setCountry(e.target.value)}/>
 
+                        <Button className={css(styles.btn3)}>Eliminar conta</Button>
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
                         <Button className={css(styles.btn2)}>Guardar as alterações</Button>
                     </TabPane>
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
     btn1:{
         background: 'none',
         color: 'black',
-        margin: '0 2% 12% 57%',
+        margin: '0 2% 12% 47%',
         ':hover':{
             fontWeight: 'bold'
         }
@@ -189,5 +190,11 @@ const styles = StyleSheet.create({
     btn2:{
         background: 'black',
         color: 'white',
+    },
+
+    btn3:{
+        background: 'red',
+        color: 'black',
+        marginLeft: '4%'
     }
 })
