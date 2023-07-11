@@ -1,62 +1,63 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import { MdPlayCircle as Play, MdPauseCircle as Pause } from "react-icons/md"
 
-const Radios = ({ radios, selecionarRadio, isPlaying }) => {
-  const [radioPlayingIndex, setRadioPlayingIndex] = useState(null)
-  const Pais = 'Angola'
+const Podcasts = ({ podcasts, selecionarPodcast, isPlaying, irPerfil }) => {
+  const [podcastPlayingIndex, setPodcastPlayingIndex] = useState(null)
+  const podeTitulo = 'Podcasts'
 
   const handleClick = (index) => {
     var playPause
 
-    if (radioPlayingIndex === index) {
-      setRadioPlayingIndex(null);
+    if (podcastPlayingIndex === index) {
+      setPodcastPlayingIndex(null);
       playPause = 12
     } else {
-      setRadioPlayingIndex(index);
+      setPodcastPlayingIndex(index);
       playPause = 11
     }
 
-    selecionarRadio(index, 3, playPause);
+    selecionarPodcast(index, 4, playPause);
     setTimeout(() => {
       selectRadio(index, playPause);
     }, 100);
   };
 
   const selectRadio = (index, playPause) => {
-    selecionarRadio(index, 3, playPause);
+    selecionarPodcast(index, 4, playPause);
   };
 
   return (
     <div className={css(styles.container)}>
       
       <div className={css(styles.playlist)}>
-        <span style={{background: 'none'}}>{Pais}</span>
+        <span style={{background: 'none'}}>{podeTitulo}</span>
       </div>
 
       <div className={css(styles.info)} style={{background: 'none'}}>
 
         <div className={css(styles.spans)}>
           <span style={{background: 'none'}}>#</span>
-          <span style={{marginLeft: '4%', background: 'none'}}>Estação</span>
+          <span style={{marginLeft: '4%', background: 'none'}}>Título</span>
         </div>
         <span style={{background: 'none', marginRight: '-1.5%'}}>Reproduzir</span>
       </div>
 
-      {radios.map((radio, index) => (
+      {podcasts.map((podcast, index) => (
         <div key={index} className={css(styles.radios)}>
 
           <div className={css(styles.spans)}>
             <span style={{background: 'none'}}>{index+1}</span>
-            <img src={radio.imageDownloadURL} className={css(styles.img)} alt="" />
+            <img src={podcast.imageDownloadURL} className={css(styles.img)} alt="" />
 
             <div className={css(styles.titles)}>
-              <span style={{background: 'none'}}>{radio.titulo}</span>
+              <span style={{background: 'none'}}>{podcast.titulo}</span><br />
+              <span className={css(styles.autor)} onClick={() => irPerfil(podcast.autor)}>{podcast.autor}</span>
             </div>
           </div>
 
           <span style={{background: 'none'}} onClick={() => handleClick(index)}>
-            {radioPlayingIndex === index && isPlaying == true ? (
+            {podcastPlayingIndex === index && isPlaying == true ? (
               <Pause className={css(styles.icone)}/>
             ) : (
               <Play className={css(styles.icone)}/>
@@ -68,7 +69,7 @@ const Radios = ({ radios, selecionarRadio, isPlaying }) => {
   );
 };
 
-export default Radios;
+export default Podcasts;
 
 const styles = StyleSheet.create({
   container:{
@@ -139,6 +140,21 @@ const styles = StyleSheet.create({
     marginLeft: '3%',
     background: 'none',
     textAlign: 'justify'
+  },
+
+  autor:{
+    background: 'none',
+    fontSize: '14px',
+
+    ':hover':{
+      cursor: 'pointer',
+      textDecoration: 'underline'
+    }
+  },
+
+  radioname:{
+    background: 'none',
+    fontSize: '14px',
   },
 
   icone: {

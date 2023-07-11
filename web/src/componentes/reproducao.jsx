@@ -4,13 +4,13 @@ import { RiHeart3Fill as Heart } from "react-icons/ri"
 import { Nav, NavItem, NavLink } from 'reactstrap'
 import { TbPlayerTrackPrevFilled as Prev, TbPlayerTrackNextFilled as Next } from "react-icons/tb"
 import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Download, MdPauseCircle as Pause } from "react-icons/md"
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 //import firebase from 'firebase/app';
 import firebase from 'firebase';
 import axios from 'axios'
 import 'firebase/storage'
 
-export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, mediaRef }){
+export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, mediaRef, irPerfil }) {
 
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -32,16 +32,16 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     }, [mediaRef]);
 
     useEffect(() => {//UseEfect para avançar para próxima a media de forma automatica
-        if(mediaSelecionado.tipo === 'Áudio'){
+        if (mediaSelecionado.tipo === 'Áudio' || mediaSelecionado.tipo === 'Podcast') {
             if (formatTime(currentTime) === formatTime(duration)) {
-                if(formatTime(duration) != '00:00'){
+                if (formatTime(duration) != '00:00') {
                     setTimeout(() => {
                         handleClickAvanco();
                     }, 100);
                 }
             }
         }
-        
+
     }, [currentTime, duration]);
 
     const handleTimeUpdate = () => {
@@ -67,12 +67,12 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     };
 
     const handleVolumeChange = (event) => {
-        if(mediaSelecionado.tipo === 'Áudio' || mediaSelecionado.tipo === 'Radio'){
+        if (mediaSelecionado.tipo === 'Áudio' || mediaSelecionado.tipo === 'Radio' || mediaSelecionado.tipo === 'Podcast') {
             const volumeValue = parseFloat(event.target.value);
             setVolume(volumeValue);
             mediaRef.current.volume = volumeValue;
         }
-        else{
+        else {
             setVolume(0);
             mediaRef.current.volume = 0;
         }
@@ -134,7 +134,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 method: 'GET',
                 responseType: 'blob',
             });
-            
+
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
@@ -157,12 +157,12 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
 
     const handleClickRecuo = () => {
         retroceder();
-        
+
         setTimeout(() => {
-          playMedia();
+            playMedia();
         }, 100);
     };
-    
+
     const playMedia = () => {
         reproduzir();
     };
@@ -170,11 +170,11 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     if (!mediaSelecionado) {
         return null;
     }
-    
-    return(
+
+    return (
         <Nav className={css(styles.nav)}>
             {mediaSelecionado.tipo === 'Vídeo' ? (
-                <video ref={mediaRef} src={mediaSelecionado.videoURL} muted style={{display: 'none'}} />
+                <video ref={mediaRef} src={mediaSelecionado.videoURL} muted style={{ display: 'none' }} />
             ) : (
                 <audio ref={mediaRef} src={mediaSelecionado.audioURL} />
             )}
@@ -185,47 +185,55 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 </NavLink>
             </NavItem>
 
-            <NavItem className={css(styles.titles)}>
-                {mediaSelecionado.titulo} <br />
-                <span className={css(styles.artista)}>{mediaSelecionado.titulo}</span>
+
+            {mediaSelecionado.tipo == 'Radio' ? (
+                <NavItem className={css(styles.titles)}>
+                    {mediaSelecionado.titulo} <br />
+                    <span className={css(styles.radio)}>{mediaSelecionado.titulo}</span>
+                </NavItem>
+            ) : (
+                <NavItem className={css(styles.titles)}>
+                    {mediaSelecionado.titulo} <br />
+                    <span className={css(styles.artista)} onClick={() => irPerfil(mediaSelecionado.autor)}>{mediaSelecionado.autor}</span>
+                </NavItem>
+            )}
+
+            <NavItem className={css(styles.item2)}>
+                <Heart className={css(styles.item21)} />
             </NavItem>
 
             <NavItem className={css(styles.item2)}>
-                <Heart className={css(styles.item21)}/>
+                <Prev className={css(styles.item23)} onClick={() => handleClickRecuo()} />
             </NavItem>
- 
-            <NavItem className={css(styles.item2)}>
-                <Prev className={css(styles.item23)} onClick={() => handleClickRecuo()}/>
-            </NavItem>
-            
-            {mediaSelecionado.tipo == 'Radio' || mediaSelecionado.tipo == 'Áudio' ? (
+
+            {mediaSelecionado.tipo == 'Radio' || mediaSelecionado.tipo == 'Áudio' || mediaSelecionado.tipo === 'Podcast' ? (
                 <NavItem className={css(styles.item2)}>
                     {isPlaying ? (
-                        <Pause className={css(styles.iconPlay)} onClick={pausar}/> 
+                        <Pause className={css(styles.iconPlay)} onClick={pausar} />
                     ) : (
-                        <Play className={css(styles.iconPlay)} onClick={reproduzir}/>
+                        <Play className={css(styles.iconPlay)} onClick={reproduzir} />
                     )}
                 </NavItem>
             ) : (
                 <NavItem className={css(styles.item2)}>
-                    <Play className={css(styles.disable)}/> 
+                    <Play className={css(styles.disable)} />
                 </NavItem>
             )}
 
             <NavItem className={css(styles.item2)}>
-                <Next className={css(styles.item23)} onClick={() => handleClickAvanco()}/>
+                <Next className={css(styles.item23)} onClick={() => handleClickAvanco()} />
             </NavItem>
 
             {mediaSelecionado.tipo != 'Áudio' ? (
-               <NavItem className={css(styles.item2)}>
+                <NavItem className={css(styles.item2)}>
                     <Download className={css(styles.disableDown)} />
                 </NavItem>
             ) : (
                 <NavItem className={css(styles.item2)}>
-                    <Download className={css(styles.item21)} onClick={() => fazerDownload(mediaSelecionado)}/>
+                    <Download className={css(styles.item21)} onClick={() => fazerDownload(mediaSelecionado)} />
                 </NavItem>
             )}
-            
+
             {mediaSelecionado.tipo == 'Vídeo' || mediaSelecionado.tipo == 'Radio' ? (
                 <div className={css(styles.progress)}>
                     <input type="range" min={0} max={0} className={css(styles.range)} disabled />
@@ -246,18 +254,18 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
             {mediaSelecionado.tipo == 'Vídeo' ? (
                 <NavItem className={css(styles.item3)}>
                     <NavLink href="#" className={css(styles.item32)}>
-                        <Volume className={css(styles.icone)}/>
+                        <Volume className={css(styles.icone)} />
                         <input type="range" min={0} max={1} step={0.05} disabled
                             value={volume}
                             onChange={handleVolumeChange}
-                            className={css(styles.volume)} 
+                            className={css(styles.volume)}
                         />
                     </NavLink>
                 </NavItem>
             ) : (
                 <NavItem className={css(styles.item3)}>
                     <NavLink href="#" className={css(styles.item32)}>
-                        <Volume className={css(styles.icone)}/>
+                        <Volume className={css(styles.icone)} />
                         <input type="range" min={0} max={1} step={0.05}
                             value={volume}
                             onChange={handleVolumeChange}
@@ -271,7 +279,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
 }
 
 const styles = StyleSheet.create({
-    nav:{
+    nav: {
         transform: 'translate(0%, -49%)',
         color: 'white',
         background: 'none',
@@ -279,7 +287,7 @@ const styles = StyleSheet.create({
         height: '190%',
     },
 
-    foto:{
+    foto: {
         marginTop: '0.7%',
         borderRadius: '8px',
         background: 'rgb(36,36,36)',
@@ -289,20 +297,20 @@ const styles = StyleSheet.create({
         position: 'fixed'
     },
 
-    img:{
+    img: {
         background: 'none',
         height: '100%',
         width: '100%'
     },
 
-    item1:{
+    item1: {
         background: 'none',
         fontSize: '18px',
         color: 'white',
         width: '10.7%',
     },
 
-    titles:{
+    titles: {
         margin: '2.2% 0 0 -2%',
         background: 'none',
         textAlign: 'justify',
@@ -312,16 +320,21 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
 
-    artista:{
+    radio:{
         fontSize: '14px',
         background: 'none',
-        ':hover':{
+    },
+
+    artista: {
+        fontSize: '14px',
+        background: 'none',
+        ':hover': {
             cursor: 'pointer',
             textDecoration: 'underline'
         }
     },
 
-    item2:{
+    item2: {
         transform: 'translate(330%, 20%)',
         background: 'none',
         color: 'white',
@@ -331,71 +344,71 @@ const styles = StyleSheet.create({
         width: '4.2%',
     },
 
-    item21:{
+    item21: {
         background: 'none',
         color: 'white',
-        ':hover':{
+        ':hover': {
             color: 'rgba(255, 213, 0, 1)'
         },
     },
 
-    disableDown:{
+    disableDown: {
         background: 'none',
         color: 'white',
         opacity: '0.6'
     },
 
-    disable:{
+    disable: {
         background: 'none',
         color: 'white',
         fontSize: '40px',
         opacity: '0.6'
     },
 
-    iconPlay:{
+    iconPlay: {
         background: 'none',
         color: 'white',
         fontSize: '40px',
-        ':hover':{
+        ':hover': {
             color: 'rgba(255, 213, 0, 1)',
         }
     },
 
-    item23:{
+    item23: {
         background: 'none',
         color: 'white',
-        ':hover':{
+        ':hover': {
             color: 'rgba(255, 213, 0, 1)',
         }
     },
 
-    progress:{
+    progress: {
         transform: 'translate(-41.5%, 275%)',
         background: 'none',
         height: '22%',
         width: '42%'
     },
 
-    time:{
+    time: {
         fontSize: '12px',
         background: 'none',
         paddingTop: '100%'
     },
 
-    range:{
+    range: {
         width: '86%',
         height: '25%',
         margin: '0 1% 0 1%'
     },
 
-    item3:{
+    item3: {
         transform: 'translate(580%, -72%)',
         background: 'none',
         fontSize: '25px',
         height: '100%',
     },
 
-    item32:{
+    item32: {
         background: 'none',
         color: 'white',
         paddingTop: '15%'
@@ -406,7 +419,7 @@ const styles = StyleSheet.create({
         color: 'white',
     },
 
-    volume:{
+    volume: {
         transform: 'translate(0%, -70%)',
         height: '5.1px',
     }

@@ -99,6 +99,7 @@ export default function Upload({handleShow, username}){
         'Filme',
         'Série',
         'Ciência',
+        'Conversa',
     ];
 
     const months = [
@@ -118,8 +119,6 @@ export default function Upload({handleShow, username}){
     ];
 
     const onFileUpload = () => {
-
-        let detalhes={};
         
         if (selectedFile) {
           const storageRef = storage.ref();
@@ -327,7 +326,7 @@ export default function Upload({handleShow, username}){
 
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
                         <button id='btn btn-primary' className={css(styles.btn2)} onClick={onFileUpload}>Carregar</button>
-                        {uploadProgress > 0 && <p>Progress: {uploadProgress}%</p>}
+                        {uploadProgress > 0 && <p style={{background: 'none', color: 'white', marginBottom: '5%'}}>Progress: {uploadProgress}%</p>}
                     </TabPane>
                 </TabContent>
             </Row>
@@ -432,7 +431,7 @@ const styles = StyleSheet.create({
     btn1:{
         background: 'none',
         color: 'white',
-        margin: '0 2% 12% 57%',
+        margin: '0 2% 2% 65%',
         ':hover':{
             fontWeight: 'bold'
         }

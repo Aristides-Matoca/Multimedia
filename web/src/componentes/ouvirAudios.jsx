@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import { MdPlayCircle as Play, MdPauseCircle as Pause } from "react-icons/md"
 
-const AudioPlayer = ({ audios, selecionarAudio, isPlaying }) => {
+const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil }) => {
   const [audioPlayingIndex, setAudioPlayingIndex] = useState(null)
   const playlist = 'Playlist 1'
 
@@ -50,7 +50,7 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying }) => {
 
             <div className={css(styles.titles)}>
               <span style={{background: 'none'}}>{audio.titulo}</span><br />
-              <span className={css(styles.artista)}>{audio.autor}</span>
+              <span className={css(styles.artista)} onClick={() => irPerfil(audio.autor)}>{audio.autor}</span>
             </div>
           </div>
 
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
   },
 
   img:{
-    width: '10%',
-    height: '8%',
+    width: '45px',
+    height: '40px',
     marginLeft: '4%',
     background: 'rgb(36,36,36)'
   },
