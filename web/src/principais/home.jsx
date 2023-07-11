@@ -92,17 +92,19 @@ export default function Home({ handleShow2, username }) {
       });
   }, []);
 
-  /*useEffect(() => { //Fetch de pessoa
+  useEffect(() => { //Fetch de pessoa
     // Fetch the uploads from Firestore or your backend API
-    axios.get(api + "/pessoa")
+    axios.get(api + "/")
       .then(response => {
-        const uploadsData = response.data;
-        setPessoa(uploadsData);
+        const pessoas = response.data;
+        setPessoa(pessoas);
       })
       .catch(error => {
         console.error('Error fetching uploads:', error);
       });
-  }, []);*/
+  }, []);
+
+  //console.log(pessoa)
 
   /* useEffect(() => {
      // Fetch the uploads from Firestore or your backend API

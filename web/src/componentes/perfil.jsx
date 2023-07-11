@@ -5,11 +5,27 @@ import React, { useState, useRef, useEffect } from 'react';
 import { BiUser } from "react-icons/bi"
 import { FiEdit2 } from "react-icons/fi"
 import { MdPlayCircle as Play, MdPauseCircle as Pause } from "react-icons/md"
+import axios from 'axios';
 
 export default function Perfil({ username, audios, videos, podcasts, selecionarAudio, isPlaying }) {
+    const api = "http://localhost:4000";
     const [selectedAudios, setSelectedAudios] = useState([])
     const [selectedVideos, setSelectedVideos] = useState([])
     const [selectedPodcasts, setSelectedPodcasts] = useState([])
+
+    const [video, setVideo] = useState([])
+
+    useEffect(() => {
+        // Fetch the uploads from Firestore or your backend API
+        axios.get(api + "/video")
+          .then(response => {
+            const uploadsData = response.data;
+            setVideo(uploadsData);
+          })
+          .catch(error => {
+            console.error('Error fetching uploads:', error);
+          });
+      }, []);
 
     useEffect(() => {
         const filtrarAudios = () => {
@@ -22,7 +38,7 @@ export default function Perfil({ username, audios, videos, podcasts, selecionarA
 
     useEffect(() => {
         const filtrarVideos = () => {
-            const videosFiltradas = videos.filter(video => video.autor === username);
+            const videosFiltradas = video.filter(video => video.autor === username);
             setSelectedVideos(videosFiltradas);
         };
 
