@@ -2,21 +2,45 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
 import { Row, Nav, NavItem } from 'reactstrap';
 import Img from '../img/imagem2.png'
-import React from 'react';
+import audiologo from '../img/audiologo.png'
+import React, { useState, useEffect } from 'react'
 
-export default function Homepage({handleShow, selecionarMedia}){
+export default function Homepage({handleShow, selecionarMedia, videos, radios}){
+    const [selectedVideos, setSelectedVideos] = useState([])
+    const [selectedRadios, setSelectedRadios] = useState([])
+
+    useEffect(() => {
+        if(videos != null){
+            // Embaralhar o array original e selecionar os primeiros 4 vídeos
+            const shuffledArray = [...videos].sort(() => 0.5 - Math.random());
+            const selected = shuffledArray.slice(0, 4);
+            setSelectedVideos(selected)
+        }
+    }, [videos]);
+
+    useEffect(() => {
+        if(radios != null){
+            const shuffledArray = [...radios].sort(() => 0.5 - Math.random());
+            const selected = shuffledArray.slice(0, 3);
+            setSelectedRadios(selected)
+        }
+    }, [radios]);
 
     const handleClick = (index, pos) => {
+
+        if(pos == 2){
+            handleShow('Assistir')
+        }
     
         selecionarMedia(index, pos, 11);
         setTimeout(() => {
           selectMedia(index, pos);
         }, 100);
-      };
+    };
     
-      const selectMedia = (index, pos) => {
+    const selectMedia = (index, pos) => {
         selecionarMedia(index, pos, 11);
-      };
+    };
 
     return (
         <Row className={css(styles.row)}>
@@ -24,33 +48,19 @@ export default function Homepage({handleShow, selecionarMedia}){
 
                 <div className={css(styles.divtitles)}>
                     <h2 className={css(styles.title)}>Vídeos</h2>
-                    <span className={css(styles.vermais)}onClick={() => handleShow('Video')}>Ver mais</span>
+                    <span className={css(styles.vermais)} onClick={() => handleShow('Video')}>Ver mais</span>
                 </div>
                 
                 <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Beyonce"/> <br/>
-                        4 <br/>
-                        Beyonce
-                    </NavItem>
-
-                    <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Ariana"/> <br/>
-                        Thank u, Next <br/>
-                        Ariana Grande
-                    </NavItem>
-
-                    <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Kendrick"/> <br/>
-                        damn <br/>
-                        Kendrick Lamar
-                    </NavItem>
-
-                    <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Kendrick"/> <br/>
-                        damn <br/>
-                        Other
-                    </NavItem>
+                    {selectedVideos.map((video, index) => (
+                        <NavItem key={index} className={css(styles.item1)} onClick={() => handleClick(index, 2)}>
+                            <div className={css(styles.foto)}>
+                                <img className={css(styles.img)} src={video.imageDownloadURL} alt="Image"/> <br/>
+                            </div>
+                            {video.description}<br />
+                            {video.description}
+                        </NavItem>
+                    ))}
                 </Nav>
 
                 <div className={css(styles.divtitles)}>
@@ -60,17 +70,17 @@ export default function Homepage({handleShow, selecionarMedia}){
 
                 <Nav className={css(styles.nav)}>
                     <NavItem className={css(styles.item3)}>
-                        <img className={css(styles.img3)} src={Img} alt="Beyonce"/> <br/>
+                        <img className={css(styles.img3)} src={audiologo} alt="Audio"/> <br/>
                         <span className={css(styles.name)}>4<br/> Beyonce</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item3)}>
-                        <img className={css(styles.img3)} src={Img} alt="Ariana"/> <br/>
+                        <img className={css(styles.img3)} src={audiologo} alt="Audio"/> <br/>
                         <span className={css(styles.name)}>Thank u, Next<br/> Ariana Grande</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item3)}>
-                        <img className={css(styles.img3)} src={Img} alt="Kendrick"/>
+                        <img className={css(styles.img3)} src={audiologo} alt="Audio"/>
                         <span className={css(styles.name)}>Damn<br/> Kendrick Lamar</span>
                         
                     </NavItem>
@@ -82,21 +92,12 @@ export default function Homepage({handleShow, selecionarMedia}){
                 </div>
 
                 <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item3)} onClick={() => handleClick(0, 3)}>
-                        <img className={css(styles.img3)} src={Img} alt="Radio Mais"/> <br/>
-                        <span className={css(styles.name)}>Radio Mais</span>
-                    </NavItem>
-
-                    <NavItem className={css(styles.item3)} onClick={() => handleClick(1, 3)}>
-                        <img className={css(styles.img3)} src={Img} alt="Radio Escola"/> <br/>
-                        <span className={css(styles.name)}>Radio Escola</span>
-                    </NavItem>
-
-                    <NavItem className={css(styles.item3)} onClick={() => handleClick(2, 3)}>
-                        <img className={css(styles.img3)} src={Img} alt="Radio LAC"/>
-                        <span className={css(styles.name)}>Radio LAC</span>
-                        
-                    </NavItem>
+                    {selectedRadios.map((radio, index) => (
+                        <NavItem key={index} className={css(styles.item3)} onClick={() => handleClick(index, 3)}>
+                            <img className={css(styles.img3)} src={radio.imageDownloadURL} alt="Image"/> <br/>
+                            <span className={css(styles.name)}>{radio.titulo}</span>
+                        </NavItem>
+                    ))}
                 </Nav>
 
                 <div className={css(styles.divtitles)}>
@@ -106,17 +107,17 @@ export default function Homepage({handleShow, selecionarMedia}){
 
                 <Nav className={css(styles.nav)}>
                     <NavItem className={css(styles.item3)}>
-                        <img className={css(styles.img3)} src={Img} alt="Podcast 1"/> <br/>
+                        <img className={css(styles.img3)} src={Img} alt="Podcast"/> <br/>
                         <span className={css(styles.name)}>Podcast 1</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item3)}>
-                        <img className={css(styles.img3)} src={Img} alt="Podcast 2"/> <br/>
+                        <img className={css(styles.img3)} src={Img} alt="Podcast"/> <br/>
                         <span className={css(styles.name)}>Podcast 2</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item3)}>
-                        <img className={css(styles.img3)} src={Img} alt="Podcast 3"/>
+                        <img className={css(styles.img3)} src={Img} alt="Podcast"/>
                         <span className={css(styles.name)}>Podcast 3</span>
                         
                     </NavItem>
@@ -194,8 +195,8 @@ const styles = StyleSheet.create({
 
     nav1:{
         background: 'none',
-        padding: '0 2.5% 0 27px',
-        width: '71.5%',
+        padding: '0 0.5% 0 0.1%',
+        width: '75%',
         borderRight: '1px solid grey'
     },
 
@@ -228,7 +229,7 @@ const styles = StyleSheet.create({
     nav:{
         background: 'black',
         padding: '2% 1.5% 2% 1.5%',
-        margin: '-0.5% 0 1.5% 0',
+        margin: '-0.5% 0 1% 0',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -239,8 +240,9 @@ const styles = StyleSheet.create({
 
     item1:{
         background: 'rgb(36,36,36)',
-        padding: '1% 1.5% 2% 1.5%',
-        width: '20%',
+        padding: '1% 1.5% 0.5% 1.5%',
+        marginTop: '-1%',
+        width: '18.3%',
         borderRadius: '5px',
         ':hover':{
             background: 'rgb(157,157,157)',
@@ -248,13 +250,20 @@ const styles = StyleSheet.create({
         }
     },
 
-    img:{
+    foto:{
         width: '100%',
-        height: '91%',
+        height: '100%',
         background: 'none',
         borderRadius: '5px',
         boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.5)',
-        marginBottom: '5%'
+        marginBottom: '5%',
+    },
+
+    img:{
+        width: '100%',
+        height: '100%',
+        background: 'none',
+        borderRadius: '5px',
     },
 
     item3:{
@@ -285,7 +294,7 @@ const styles = StyleSheet.create({
     },
 
     nav2:{
-        transform: 'translate(11%, 0%)',
+        transform: 'translate(2%, 0%)',
         background: 'none',
         width: '25%',
     },
@@ -301,6 +310,7 @@ const styles = StyleSheet.create({
         fontSize: '23px',
         textAlign: 'left',
         color: 'white',
+        paddingLeft: '2%'
     },
 
     item2:{

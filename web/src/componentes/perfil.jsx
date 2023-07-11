@@ -5,7 +5,7 @@ import React, { useState, useRef } from 'react';
 import { BiUser } from "react-icons/bi"
 import { FiEdit2 } from "react-icons/fi"
 
-export default function Perfil(){
+export default function Perfil({username}){
     //Tem a ver com upload de fotos
     const [profilePicture, setProfilePicture] = useState(null);
     const [isHovered, setIsHovered] = useState(false);
@@ -36,7 +36,6 @@ export default function Perfil(){
     const handleMouseLeave = () => {
         setIsHovered(false);
     };
-    const name = 'Aristides Matoca'
 
     //Tem a ver o TabPane
     const [activeTab, setActiveTab] = useState('1');
@@ -66,7 +65,7 @@ export default function Perfil(){
                         <button className="btn btn-link" id='remove' onClick={clearProfilePicture}>Remover Foto</button>
                     )}
                     
-                    <h1 className={css(styles.tittle)}>{name}</h1>
+                    <h1 className={css(styles.tittle)}>{username}</h1>
                 </div>
 
                 <Nav tabs className={css(styles.nav)} justified>
@@ -149,11 +148,12 @@ const styles = StyleSheet.create({
     },
 
     tittle:{
-        transform: 'translate(50%, -230%)',
+        transform: 'translate(0%, -200%)',
         position: 'fixed',
         color: 'white',
         background: 'none',
         fontSize: '70px',
+        marginLeft: '21%',
     },
 
     nav:{

@@ -7,6 +7,8 @@ import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Do
 import React, {useState, useEffect} from 'react'
 //import firebase from 'firebase/app';
 import firebase from 'firebase';
+import axios from 'axios'
+import 'firebase/storage'
 
 export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, mediaRef }){
 
@@ -87,16 +89,58 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
     };
 
     const fazerDownload = async (mediaSelecionado) => {
-
+        console.log(mediaSelecionado.audioURL)
         try {
-            const storageRef = firebase.storage().ref();
+            /*const storageRef = firebase.storage().ref();
             const fileRef = storageRef.child(mediaSelecionado.audioURL);
 
             const url = await fileRef.getDownloadURL();
+            console.log('Link 2 ' + url)
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${mediaSelecionado.legenda} - ${mediaSelecionado.titulo}`;
+            link.click();*/
+
+            /*const response = await fetch(mediaSelecionado.url);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = mediaSelecionado.nome + ' - ' + mediaSelecionado.titulo;
+            link.click()
+
+
+            const url = mediaSelecionado.audioURL;
+            console.log('Link 2: ' + url);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${mediaSelecionado.legenda} - ${mediaSelecionado.titulo}`;
+            link.setAttribute('download', '')
+            link.click();
+
+
+            const url = mediaSelecionado.audioURL;
+            console.log('Link 2: ' + url);
+
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${mediaSelecionado.legenda} - ${mediaSelecionado.titulo}`;
+            link.click();*/
+            const response = await axios({
+                url: mediaSelecionado.audioURL,
+                method: 'GET',
+                responseType: 'blob',
+            });
+            
+            const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
             link.download = `${mediaSelecionado.legenda} - ${mediaSelecionado.titulo}`;
             link.click();
+
 
         } catch (error) {
             console.error('Erro ao fazer o download:', error);
@@ -136,8 +180,8 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
             )}
 
             <NavItem className={css(styles.item1)}>
-                <NavLink href="#" className={css(styles.foto)}>
-                    <img className={css(styles.img)} href="#" src={mediaSelecionado.imageDownloadURL} alt="Foto qualquer" />
+                <NavLink href="#" className={css(styles.foto)} disabled>
+                    <img className={css(styles.img)} href="#" src={mediaSelecionado.imageDownloadURL} alt="Image" />
                 </NavLink>
             </NavItem>
 
@@ -178,7 +222,7 @@ export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avanc
                 </NavItem>
             ) : (
                 <NavItem className={css(styles.item2)}>
-                    <Download className={css(styles.item21)} onClick={() => fazerDownloadProvisorio(mediaSelecionado)}/>
+                    <Download className={css(styles.item21)} onClick={() => fazerDownload(mediaSelecionado)}/>
                 </NavItem>
             )}
             
@@ -236,18 +280,18 @@ const styles = StyleSheet.create({
     },
 
     foto:{
-        border: '1px solid grey',
+        marginTop: '0.7%',
         borderRadius: '8px',
-        background: 'none',
-        height: '102%',
-        width: '10%',
+        background: 'rgb(36,36,36)',
+        height: '85%',
+        width: '8%',
         overflow: 'hidden',
         position: 'fixed'
     },
 
     img:{
         background: 'none',
-        height: '99%',
+        height: '100%',
         width: '100%'
     },
 
@@ -259,12 +303,12 @@ const styles = StyleSheet.create({
     },
 
     titles:{
+        margin: '2.2% 0 0 -2%',
         background: 'none',
-        paddingTop: '2%',
         textAlign: 'justify',
         fontSize: '16px',
         color: 'white',
-        width: '17%',
+        width: '20%',
         overflow: 'hidden',
     },
 

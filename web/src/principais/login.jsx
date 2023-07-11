@@ -1,53 +1,48 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './login.css'
-import { Label, Input, Button, Container} from 'reactstrap'
+import { Label, Input, Button, Container } from 'reactstrap'
 import { FaPlay } from 'react-icons/fa'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from "react-router-dom"
 
-export default function Login({ onLogin }){
+export default function Login({ handleShow, handleLogin }){
 
-    const api = "http://localhost:4000";
+  const api = "http://localhost:4000";
 
-    const [dadosUsuario, setDadosUsuario] = useState(null);
+  const [dadosUsuario, setDadosUsuario] = useState(null);
 
-    const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
 
-    const [p, setP] = useState('');
+  useEffect(() => {
+    // Busca dados 
+    axios
+      .get(api + '/')
+      .then(response => {
+        setDadosUsuario(response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, []);
 
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        // Busca dados 
-        axios
-          .get(api+'/') 
-          .then(response => {
-            setDadosUsuario(response.data);   
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
-      }, []);
-
-    function verificarUsuario() {
-        const usuarios = [];
-        if(dadosUsuario != null){
-            dadosUsuario.forEach(obj => {
-                if (obj.username === username && obj.password === password) {
-                  const copia = { ...obj };
-                  usuarios.push(copia);
-                }
-              });
+  function verificarUsuario() {
+    const usuarios = [];
+    if (dadosUsuario != null) {
+      dadosUsuario.forEach(obj => {
+        if (obj.username === username && obj.password === password) {
+          const copia = { ...obj };
+          usuarios.push(copia);
         }
+      });
+    }
 
-        return usuarios.length === 0;
-      }
+    return usuarios.length === 0;
+  }
 
-      const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-      };
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
@@ -56,56 +51,55 @@ export default function Login({ onLogin }){
 
     const handleFormSubmit = event => {
         event.preventDefault();
-        onLogin(username);
+        handleLogin(username)
 
-        // Verificar existência de usuários com o mesmo username ou email 
-        const nExiste = verificarUsuario();
-        if(nExiste){
-            // MUDAR AQUI, APRESENTA A MENSAGEM AO USUÁRIO
-            alert("Usuário não existe!");
-            navigate('/login');
+    // Verificar existência de usuários com o mesmo username ou email 
+    const nExiste = verificarUsuario();
+    if (nExiste) {
+      // MUDAR AQUI, APRESENTA A MENSAGEM AO USUÁRIO
+      alert("Usuário não existe!");
+      setTimeout(() => {
+        handleShow('Login')
+      }, 100);
+    }
+    else {
+      // Criar um novo usuário
+      axios
+        .post(api + '/addUOn', { username })
+        .then(response => {
+          const createdUser = response.data;
+          console.log('Created user:', createdUser);
+          setUsername('');
+          setPassword('');
+          setTimeout(() => {
+            handleShow('Home')
+          }, 100);
+        })
+        .catch(error => {
+          console.error('Error creating user:', error);
+        });
+    }
 
-        }
-        else{
-            // Criar um novo usuário
-            axios
-            .post(api+'/addUOn', { username })
-            .then(response => {
-            const createdUser = response.data;
-            console.log('Created user:', createdUser);
-            setUsername('');
-            setPassword('');
-            navigate('/home');
-            })
-            .catch(error => {
-            console.error('Error creating user:', error);
-            });
-        }        
+  };
 
-      };
+  return (
+    <Container className='container'>
+      <header className='header1' onClick={() => handleShow('Start')}>
+        <FaPlay className='play1' />
+        <h3>ISPMedia</h3>
+      </header>
 
-    return (
-        <Container className='container'>
-            <Link className='link2' to={"/"}>
-                <header className='header1'>
-                    <FaPlay className='play1'/>
-                    <h3>ISPMedia</h3>
-                </header>
-            </Link>
+      <h2 className='title1'>Iniciar Sessão no ISPMedia</h2>
 
-            <h2 className='title1'>Iniciar Sessão no ISPMedia</h2>
+      <Label className='label1'>Username</Label>
+      <Input className='in1' type='text' placeholder='Username' value={username} onChange={handleUsernameChange} required />
 
-            <Label className='label1'>Username</Label>
-            <Input className='in1' type='text' placeholder='Username' value={username} onChange={handleUsernameChange} required/>
+      <Label className='label1'>Password</Label>
+      <Input className='in1' type='password' placeholder='Palavra-passe' value={password} onChange={handlePasswordChange} required />
 
-            <Label className='label1'>Password</Label>
-            <Input className='in1' type='password' placeholder='Palavra-passe' value={password} onChange={handlePasswordChange} required/>
-                
-            <Button className='btn1' onClick={handleFormSubmit}>
-                <Link className='btn-link' to={'/home'}>Iniciar Sessão</Link>
-            </Button>
+      <Button className='btn1' onClick={handleFormSubmit}>Iniciar Sessão</Button>
 
-            <p className='reg'>Não tens uma conta? <Link className='link2' to={"/signin"}>Regista-te no ISPMedia</Link></p>
-        </Container>
-    )
+      <p className='reg'>Não tens uma conta? <span className='span' onClick={() => handleShow('SignIn')}>Regista-te</span></p>
+    </Container>
+  )
 }

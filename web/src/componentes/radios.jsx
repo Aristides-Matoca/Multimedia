@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, css } from 'aphrodite'
 import { MdPlayCircle as Play, MdPauseCircle as Pause } from "react-icons/md"
+import radiologo from '../img/radiologo.png'
 
 const Radios = ({ radios, selecionarRadio, isPlaying }) => {
   const [radioPlayingIndex, setRadioPlayingIndex] = useState(null)
@@ -38,7 +39,7 @@ const Radios = ({ radios, selecionarRadio, isPlaying }) => {
 
         <div className={css(styles.spans)}>
           <span style={{background: 'none'}}>#</span>
-          <span className={css(styles.titles)}>Estação</span>
+          <span style={{marginLeft: '4%', background: 'none'}}>Estação</span>
         </div>
         <span style={{background: 'none', marginRight: '-1.5%'}}>Reproduzir</span>
       </div>
@@ -48,6 +49,7 @@ const Radios = ({ radios, selecionarRadio, isPlaying }) => {
 
           <div className={css(styles.spans)}>
             <span style={{background: 'none'}}>{index+1}</span>
+            <img src={radiologo} className={css(styles.img)} alt="" />
 
             <div className={css(styles.titles)}>
               <span style={{background: 'none'}}>{radio.titulo}</span><br />
@@ -75,6 +77,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: '8px',
     borderTopRightRadius: '8px',
     background: 'black',
+    width: '101.4%',
+    marginLeft: '-0.8%',
   },
 
   playlist:{
@@ -126,9 +130,17 @@ const styles = StyleSheet.create({
     width: '40%'
   },
 
+  img:{
+    width: '10%',
+    height: '8%',
+    marginLeft: '4%',
+    background: 'rgb(36,36,36)'
+  },
+
   titles:{
-    marginLeft: '6%',
+    marginLeft: '3%',
     background: 'none',
+    textAlign: 'justify'
   },
 
   radioname:{
