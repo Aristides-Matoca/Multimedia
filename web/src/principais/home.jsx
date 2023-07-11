@@ -21,6 +21,7 @@ import Img2 from '../img/imagem2.png'
 import Group from '../componentes/group'
 import CriarGrupo from '../componentes/criarGrupo'
 import ValidarAcesso from '../componentes/validarAcesso'
+import GroupIn from '../componentes/groupIn'
 
 export default function Home() {
   
@@ -212,6 +213,7 @@ export default function Home() {
     Upload: false,
     CriarGrupo: false,
     Grupo: false,
+    GrupoIn: false,
   })
 
   const handleShow = (nav) => {
@@ -302,6 +304,7 @@ export default function Home() {
               {nav === 'Grupos' && <Group handleShow={handleShow} name={name}/>}
               {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow}/>}
               {nav === 'Grupo' && <ValidarAcesso handleShow={handleShow} nome={grupoName}/>}
+              {nav === 'GrupoIn' && <GroupIn handleShow={handleShow} nome={grupoName}/>}
             </React.Fragment>
           )
         )}

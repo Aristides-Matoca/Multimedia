@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom"
 
 
-export default function SignIn(){
+export default function SignIn({onLogin}){
 
     const api = "http://localhost:4000";
 
@@ -86,6 +86,8 @@ export default function SignIn(){
         let pass = validatePassword(password);
         let em = validateEmail(email);
         const nExiste = verificarUsuario();
+
+        onLogin(username);
 
         if(!em){
             alert("Só são aceites membros do ISPTEC.");

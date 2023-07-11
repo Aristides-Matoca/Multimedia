@@ -1,11 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { Label, Input, InputGroup, InputGroupText, Container, Row, Nav, NavItem, NavLink, TabPane, TabContent} from 'reactstrap'
+import { Label, Input, Container, Row, Nav, NavItem, NavLink, TabPane, TabContent} from 'reactstrap'
 import { StyleSheet, css } from 'aphrodite'
 import React, { useState, useRef, useEffect } from 'react'
-import { AiOutlineCamera as Camera } from "react-icons/ai"
-import { FiEdit2 } from "react-icons/fi";
 import axios from 'axios';
-import { storage } from '../../backend/config'
 
 export default function ValidarAcesso({handleShow, nome}){
 
@@ -13,7 +10,6 @@ export default function ValidarAcesso({handleShow, nome}){
 
     const [owner, setOwner] = useState('');
     const [grupos, setGrupos] = useState(null);
-    const [grupo, setGrupo] = useState(null);
 
     //Tem a ver com upload de fotos
 
@@ -26,28 +22,28 @@ export default function ValidarAcesso({handleShow, nome}){
         }
     }
 
-      function verificarUsuario1() {
-        //const usuarios = [];
-        if(grupo != null){
-            grupo.forEach(obj => {
-                if (obj.membro == nome) {
-                        return true;
+    function set(){
+        if(grupos != null){
+            for(let i=0; i<grupos.length;i++){
+                if(grupos[i].nome == nome){  
+                    for(let j = 0; j<grupos[i].membros.length; j++){
+                        if (grupos[i].membros[j] == nome) {
+                            console.log(membros);
+                            return true;
+                        }
                     }
-                });
+                } 
+            }
         }
         return false;
-      }
+    }
 
     useEffect(() => {
         // Busca dados 
         axios
-          .get(api+'/listaG/', {
-            params: {
-              q: 'axios',
-              name: nome
-            }}) 
+          .get(api+'/listaG/',) 
           .then(response => {
-            setGrupo(response.data);   
+            setGrupos(response.data);   
           })
           .catch(error => {
             console.error('Error:', error);
@@ -55,14 +51,14 @@ export default function ValidarAcesso({handleShow, nome}){
       }, []);
 
 
-    const onFileUpload = event => {
-        event.preventDefault();  
+    const onFileUpload = () => {  
         //verificarUsuario();
-        const nExiste = verificarUsuario1();
+        //set();
+        const nExiste = set();
 
         if(!nExiste){
             // MUDAR AQUI, APRESENTA A MENSAGEM AO USUÁRIO
-            handleShow('Grupo');
+            handleShow('Audio');
         }else {
             alert("Não é membro!");
             handleShow('Inicio');

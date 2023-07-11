@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom"
 
-export default function Login(){
+export default function Login({ onLogin }){
 
     const api = "http://localhost:4000";
 
@@ -51,10 +51,12 @@ export default function Login(){
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
+        
       };
 
     const handleFormSubmit = event => {
         event.preventDefault();
+        onLogin(username);
 
         // Verificar existência de usuários com o mesmo username ou email 
         const nExiste = verificarUsuario();

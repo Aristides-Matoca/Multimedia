@@ -43,8 +43,9 @@ app.get("/listaG", async(req, res) => {
     res.send(list);
 })
 
-app.get("/listaG/", async (req, res) => {
+app.get("/listaG/m", async (req, res) => {
     const groupName = req.params.name;
+    
     const snapshot = await Grupos.where("nome", "==", groupName).get();
     const groupDoc = snapshot.docs[0];
     const groupId = groupDoc.id;
