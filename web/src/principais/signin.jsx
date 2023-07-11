@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-export default function SignIn({ handleShow, handleLogin }) {
+export default function SignIn({ handleShow, handleLogin }){
 
     const api = "http://localhost:4000";
 
@@ -85,7 +85,7 @@ export default function SignIn({ handleShow, handleLogin }) {
         let em = validateEmail(email);
         const nExiste = verificarUsuario();
 
-        if (!em) {
+        if (!em){
             alert("Só são aceites membros do ISPTEC.");
             setTimeout(() => {
                 handleShow('SignIn')

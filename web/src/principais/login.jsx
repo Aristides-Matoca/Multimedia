@@ -5,7 +5,7 @@ import { FaPlay } from 'react-icons/fa'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function Login({ handleShow, handleLogin }) {
+export default function Login({ handleShow, handleLogin }){
 
   const api = "http://localhost:4000";
 
@@ -44,13 +44,14 @@ export default function Login({ handleShow, handleLogin }) {
     setPassword(event.target.value);
   };
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+        
+      };
 
-  const handleFormSubmit = event => {
-    event.preventDefault();
-    handleLogin(username)
+    const handleFormSubmit = event => {
+        event.preventDefault();
+        handleLogin(username)
 
     // Verificar existência de usuários com o mesmo username ou email 
     const nExiste = verificarUsuario();

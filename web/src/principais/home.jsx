@@ -25,6 +25,7 @@ import Group from '../componentes/group'
 import KMW from '../audios/KMW-MeuSucesso.mp3'
 import CriarGrupo from '../componentes/criarGrupo'
 import ValidarAcesso from '../componentes/validarAcesso'
+import GroupIn from '../componentes/groupIn'
 
 export default function Home({ handleShow2, username }) {
 
@@ -266,6 +267,7 @@ export default function Home({ handleShow2, username }) {
     Upload: false,
     CriarGrupo: false,
     Grupo: false,
+    GrupoIn: false,
   })
 
   const handleShow = (nav) => {
@@ -358,6 +360,19 @@ export default function Home({ handleShow2, username }) {
               {nav === 'Grupos' && <Group handleShow={handleShow} name={name} />}
               {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow} />}
               {nav === 'Grupo' && <ValidarAcesso handleShow={handleShow} nome={grupoName} />}
+              {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia} videos={videos} radios={radios}/>}
+              {nav === 'Audio' && <Audios handleShow={handleShow}/>}
+              {nav === 'Video' && <Videos handleShow={handleShow} videos={videos} selecionarVideo={selecionarMedia}/>}
+              {nav === 'Assistir' && <VideoPlayer videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} indexVideo={indexVideo}/>}
+              {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying}/>}
+              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying}/>}
+              {nav === 'Conta' && <Conta handleShow={handleShow} username={username}/>}
+              {nav === 'Perfil' && <Perfil username={username} />}
+              {nav === 'Upload' && <Upload handleShow={handleShow} username={username}/>}
+              {nav === 'Grupos' && <Group handleShow={handleShow} name={name}/>}
+              {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow}/>}
+              {nav === 'Grupo' && <ValidarAcesso handleShow={handleShow} nome={grupoName}/>}
+              {nav === 'GrupoIn' && <GroupIn handleShow={handleShow} nome={grupoName}/>}
             </React.Fragment>
           )
         )}
