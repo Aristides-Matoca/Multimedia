@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react'
 //import firebase from 'firebase/app';
 import firebase from 'firebase';
 import axios from 'axios'
-import 'firebase/storage'
+//import 'firebase/storage'
 
 export default function Reproducao({ mediaSelecionado, pausar, reproduzir, avancar, retroceder, isPlaying, mediaRef, irPerfil }) {
 

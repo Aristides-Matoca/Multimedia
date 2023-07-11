@@ -232,7 +232,7 @@ export default function Upload({handleShow, username}){
             }
           );
           }
-          console.log('Selected file:', selectedFile);
+          //console.log('Selected file:', selectedFile);
         }
       };
 
@@ -242,6 +242,7 @@ export default function Upload({handleShow, username}){
         .then(response => {
         const createdUser = response.data;
         console.log('Created file:', createdUser+" "+db);
+        console.log('Enviado');
         })
         .catch(error => {
         console.error('Error creating user:', error);
