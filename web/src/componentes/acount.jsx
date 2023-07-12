@@ -4,7 +4,7 @@ import { StyleSheet, css } from 'aphrodite'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function Conta({handleShow, username}){
+export default function Conta({handleShow, username, info}){
     const api = "http://localhost:4000";
 
     const [activeTab, setActiveTab] = useState('1');
@@ -37,7 +37,6 @@ export default function Conta({handleShow, username}){
     ];
 
     const [user, setUser] = useState(username);
-    const [email, setEmail] = useState('my.email@example.com');
     const [gender, setGender] = useState(genders[0]);
     const [day, setDay] = useState('10');
     const [month, setMonth] = useState(months[0]);
@@ -47,13 +46,13 @@ export default function Conta({handleShow, username}){
     const [password, setPass] = useState('');
     const [pass1, setPass1] = useState('');
     const [dadosUsuario, setDadosUsuario] = useState(null);
+    const [email, setEmail] = useState(info);
     
 
     function validateEmail(email) {
         const emailPattern = /^[a-z]+\.[a-z]+@isptec\.co\.ao$/ 
         const emal = /^20(20|21|22|23)\d{4}@isptec\.co\.ao$/;
         const ema = /^20(1[2-9]|20)\d{4}@isptec\.co\.ao$/;
-
         return emailPattern.test(email) || emal.test(email) || ema.test(email) ;
     }
 
@@ -68,17 +67,16 @@ export default function Conta({handleShow, username}){
             console.error('Error:', error);
           });
       }, []);
-    
-      function verificarUsuario() {
-        const usuarios = [];
+       
+    function verificarUsuario() {
+        //const usuarios = [];
         if (dadosUsuario != null) {
           dadosUsuario.forEach(obj => {
-            if (obj.username === username && obj.password === password) {
+            if (obj.username === username && obj.password === password) {              
               return true
             }
           });
         }
-    
         return false;
       }
 
@@ -125,13 +123,14 @@ export default function Conta({handleShow, username}){
     }
 
     return (
+        
         <Container className={css(styles.cont)}>
-            <Row className={css(styles.row)}>
+            <Row className={css(styles.row)} >
 
                 <h1 className={css(styles.tittle)}>Minha conta</h1>
                 <Nav tabs className={css(styles.nav)}>
                     <NavItem className={css(styles.item)}>
-                        <NavLink id='linkConta' className={activeTab === '1' ? 'active' : '' && css(styles.item)} onClick={() => toggleTab('1')}>Editar conta</NavLink>
+                        <NavLink id='linkConta' className={activeTab === '1' ? 'active' : '' && css(styles.item)} onClick={() => {toggleTab('1');}}>Editar conta</NavLink>
                     </NavItem>
                     
                     <NavItem className={css(styles.item)}>
