@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, css } from 'aphrodite'
-import user from '../img/user.jpg'
 
 const Artistas = ({ pessoa, audios, videos, podcast, irPerfil }) => {
-    const [newPessoa, setNewPessoa] = useState([])
-    const podeTitulo = 'Artistas'
+    const [podeTitulo, setPodeTitulo] =  useState('Artistas')
+    const [autores, setAutores] = useState([]);
 
-    useEffect(() => {
-        if (pessoa != null) {
-            const pessoaActualizada = pessoa.map(p => {
-                if (p.foto === null) {
-                    return { ...p, foto: user };
-                }
-                return p;
-            });
-            setNewPessoa(pessoaActualizada);
-        }
-    }, []);
+  useEffect(() => {
+    const verificarAutores = () => {
+      const novosAutores = pessoa
+        .filter(people => audios.some(audio => audio.autor === people.username))
+        .map(people => people);
+
+      setAutores(prevAutores => [...new Set([...prevAutores, ...novosAutores])]);
+    };
+
+    verificarAutores();
+  }, [pessoa, audios]);
 
     return (
         <div className={css(styles.container)}>
@@ -26,23 +25,17 @@ const Artistas = ({ pessoa, audios, videos, podcast, irPerfil }) => {
             </div>
 
             <div className={css(styles.info)} style={{ background: 'none' }}>
-
-                <div className={css(styles.spans)}>
-                    <span style={{ background: 'none' }}>#</span>
-                    <span style={{ marginLeft: '4%', background: 'none' }}>Título</span>
-                </div>
-                <span style={{ background: 'none', marginRight: '-1.5%' }}>Reproduzir</span>
             </div>
 
-            {newPessoa.map((pessoa, index) => (
+            {autores.map((people, index) => (
                 <div key={index} className={css(styles.radios)}>
 
                     <div className={css(styles.spans)}>
                         <span style={{ background: 'none' }}>{index + 1}</span>
-                        <img src={pessoa.foto} className={css(styles.img)} alt="" />
+                        <img src={people.foto} className={css(styles.img)} alt="" />
 
                         <div className={css(styles.titles)}>
-                            <span className={css(styles.autor)} onClick={() => irPerfil(pessoa.username)}>{pessoa.username}</span>
+                            <span className={css(styles.autor)} onClick={() => irPerfil(people.username)}>{people.username}</span>
                         </div>
                     </div>
                 </div>

@@ -351,7 +351,7 @@ export default function Home({ handleShow2, username }) {
           show && (
             <React.Fragment key={nav}>
               {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia} videos={videos} radios={radios} podcasts={podcasts}/>}
-              {nav === 'Audio' && <Audios handleShow={handleShow} />}
+              {nav === 'Audio' && <Audios handleShow={handleShow} audios={audios} pessoa={pessoa} irPerfil={irPerfil}/>}
               {nav === 'Video' && <Videos handleShow={handleShow} videos={videos} selecionarVideo={selecionarMedia} irPerfil={irPerfil} />}
               {nav === 'Assistir' && <VideoPlayer videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} indexVideo={indexVideo} irPerfil={irPerfil}/>}
               {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying} />}

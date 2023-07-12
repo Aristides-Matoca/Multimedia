@@ -2,8 +2,34 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
 import { Row, Nav, NavItem } from 'reactstrap'
 import Img from '../img/imagem2.png'
+import React, { useState, useEffect } from 'react';
 
-export default function Audios({handleShow}){
+export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
+    const [autores, setAutores] = useState([]);
+    const [selectedArtistas, setSelectedArtistas] = useState([])
+
+    useEffect(() => {
+        const verificarAutores = () => {
+            const novosAutores = pessoa
+                .filter(people => audios.some(audio => audio.autor === people.username))
+                .map(people => people);
+
+            setAutores(prevAutores => [...new Set([...prevAutores, ...novosAutores])]);
+        };
+
+        verificarAutores();
+    }, [pessoa, audios]);
+
+    useEffect(() => {
+        if (autores != null) {
+            // Embaralhar o array original e selecionar os primeiros 4 vídeos
+            const shuffledArray = [...autores].sort(() => 0.5 - Math.random());
+            const selected = shuffledArray.slice(0, 4);
+            setSelectedArtistas(selected)
+        }
+    }, [autores]);
+
+
     return (
         <Row className={css(styles.row)}>
             <Nav vertical className={css(styles.nav1)}>
@@ -11,20 +37,20 @@ export default function Audios({handleShow}){
                 <div className={css(styles.divtitles)}>
                     <h2 className={css(styles.title)}>Playlists mais ouvidas</h2>
                 </div>
-                
+
                 <Nav className={css(styles.nav)}>
                     <NavItem className={css(styles.item1)} onClick={() => handleShow('Ouvir')}>
-                        <img className={css(styles.img)} src={Img} alt="Beyonce"/>
+                        <img className={css(styles.img)} src={Img} alt="Beyonce" />
                         <span className={css(styles.name)}>Playlist 1</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Ariana"/>
+                        <img className={css(styles.img)} src={Img} alt="Ariana" />
                         <span className={css(styles.name)}>Playlist 2</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Kendrick"/>
+                        <img className={css(styles.img)} src={Img} alt="Kendrick" />
                         <span className={css(styles.name)}>Playlist 3</span>
                     </NavItem>
                 </Nav>
@@ -36,68 +62,33 @@ export default function Audios({handleShow}){
 
                 <Nav className={css(styles.nav)}>
                     <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Beyonce"/>
+                        <img className={css(styles.img)} src={Img} alt="Beyonce" />
                         <span className={css(styles.name)}>Álbum 1</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Ariana"/>
+                        <img className={css(styles.img)} src={Img} alt="Ariana" />
                         <span className={css(styles.name)}>Álbum 2</span>
                     </NavItem>
 
                     <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Kendrick"/>
+                        <img className={css(styles.img)} src={Img} alt="Kendrick" />
                         <span className={css(styles.name)}>Álbum 3</span>
                     </NavItem>
                 </Nav>
-                
+
                 <Nav className={css(styles.nav2)}>
-                <div className={css(styles.divtitles)}>
-                    <h2 className={css(styles.title)}>Artistas mais ouvidos</h2>
-                    <span className={css(styles.vermais)}>Ver mais</span>
-                </div>
+                    <div className={css(styles.divtitles)}>
+                        <h2 className={css(styles.title)}>Artistas que talvez conheças</h2>
+                        <span className={css(styles.vermais)} onClick={() => handleShow('Artistas')}>Ver mais</span>
+                    </div>
                     <Row className={css(styles.row2)}>
-                        <NavItem className={css(styles.item2)}>
-                            <img className={css(styles.img2)} src={Img} alt="Beyonce"/><br />
-                            Beyonce
-                        </NavItem>
-
-                        <NavItem className={css(styles.item2)}>
-                            <img className={css(styles.img2)} src={Img} alt="Ariana"/><br />
-                            Kendrick Lamar
-                        </NavItem>
-
-                        <NavItem className={css(styles.item2)}>
-                            <img className={css(styles.img2)} src={Img} alt="Kendrick"/><br />
-                            Ariana Grande
-                        </NavItem>
-
-                        <NavItem className={css(styles.item2)}>
-                            <img className={css(styles.img2)} src={Img} alt="Kendrick"/><br />
-                            Other 1
-                        </NavItem>
-                    </Row>
-                
-                    <Row className={css(styles.row2)}>
-                        <NavItem className={css(styles.item2)}>
-                            <img className={css(styles.img2)} src={Img} alt="Beyonce"/><br />
-                            Beyonce
-                        </NavItem>
-
-                        <NavItem className={css(styles.item2)}>
-                            <img className={css(styles.img2)} src={Img} alt="Ariana"/><br />
-                            Kendrick Lamar
-                        </NavItem>
-
-                        <NavItem className={css(styles.item2)}>
-                            <img className={css(styles.img2)} src={Img} alt="Kendrick"/><br />
-                            Ariana Grande
-                        </NavItem>
-
-                        <NavItem className={css(styles.item2)}>
-                            <img className={css(styles.img2)} src={Img} alt="Kendrick"/><br />
-                            Other 2
-                        </NavItem>
+                        {selectedArtistas.map((people, index) => (
+                            <NavItem className={css(styles.item2)}>
+                                <img className={css(styles.img2)} src={people.foto} /><br />
+                                <span className={css(styles.autor)} onClick={() => irPerfil(people.username)}>{people.username}</span>
+                            </NavItem>
+                        ))}
                     </Row>
                 </Nav>
             </Nav>
@@ -106,12 +97,12 @@ export default function Audios({handleShow}){
 }
 
 const styles = StyleSheet.create({
-    row:{
+    row: {
         background: 'none',
         color: 'white'
     },
 
-    nav1:{
+    nav1: {
         background: 'none',
         paddingLeft: '27px',
         width: '100%',
@@ -119,7 +110,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
-    divtitles:{
+    divtitles: {
         background: 'black',
         borderTopLeftRadius: '6px',
         borderTopRightRadius: '6px',
@@ -131,21 +122,21 @@ const styles = StyleSheet.create({
 
     },
 
-    title:{
+    title: {
         background: 'black',
         textAlign: 'left',
         fontSize: '27px',
     },
 
-    vermais:{
+    vermais: {
         background: 'none',
-        ':hover':{
+        ':hover': {
             cursor: 'pointer',
             textDecoration: 'underline'
         }
     },
 
-    nav:{
+    nav: {
         background: 'black',
         padding: '2% 1.5% 2% 1.5%',
         margin: '-0.5% -0.5% 0.5% -2.1%',
@@ -156,19 +147,19 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: '6px',
     },
 
-    item1:{
+    item1: {
         background: 'rgb(36,36,36)',
         width: '30%',
         borderRadius: '5px',
         display: 'flex',
         alignItems: 'inherit',
-        ':hover':{
+        ':hover': {
             background: 'rgb(157,157,157)',
             cursor: 'pointer'
         }
     },
 
-    img:{
+    img: {
         width: '33%',
         height: '100%',
         background: 'none',
@@ -183,8 +174,8 @@ const styles = StyleSheet.create({
         fontSize: '22px'
     },
 
-    nav2:{
-        width: '100%',
+    nav2: {
+        width: '102.8%',
         background: 'black',
         padding: '1% 1.5% 2% 1.5%',
         margin: '0% -4% -1.5% -2.2%',
@@ -194,7 +185,7 @@ const styles = StyleSheet.create({
         borderRadius: '6px',
     },
 
-    row2:{
+    row2: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -202,25 +193,35 @@ const styles = StyleSheet.create({
         background: 'none'
     },
 
-    item2:{
+    item2: {
         background: 'rgb(36,36,36)',
         width: '20%',
         //height: '100%',
         borderRadius: '5px',
-        padding: '1% 1.5% 2% 1.5%',
-        ':hover':{
+        padding: '1%',
+        ':hover': {
             textDecoration: 'underline',
             background: 'rgb(157,157,157)',
             cursor: 'pointer'
         }
     },
 
-    img2:{
-        width: '100%',
-        height: '80%',
+    img2: {
+        width: '200px',
+        height: '200px',
         background: 'none',
-        borderRadius: '5px',
+        borderRadius: '50%',
         boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.5)',
         marginBottom: '5%'
+    },
+
+    autor: {
+        background: 'none',
+        fontSize: '14px',
+
+        ':hover': {
+            cursor: 'pointer',
+            textDecoration: 'underline'
+        }
     },
 })
