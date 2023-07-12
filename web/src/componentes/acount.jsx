@@ -4,9 +4,24 @@ import { StyleSheet, css } from 'aphrodite'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function Conta({handleShow, username, info}){
+export default function Conta({handleShow, username, info, pessoa}){
     const api = "http://localhost:4000";
 
+    console.log(pessoa)
+    const [pEmail, setPEmail] = useState('')
+    const [selectedPessoa, setSelectedPessoa] = useState([])
+    
+    useEffect(() => {
+        if(pessoa != null){
+            const filtrarPessoa = () => {
+                const PessoaFiltrada = pessoa.filter(p => p.username === username);
+                setSelectedPessoa(PessoaFiltrada);
+            };
+            filtrarPessoa();
+        }
+    }, [pessoa, username]);
+
+console.log(pEmail)
     const [activeTab, setActiveTab] = useState('1');
 
     const toggleTab = tab => {
@@ -46,9 +61,8 @@ export default function Conta({handleShow, username, info}){
     const [password, setPass] = useState('');
     const [pass1, setPass1] = useState('');
     const [dadosUsuario, setDadosUsuario] = useState(null);
-    const [email, setEmail] = useState(info);
+    const [email, setEmail] = useState(pEmail);
     
-
     function validateEmail(email) {
         const emailPattern = /^[a-z]+\.[a-z]+@isptec\.co\.ao$/ 
         const emal = /^20(20|21|22|23)\d{4}@isptec\.co\.ao$/;
@@ -176,10 +190,10 @@ export default function Conta({handleShow, username, info}){
 
                     <TabPane tabId="2" className={css(styles.tab)}>
                         <Label className={css(styles.label)}>Palavra-passe atual</Label>
-                        <Input className={css(styles.input)} type='text' value={password} onClick={(e) => setPass(e.target.value)}/>
+                        <Input className={css(styles.input)} type='password' value={password} onChange={(e) => setPass(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Nova palavra-passe</Label>
-                        <Input className={css(styles.input)} type='text' value={pass1} onClick={(e) => setPass1(e.target.value)}/>
+                        <Input className={css(styles.input)} type='password' value={pass1} onChange={(e) => setPass1(e.target.value)}/>
 
 
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
