@@ -1,9 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Label, Input, InputGroup, Button, Container, Row, Nav, NavItem, NavLink, TabPane, TabContent} from 'reactstrap'
 import { StyleSheet, css } from 'aphrodite'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function Conta({handleShow, username}){
+    const api = "http://localhost:4000";
+
     const [activeTab, setActiveTab] = useState('1');
 
     const toggleTab = tab => {
@@ -40,6 +43,86 @@ export default function Conta({handleShow, username}){
     const [month, setMonth] = useState(months[0]);
     const [year, setYear] = useState('2001');
     const [country, setCountry] = useState('Angola');
+
+    const [password, setPass] = useState('');
+    const [pass1, setPass1] = useState('');
+    const [dadosUsuario, setDadosUsuario] = useState(null);
+    
+
+    function validateEmail(email) {
+        const emailPattern = /^[a-z]+\.[a-z]+@isptec\.co\.ao$/ 
+        const emal = /^20(20|21|22|23)\d{4}@isptec\.co\.ao$/;
+        const ema = /^20(1[2-9]|20)\d{4}@isptec\.co\.ao$/;
+
+        return emailPattern.test(email) || emal.test(email) || ema.test(email) ;
+    }
+
+    useEffect(() => {
+        // Busca dados 
+        axios
+          .get(api + '/')
+          .then(response => {
+            setDadosUsuario(response.data);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }, []);
+    
+      function verificarUsuario() {
+        const usuarios = [];
+        if (dadosUsuario != null) {
+          dadosUsuario.forEach(obj => {
+            if (obj.username === username && obj.password === password) {
+              return true
+            }
+          });
+        }
+    
+        return false;
+      }
+
+    function alter(){
+        if(validateEmail(email)){
+            axios
+            .post(api + '/update', { username, email, gender, day, month, year, country })
+            .then(response => {
+            const createdUser = response.data;
+            alert('Actualizado!');
+            })
+            .catch(error => {
+            console.error('Error creating user:', error);
+            }); 
+        }     
+    }
+
+    function eliminar(){
+        axios
+            .post(api + '/delete', { username })
+            .then(response => {
+            const createdUser = response.data;
+            alert('Eliminado!');
+            })
+            .catch(error => {
+            console.error('Error creating user:', error);
+            });    
+    }
+
+    function alter2(){
+        if(verificarUsuario()){
+            axios
+            .post(api + '/updateP', { pass1})
+            .then(response => {
+            const createdUser = response.data;
+            alert('Actualizado!');
+            })
+            .catch(error => {
+            console.error('Error creating user:', error);
+            }); 
+        }else{
+            alert("Password actual errada!!!")
+        }     
+    }
 
     return (
         <Container className={css(styles.cont)}>
@@ -87,23 +170,21 @@ export default function Conta({handleShow, username}){
                         <Label className={css(styles.label)}>País/Região</Label>
                         <Input className={css(styles.input)} type='text' value={country} onChange={(e) => setCountry(e.target.value)}/>
 
-                        <Button className={css(styles.btn3)}>Eliminar conta</Button>
+                        <Button className={css(styles.btn3)} onClick={() => eliminar()} >Eliminar conta</Button>
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
-                        <Button className={css(styles.btn2)}>Guardar as alterações</Button>
+                        <Button className={css(styles.btn2)} onClick={() => alter()} >Guardar as alterações</Button>
                     </TabPane>
 
                     <TabPane tabId="2" className={css(styles.tab)}>
                         <Label className={css(styles.label)}>Palavra-passe atual</Label>
-                        <Input className={css(styles.input)} type='password'/>
+                        <Input className={css(styles.input)} type='text' value={password} onClick={(e) => setPass(e.target.value)}/>
 
                         <Label className={css(styles.label)}>Nova palavra-passe</Label>
-                        <Input className={css(styles.input)} type='password'/>
+                        <Input className={css(styles.input)} type='text' value={pass1} onClick={(e) => setPass1(e.target.value)}/>
 
-                        <Label className={css(styles.label)}>Confirmar a palavra-passe nova</Label>
-                        <Input className={css(styles.input)} type='password'/>
 
                         <button id='btn btn-default' className={css(styles.btn1)} onClick={() => handleShow('Inicio')}>Cancelar</button>
-                        <Button className={css(styles.btn2)}>Definir a nova palavra-passe</Button>
+                        <Button className={css(styles.btn2)} onClick={() => alter2()} >Definir a nova palavra-passe</Button>
                     </TabPane>
                 </TabContent>
             </Row>

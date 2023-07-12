@@ -241,8 +241,8 @@ export default function Upload({handleShow, username}){
         .post(api + db, info)
         .then(response => {
         const createdUser = response.data;
-        console.log('Created file:', createdUser+" "+db);
-        console.log('Enviado');
+        //console.log('Created file:', createdUser+" "+db);
+        alert('Enviado');
         })
         .catch(error => {
         console.error('Error creating user:', error);

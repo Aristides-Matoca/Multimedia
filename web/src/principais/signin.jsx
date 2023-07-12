@@ -35,9 +35,11 @@ export default function SignIn({ handleShow, handleLogin }){
     }
 
     function validateEmail(email) {
-        const emailPattern = /^(20((1[2-9]\d{5})|(2[0-3]\d{5}))|[a-z]+\.[a-z]+)@isptec\.co\.ao$/
+        const emailPattern = /^[a-z]+\.[a-z]+@isptec\.co\.ao$/ 
+        const emal = /^20(20|21|22|23)\d{4}@isptec\.co\.ao$/;
+        const ema = /^20(1[2-9]|20)\d{4}@isptec\.co\.ao$/;
 
-        return (emailPattern.test(email));
+        return emailPattern.test(email) || emal.test(email) || ema.test(email) ;
     }
 
     useEffect(() => {
