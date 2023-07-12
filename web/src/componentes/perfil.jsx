@@ -6,26 +6,29 @@ import { BiUser } from "react-icons/bi"
 import { FiEdit2 } from "react-icons/fi"
 import { MdPlayCircle as Play, MdPauseCircle as Pause } from "react-icons/md"
 import axios from 'axios';
+import { FiHeart as Heart } from "react-icons/fi"
+import { BsThreeDots as Dots } from "react-icons/bs"
+import { BiLeftArrow as Arrow } from "react-icons/bi"
 
-export default function Perfil({ username, audios, videos, podcasts, selecionarAudio, isPlaying }) {
+export default function Perfil({ username, owner, audios, videos, podcasts, selecionarAudio, isPlaying }) {
     const api = "http://localhost:4000";
     const [selectedAudios, setSelectedAudios] = useState([])
     const [selectedVideos, setSelectedVideos] = useState([])
     const [selectedPodcasts, setSelectedPodcasts] = useState([])
 
-    const [video, setVideo] = useState([])
+    /*const [video, setVideo] = useState([])
 
     useEffect(() => {
         // Fetch the uploads from Firestore or your backend API
         axios.get(api + "/video")
-          .then(response => {
-            const uploadsData = response.data;
-            setVideo(uploadsData);
-          })
-          .catch(error => {
-            console.error('Error fetching uploads:', error);
-          });
-      }, []);
+            .then(response => {
+                const uploadsData = response.data;
+                setVideo(uploadsData);
+            })
+            .catch(error => {
+                console.error('Error fetching uploads:', error);
+            });
+    }, []);*/
 
     useEffect(() => {
         const filtrarAudios = () => {
@@ -38,7 +41,7 @@ export default function Perfil({ username, audios, videos, podcasts, selecionarA
 
     useEffect(() => {
         const filtrarVideos = () => {
-            const videosFiltradas = video.filter(video => video.autor === username);
+            const videosFiltradas = videos.filter(video => video.autor === username);
             setSelectedVideos(videosFiltradas);
         };
 
@@ -47,7 +50,7 @@ export default function Perfil({ username, audios, videos, podcasts, selecionarA
 
     useEffect(() => {
         const filtrarPodcasts = () => {
-            const podcastsFiltradas = podcasts.filter(video => video.autor === username);
+            const podcastsFiltradas = podcasts.filter(podcast => podcast.autor === username);
             setSelectedPodcasts(podcastsFiltradas);
         };
 
@@ -95,6 +98,47 @@ export default function Perfil({ username, audios, videos, podcasts, selecionarA
         }
     }
 
+    //Funções de Options------------------------------------------------------------------
+    const [showOptions, setShowOptions] = useState(false)
+    const iconRef = useRef(null)
+    const optionsRef = useRef(null)
+
+    const handleOutsideClick = (event) => {
+        if (
+            iconRef.current &&
+            !iconRef.current.contains(event.target) &&
+            optionsRef.current &&
+            !optionsRef.current.contains(event.target)
+        ) {
+            setShowOptions(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleOutsideClick);
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    }, []);
+
+    const handleClick2 = () => {
+        setShowOptions(!showOptions)
+    };
+
+    const handleOptionsClick = () => {
+        setShowOptions(false)
+    };
+
+    const [hovered, setHovered] = useState(null);
+
+    const handleMouseEnter2 = (index) => {
+        setHovered(index);
+    };
+
+    const handleMouseLeave2 = () => {
+        setHovered(null);
+    };
+
     return (
         <Container className={css(styles.cont)}>
             <Row className={css(styles.row)}>
@@ -139,7 +183,7 @@ export default function Perfil({ username, audios, videos, podcasts, selecionarA
                     <TabPane tabId="1" className={css(styles.tab)}>
                         {selectedAudios != null && (
                             selectedAudios.map((audio, index) => (
-                                <div key={index} className={css(styles.audios)}>
+                                <div key={index} className={css(styles.audios)} onMouseEnter={() => handleMouseEnter2(index)} onMouseLeave={handleMouseLeave2}>
 
                                     <div className={css(styles.spans)}>
                                         <span style={{ background: 'none' }}>{index + 1}</span>
@@ -151,13 +195,43 @@ export default function Perfil({ username, audios, videos, podcasts, selecionarA
                                         </div>
                                     </div>
 
-                                    <span style={{ background: 'none' }}>
-                                        {isPlaying == true ? (
-                                            <Pause className={css(styles.icone)} />
+                                    <div style={{ background: 'none', width: '14%' }}>
+
+                                        {hovered === index ? (
+                                            <span className={css(styles.favorite)}>
+                                                <Heart style={{ background: 'none' }} />
+                                            </span>
                                         ) : (
-                                            <Play className={css(styles.icone)} />
+                                            <span className={css(styles.favorite)}>
+                                                <Heart style={{ background: 'none', visibility: 'hidden' }} />
+                                            </span>
                                         )}
-                                    </span>
+
+                                        <span style={{ background: 'none' }}>
+                                            {isPlaying == true ? (
+                                                <Pause className={css(styles.icone)} />
+                                            ) : (
+                                                <Play className={css(styles.icone)} />
+                                            )}
+                                        </span>
+
+                                        <span className={css(styles.options)}>
+                                            {hovered === index ? (
+                                                <React.Fragment>
+                                                    <Dots style={{ background: 'none' }} ref={iconRef} onClick={handleClick2} />
+                                                    {showOptions ? (
+                                                        <div className={css(styles.definition)} onClick={handleOptionsClick} ref={optionsRef}>
+                                                            <p className={css(styles.cont1)}>Adicionar aos favoritos</p>
+                                                            {username === owner && <p className={css(styles.cont1)} >Editar áudio</p>}
+                                                            <p className={css(styles.cont2)}><Arrow style={{ background: 'none', color: 'white' }} /> Adicionar a playlist</p>
+                                                        </div>
+                                                    ) : null}
+                                                </React.Fragment>
+                                            ) : (
+                                                <Dots style={{ background: 'none', visibility: 'hidden' }} />
+                                            )}
+                                        </span>
+                                    </div>
                                 </div>
                             ))
                         )}
@@ -182,9 +256,9 @@ export default function Perfil({ username, audios, videos, podcasts, selecionarA
                     </TabPane>
 
                     <TabPane tabId="4" className={css(styles.tab)}>
-                    {selectedPodcasts != null && (
+                        {selectedPodcasts != null && (
                             selectedPodcasts.map((podcast, index) => (
-                                <div key={index} className={css(styles.audios)}>
+                                <div key={index} className={css(styles.audios)} onMouseEnter={() => handleMouseEnter2(index)} onMouseLeave={handleMouseLeave2}>
 
                                     <div className={css(styles.spans)}>
                                         <span style={{ background: 'none' }}>{index + 1}</span>
@@ -196,13 +270,43 @@ export default function Perfil({ username, audios, videos, podcasts, selecionarA
                                         </div>
                                     </div>
 
-                                    <span style={{ background: 'none' }}>
-                                        {isPlaying == true ? (
-                                            <Pause className={css(styles.icone)} />
+                                    <div style={{ background: 'none', width: '14%' }}>
+
+                                        {hovered === index ? (
+                                            <span className={css(styles.favorite)}>
+                                                <Heart style={{ background: 'none' }} />
+                                            </span>
                                         ) : (
-                                            <Play className={css(styles.icone)} />
+                                            <span className={css(styles.favorite)}>
+                                                <Heart style={{ background: 'none', visibility: 'hidden' }} />
+                                            </span>
                                         )}
-                                    </span>
+
+                                        <span style={{ background: 'none' }}>
+                                            {isPlaying == true ? (
+                                                <Pause className={css(styles.icone)} />
+                                            ) : (
+                                                <Play className={css(styles.icone)} />
+                                            )}
+                                        </span>
+
+                                        <span className={css(styles.options)}>
+                                            {hovered === index ? (
+                                                <React.Fragment>
+                                                    <Dots style={{ background: 'none' }} ref={iconRef} onClick={handleClick2} />
+                                                    {showOptions ? (
+                                                        <div className={css(styles.definition)} onClick={handleOptionsClick} ref={optionsRef}>
+                                                            <p className={css(styles.cont1)}>Adicionar aos favoritos</p>
+                                                            {username === owner && <p className={css(styles.cont1)} >Editar podcast</p>}
+                                                            <p className={css(styles.cont2)}><Arrow style={{ background: 'none', color: 'white' }} /> Adicionar a playlist</p>
+                                                        </div>
+                                                    ) : null}
+                                                </React.Fragment>
+                                            ) : (
+                                                <Dots style={{ background: 'none', visibility: 'hidden' }} />
+                                            )}
+                                        </span>
+                                    </div>
                                 </div>
                             ))
                         )}
@@ -334,12 +438,69 @@ const styles = StyleSheet.create({
         fontSize: '14px',
     },
 
+    favorite: {
+        background: 'none',
+        fontSize: '22px',
+        ':hover': {
+            cursor: 'pointer'
+        }
+    },
+
     icone: {
+        margin: '0 10% 0 25%',
         background: 'none',
         fontSize: '29px',
         ':hover': {
             cursor: 'pointer'
         }
+    },
+
+   options: {
+        marginRight: '-12%',
+        background: 'none',
+        fontSize: '25px',
+        ':hover': {
+            cursor: 'pointer'
+        }
+    },
+
+   definition: {
+        position: 'absolute',
+        top: '53%',
+        right: '2%',
+        border: '1px solid #ccc',
+        borderRadius: '5px',
+        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+        textAlign: 'justify',
+        background: 'rgb(44,44,43)',
+        width: '17%'
+    },
+
+     cont1: {
+        background: 'none',
+        fontSize: '18px',
+        color: 'white',
+        margin: '5px',
+        padding: '4px',
+        ':hover': {
+            cursor: 'pointer',
+            color: 'rgba(255, 213, 0, 1)',
+            background: 'rgb(36,36,36)'
+        },
+    },
+
+    cont2: {
+        borderTop: '2.5px solid rgb(36,36,36)',
+        background: 'none',
+        fontSize: '18px',
+        color: 'white',
+        margin: '5px',
+        padding: '4px',
+        ':hover': {
+            cursor: 'pointer',
+            color: 'rgba(255, 213, 0, 1)',
+            background: 'rgb(36,36,36)'
+        },
     },
 
     listaVideos: {
@@ -367,4 +528,5 @@ const styles = StyleSheet.create({
         borderRadius: '15px',
         border: '1px solid grey'
     },
+
 })

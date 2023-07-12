@@ -12,6 +12,7 @@ import Conta from '../componentes/acount'
 import Perfil from '../componentes/perfil'
 import Upload from '../componentes/upload'
 import Podcasts from '../componentes/podcast'
+import Artistas from '../componentes/artistas'
 import { StyleSheet, css } from 'aphrodite'
 import { IoIosNotifications } from "react-icons/io"
 import { TbSearch, TbSettings } from "react-icons/tb"
@@ -352,13 +353,14 @@ export default function Home({ handleShow2, username }) {
               {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia} videos={videos} radios={radios} podcasts={podcasts}/>}
               {nav === 'Audio' && <Audios handleShow={handleShow} />}
               {nav === 'Video' && <Videos handleShow={handleShow} videos={videos} selecionarVideo={selecionarMedia} irPerfil={irPerfil} />}
-              {nav === 'Assistir' && <VideoPlayer videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} indexVideo={indexVideo} />}
+              {nav === 'Assistir' && <VideoPlayer videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} indexVideo={indexVideo} irPerfil={irPerfil}/>}
               {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Podcast' && <Podcasts podcasts={podcasts} selecionarPodcast={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil}/>}
               {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil} />}
               {nav === 'Conta' && <Conta handleShow={handleShow} username={username} />}
-              {nav === 'Perfil' && <Perfil username={names} audios={audios} videos={videos} podcasts={podcasts} selecionarAudio={selecionarMedia} isPlaying={isPlaying} />}
+              {nav === 'Perfil' && <Perfil username={names} owner={username} audios={audios} videos={videos} podcasts={podcasts} selecionarAudio={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Upload' && <Upload handleShow={handleShow} username={username} />}
+              {nav === 'Artistas' && <Artistas pessoa={pessoa} audios={audios} videos={videos} podcasts={podcasts} irPerfil={irPerfil}/>}
               {nav === 'Grupos' && <Group handleShow={handleShow} name={name} />}
               {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow} />}
               {nav === 'Grupo' && <ValidarAcesso handleShow={handleShow} nome={grupoName} />}

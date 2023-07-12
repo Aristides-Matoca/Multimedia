@@ -31,7 +31,7 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil }) => {
     selecionarAudio(index, 1, playPause);
   };
 
-  //Funções de Configuranções------------------------------------------------------------------
+  //Funções de Options------------------------------------------------------------------
   const [showOptions, setShowOptions] = useState(false)
   const iconRef = useRef(null)
   const optionsRef = useRef(null)
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     background: 'black',
     width: '101.4%',
     marginLeft: '-0.8%',
+    marginBottom: '0.5%'
   },
 
   playlist: {

@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
-import { RiHeart3Fill as Heart } from "react-icons/ri"
+import { FiHeart as Heart } from "react-icons/fi"
 import { Nav, NavItem, NavLink } from 'reactstrap'
 import { TbPlayerTrackPrevFilled as Prev, TbPlayerTrackNextFilled as Next } from "react-icons/tb"
 import { MdVolumeUp as Volume, MdPlayCircle as Play, MdOutlineFileDownload as Download, MdPauseCircle as Pause } from "react-icons/md"
