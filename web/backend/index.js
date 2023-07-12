@@ -113,7 +113,7 @@ app.post("/videos", async(req, res)=>{
     res.send({msg: "File Added"})
 })
 
-app.post("/update", async(req, res)=>{
+/*app.post("/update", async(req, res)=>{
     const id = req.body.id;
     //console.log("Before:", req.body);
     delete req.body.id;
@@ -121,11 +121,59 @@ app.post("/update", async(req, res)=>{
     await Pessoa.doc(id).update(data);
     //console.log("After:", req.body);
     res.send({msg: "Updated"})
-})
+})*/
+
+app.post("/update", async (req, res) => {
+    const username = req.body.username;
+    delete req.body.username;
+    const data = req.body;
+  
+    const querySnapshot = await Pessoa.where("username", "==", username).get();
+  
+    if (querySnapshot.empty) {
+      res.status(404).send({ error: "Document not found" });
+      return;
+    }
+  
+    const documentId = querySnapshot.docs[0].id;
+  
+    await Pessoa.doc(documentId).update(data);
+  
+    res.send({ msg: "Updated" });
+  });
+
+  app.post("/updateP", async (req, res) => {
+    const username = req.body.username;
+    const newPassword = req.body.password; // New password value
+
+    // Create an object with the password field to update
+    const data = {
+        password: newPassword,
+    };
+
+    const querySnapshot = await Pessoa.where("username", "==", username).get();
+  
+    if (querySnapshot.empty) {
+      res.status(404).send({ error: "Document not found" });
+      return;
+    }
+  
+    const documentId = querySnapshot.docs[0].id;
+  
+    await Pessoa.doc(documentId).update(data);
+
+    res.send({ msg: "Updated" });
+  });
 
 app.post("/delete", async(req, res)=>{
-    const id = req.body.id;
-    await Pessoa.doc(id).delete();
+    const username = req.body.username;
+    const querySnapshot = await Pessoa.where("username", "==", username).get();
+    if (querySnapshot.empty) {
+      res.status(404).send({ error: "Document not found" });
+      return;
+    } 
+    const documentId = querySnapshot.docs[0].id;
+    await Pessoa.doc(documentId).delete();
     res.send({msg: "Deleted"});
 })
 
