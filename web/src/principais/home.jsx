@@ -65,6 +65,8 @@ export default function Home({ handleShow2, username }) {
   const [urlVideo, setUrlVideo] = useState(null);
   const mediaRef = useRef(null);
 
+  const [em, setP] = useState(null)
+
   const [grupoName, setGrupoName] = useState("");
 
   const api = "http://localhost:4000";
@@ -99,6 +101,13 @@ export default function Home({ handleShow2, username }) {
       .then(response => {
         const pessoas = response.data;
         setPessoa(pessoas);
+        if (pessoa != null) {
+          pessoa.forEach(obj => {
+            if (obj.username === username) {      
+              setP(obj.email)       
+            }
+          });
+        }
       })
       .catch(error => {
         console.error('Error fetching uploads:', error);
@@ -357,7 +366,7 @@ export default function Home({ handleShow2, username }) {
               {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Podcast' && <Podcasts podcasts={podcasts} selecionarPodcast={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil}/>}
               {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil} />}
-              {nav === 'Conta' && <Conta handleShow={handleShow} username={username} />}
+              {nav === 'Conta' && <Conta handleShow={handleShow} username={username} info={em}/>}
               {nav === 'Perfil' && <Perfil username={names} owner={username} audios={audios} videos={videos} podcasts={podcasts} selecionarAudio={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Upload' && <Upload handleShow={handleShow} username={username} />}
               {nav === 'Artistas' && <Artistas pessoa={pessoa} audios={audios} videos={videos} podcasts={podcasts} irPerfil={irPerfil}/>}

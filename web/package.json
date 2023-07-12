@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@sweetalert2/themes": "^5.0.15",
     "aphrodite": "^2.4.0",
     "axios": "^1.4.0",
