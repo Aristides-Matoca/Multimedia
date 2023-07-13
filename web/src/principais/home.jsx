@@ -39,9 +39,11 @@ export default function Home({ handleShow2, username }) {
 
   const [audios, setAudios] = useState(null);
 
-  const [podcasts, setPodcasts] = useState([
+ /* const [podcasts, setPodcasts] = useState([
     { tipo: 'Podcast', titulo: 'Podast 1', autor: 'Harry Matoca', legenda: 'Entrevista ao Kelson', imageDownloadURL: podlogo, audioURL: KMW },
-  ]);
+  ]);*/
+
+  const [podcasts, setPodcasts] = useState(null);
 
   const [videos, setVideos] = useState(null);
 
@@ -104,7 +106,7 @@ export default function Home({ handleShow2, username }) {
       });
   }, []);
 
-  /* useEffect(() => {
+  useEffect(() => {
      // Fetch the uploads from Firestore or your backend API
        axios.get(api + "/podcasts")
          .then(response => {
@@ -114,7 +116,7 @@ export default function Home({ handleShow2, username }) {
          .catch(error => {
            console.error('Error fetching uploads:', error);
          });
-   }, []);*/
+   }, []);
 
   const selecionarMedia = (index, value, playPause) => {
     if (value == 1) {
@@ -163,7 +165,7 @@ export default function Home({ handleShow2, username }) {
     }
 
     else if (value == 4) {
-      podcasts[index].tipo = 'Áudio'
+      podcasts[index].tipo = 'Podcast'
       if (podcasts[index].imageDownloadURL == null) {
         podcasts[index].imageDownloadURL = podlogo
       }
@@ -328,7 +330,7 @@ export default function Home({ handleShow2, username }) {
     );
     setResultadosPesquisa(resultados);
     setPopUpVisivel(true);
-  };
+  }; 
 
   const handleBlurInput = () => {
     setPopUpVisivel(false);
@@ -391,7 +393,7 @@ export default function Home({ handleShow2, username }) {
               {nav === 'Podcast' && <Podcasts podcasts={podcasts} selecionarPodcast={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil} />}
               {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil} />}
               {nav === 'Conta' && <Conta handleShow={handleShow} username={username} pessoa={pessoa} />}
-              {nav === 'Perfil' && <Perfil handleShow={handleShow} username={names} owner={username} audios={audios} videos={videos} podcasts={podcasts} selecionarAudio={selecionarMedia} isPlaying={isPlaying} />}
+              {nav === 'Perfil' && <Perfil handleShow={handleShow} username={names} owner={username} audios={audios} videos={videos} podcasts={podcasts} selecionarMedia={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Upload' && <Upload handleShow={handleShow} username={username} />}
               {nav === 'Artistas' && <Artistas pessoa={pessoa} audios={audios} videos={videos} podcasts={podcasts} irPerfil={irPerfil}/>}
               {nav === 'Grupos' && <Group handleShow={handleShow} name={name} />}

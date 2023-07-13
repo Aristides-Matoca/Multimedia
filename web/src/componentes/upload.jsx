@@ -214,19 +214,19 @@ export default function Upload({ handleShow, username }) {
                         console.error('Error uploading file to Firebase Storage:', error);
                     },
                     () => {
-                        uploadTask.snapshot.ref.getDownloadURL().then(podcastURL => {
+                        uploadTask.snapshot.ref.getDownloadURL().then(audioURL => {
                             if (selectedFileImagem) {
                                 imageRef.put(selectedFileImagem).then(() => {
                                     imageRef.getDownloadURL().then((imageDownloadURL) => {
                                         //alert(imageDownloadURL);
                                         // Update the previously saved database entry with the image download URL
-                                        enviar(db, { podcastURL, imageDownloadURL, tipo, titulo, autor, est, description, dia, mes, ano, legenda, size });
+                                        enviar(db, { audioURL, imageDownloadURL, tipo, titulo, autor, est, description, dia, mes, ano, legenda, size });
                                     });
                                 }).catch((imageError) => {
                                     console.error("Error uploading image file:", imageError);
                                 });
                             } else {
-                                enviar(db, { podcastURL, tipo, titulo, autor, est, description, dia, mes, ano, legenda, size });
+                                enviar(db, { audioURL, tipo, titulo, autor, est, description, dia, mes, ano, legenda, size });
                             }
                         });
                     }

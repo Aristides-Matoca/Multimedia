@@ -217,7 +217,7 @@ export default function Perfil({ handleShow, username, owner, audios, videos, po
                                             </span>
                                         )}
 
-                                        <span style={{ background: 'none' }} onClick={() => handleClick(1, audio.videoURL)}>
+                                        <span style={{ background: 'none' }} onClick={() => handleClick(1, audio.audioURL)}>
                                             {isPlaying == true ? (
                                                 <Pause className={css(styles.icone)} />
                                             ) : (
@@ -292,7 +292,7 @@ export default function Perfil({ handleShow, username, owner, audios, videos, po
                                             </span>
                                         )}
 
-                                        <span style={{ background: 'none' }} onClick={() => handleClick(4, podcast.videoURL)}>
+                                        <span style={{ background: 'none' }} onClick={() => handleClick(4, podcast.audioURL)}>
                                             {isPlaying == true ? (
                                                 <Pause className={css(styles.icone)} />
                                             ) : (
