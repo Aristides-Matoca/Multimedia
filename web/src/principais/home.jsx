@@ -25,7 +25,6 @@ import podlogo from '../img/Podcast.jpg'
 import Group from '../componentes/group'
 import KMW from '../audios/KMW-MeuSucesso.mp3'
 import CriarGrupo from '../componentes/criarGrupo'
-import ValidarAcesso from '../componentes/validarAcesso'
 import GroupIn from '../componentes/groupIn'
 
 export default function Home({ handleShow2, username }) {
@@ -370,9 +369,8 @@ export default function Home({ handleShow2, username }) {
               {nav === 'Perfil' && <Perfil username={names} owner={username} audios={audios} videos={videos} podcasts={podcasts} selecionarAudio={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Upload' && <Upload handleShow={handleShow} username={username} />}
               {nav === 'Artistas' && <Artistas pessoa={pessoa} audios={audios} videos={videos} podcasts={podcasts} irPerfil={irPerfil}/>}
-              {nav === 'Grupos' && <Group handleShow={handleShow} name={name} />}
-              {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow} />}
-              {nav === 'Grupo' && <ValidarAcesso handleShow={handleShow} nome={grupoName} />}
+              {nav === 'Grupos' && <Group handleShow={handleShow} name={name} username={username}/>}
+              {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow} username={username}/>}
               {nav === 'GrupoIn' && <GroupIn handleShow={handleShow} nome={grupoName}/>}
             </React.Fragment>
           )

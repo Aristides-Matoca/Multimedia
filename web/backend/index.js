@@ -3,7 +3,7 @@ import { json } from 'express';
 import cors from 'cors';
 
 //import Pessoa from './pessoaDB.js';
-import { UsuariosOn, Pessoa, storage, Audios, Videos, Grupos } from './config.js';
+import { UsuariosOn, Pessoa, storage, Audios, Videos, Grupos, Podcast } from './config.js';
 
 const app = express();
 app.use(express.json());
@@ -64,13 +64,13 @@ app.get("/video", async(req, res) => {
     res.send(list);
 })
 
-/*app.get("/podcasts", async(req, res) => {
+app.get("/podcasts", async(req, res) => {
     const snapshot = await Podcast.get();
     //const ids = snapshot.docs.map((doc) => doc.id);
     //const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     const list = snapshot.docs.map((doc) => doc.data());
     res.send(list);
-})*/
+})
 
 // Enviar a colecção
 // Enviar para Pessoa
@@ -113,6 +113,13 @@ app.post("/videos", async(req, res)=>{
     res.send({msg: "File Added"})
 })
 
+app.post("/podcast", async(req, res)=>{
+    const data = req.body
+    console.log("Data of upload ", data)
+    await Podcast.add(data);
+    res.send({msg: "File Added"})
+})
+
 /*app.post("/update", async(req, res)=>{
     const id = req.body.id;
     //console.log("Before:", req.body);
@@ -142,7 +149,7 @@ app.post("/update", async (req, res) => {
     res.send({ msg: "Updated" });
   });
 
-  app.post("/updateP", async (req, res) => {
+app.post("/updateP", async (req, res) => {
     const username = req.body.username;
     const newPassword = req.body.password; // New password value
 
@@ -152,6 +159,29 @@ app.post("/update", async (req, res) => {
     };
 
     const querySnapshot = await Pessoa.where("username", "==", username).get();
+
+    if (querySnapshot.empty) {
+        res.status(404).send({ error: "Document not found" });
+        return;
+    }
+
+    const documentId = querySnapshot.docs[0].id;
+
+    await Pessoa.doc(documentId).update(data);
+
+    res.send({ msg: "Updated" });
+});
+
+app.post("/updateGrupo", async (req, res) => {
+    const noMe = req.body.noMe;
+    const pedidos = req.body.pedidos; // New password value
+
+    // Create an object with the password field to update
+    const data = {
+        pedidos: pedidos,
+    };
+
+    const querySnapshot = await Grupos.where("nome", "==", noMe).get();
   
     if (querySnapshot.empty) {
       res.status(404).send({ error: "Document not found" });
@@ -160,7 +190,7 @@ app.post("/update", async (req, res) => {
   
     const documentId = querySnapshot.docs[0].id;
   
-    await Pessoa.doc(documentId).update(data);
+    await Grupos.doc(documentId).update(data);
 
     res.send({ msg: "Updated" });
   });
@@ -174,6 +204,18 @@ app.post("/delete", async(req, res)=>{
     } 
     const documentId = querySnapshot.docs[0].id;
     await Pessoa.doc(documentId).delete();
+    res.send({msg: "Deleted"});
+})
+
+app.post("/deleteGrupo", async(req, res)=>{
+    const noMe = req.body.noMe;
+    const querySnapshot = await Grupos.where("nome", "==", noMe).get();
+    if (querySnapshot.empty) {
+      res.status(404).send({ error: "Document not found" });
+      return;
+    } 
+    const documentId = querySnapshot.docs[0].id;
+    await Grupos.doc(documentId).delete();
     res.send({msg: "Deleted"});
 })
 
