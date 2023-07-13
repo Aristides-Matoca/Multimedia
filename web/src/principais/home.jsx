@@ -23,7 +23,6 @@ import audiologo from '../img/audiologo.jpg'
 import radiologo from '../img/radiologo.png'
 import podlogo from '../img/Podcast.jpg'
 import Group from '../componentes/group'
-import KMW from '../audios/KMW-MeuSucesso.mp3'
 import CriarGrupo from '../componentes/criarGrupo'
 import GroupIn from '../componentes/groupIn'
 
@@ -39,9 +38,9 @@ export default function Home({ handleShow2, username }) {
 
   const [audios, setAudios] = useState(null);
 
- /* const [podcasts, setPodcasts] = useState([
-    { tipo: 'Podcast', titulo: 'Podast 1', autor: 'Harry Matoca', legenda: 'Entrevista ao Kelson', imageDownloadURL: podlogo, audioURL: KMW },
-  ]);*/
+  /* const [podcasts, setPodcasts] = useState([
+     { tipo: 'Podcast', titulo: 'Podast 1', autor: 'Harry Matoca', legenda: 'Entrevista ao Kelson', imageDownloadURL: podlogo, audioURL: KMW },
+   ]);*/
 
   const [podcasts, setPodcasts] = useState(null);
 
@@ -107,16 +106,16 @@ export default function Home({ handleShow2, username }) {
   }, []);
 
   useEffect(() => {
-     // Fetch the uploads from Firestore or your backend API
-       axios.get(api + "/podcasts")
-         .then(response => {
-           const uploadsData = response.data;
-           setPodcasts(uploadsData);
-         })
-         .catch(error => {
-           console.error('Error fetching uploads:', error);
-         });
-   }, []);
+    // Fetch the uploads from Firestore or your backend API
+    axios.get(api + "/podcasts")
+      .then(response => {
+        const uploadsData = response.data;
+        setPodcasts(uploadsData);
+      })
+      .catch(error => {
+        console.error('Error fetching uploads:', error);
+      });
+  }, []);
 
   const selecionarMedia = (index, value, playPause) => {
     if (value == 1) {
@@ -318,29 +317,66 @@ export default function Home({ handleShow2, username }) {
 
   //Pesquisa de usuarios
   const [valorPesquisa, setValorPesquisa] = useState('');
-  const [resultadosPesquisa, setResultadosPesquisa] = useState([]);
+  const [resultadosPessoa, setResultadosPessoa] = useState([]);
+  const [resultadosAudios, setResultadosAudios] = useState([]);
+  const [resultadosVideos, setResultadosVidios] = useState([]);
   const [popUpVisivel, setPopUpVisivel] = useState(false);
 
   const handleChangePesquisa = (event) => {
     const valor = event.target.value;
     setValorPesquisa(valor);
 
+    const resultadosAudios = audios.filter(audio =>
+      audio.titulo.toLowerCase().includes(valor.toLowerCase())
+    );
+    setResultadosAudios(resultadosAudios);
+
+    const resultadosVideos = videos.filter(video =>
+      video.titulo.toLowerCase().includes(valor.toLowerCase())
+    );
+    setResultadosVidios(resultadosVideos);
+
     const resultados = pessoa.filter(p =>
       p.username.toLowerCase().includes(valor.toLowerCase())
     );
-    setResultadosPesquisa(resultados);
+    setResultadosPessoa(resultados);
     setPopUpVisivel(true);
-  }; 
+  };
 
   const handleBlurInput = () => {
     setPopUpVisivel(false);
-    setResultadosPesquisa([]);
+    setResultadosPessoa([]);
+    setResultadosAudios([]);
   };
 
   const handleClickAutor = (autor) => {
     setPopUpVisivel(false);
     irPerfil(autor)
   }
+
+  const handleClickMedia = (url, pos) => {
+    setPopUpVisivel(false);
+    var posicao
+
+    if (pos == 1) {
+      posicao = audios.findIndex(audio => audio.audioURL === url)
+    }
+
+    if (pos == 2) {
+      posicao = videos.findIndex(video => video.videoURL === url)
+      handleShow('Assistir')
+    }
+
+    selecionarMedia(posicao, pos, 11)
+    setTimeout(() => {
+      selectMedia(posicao, pos);
+    }, 100);
+  }
+
+  const selectMedia = (posicao, pos) => {
+    selecionarMedia(posicao, pos, 11);
+  };
+
 
   return (
     <Row className={css(styles.row2)}>
@@ -357,14 +393,38 @@ export default function Home({ handleShow2, username }) {
           <Input value={valorPesquisa} onChange={handleChangePesquisa} onBlur={handleBlurInput} onFocus={() => setPopUpVisivel(true)} className={css(styles.textsearch)} placeholder='Pesquise por Sons, Artistas e Álbuns' />
         </InputGroup>
 
-        {popUpVisivel && resultadosPesquisa.length > 0 && (
+        {popUpVisivel && resultadosVideos.length > 0 && (
           <div className={css(styles.popup)} onBlur={handleBlurInput} onMouseDown={(e) => e.preventDefault()}>
-            <h4 >Artistas</h4>
-              {resultadosPesquisa.map((p, index) => (
-                <div key={index} className={css(styles.cont1)} onClick={() => handleClickAutor(p.username)}>
-                  <span style={{background:'none'}}>{p.username}<br/></span>
-                </div>
-              ))}
+            <h4 style={{ background: 'none', borderBottom: '1px solid grey', textAlign: 'center', paddingTop: '1%' }}>Vídeos</h4>
+            {resultadosVideos.map((video, index) => (
+              <div key={index} className={css(styles.cont1)} onClick={() => handleClickMedia(video.videoURL, 2)}>
+                <span style={{ background: 'none' }}>{video.titulo}<br /></span>
+                <span style={{ background: 'none', fontSize: '16px' }}>{video.autor}<br /></span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {popUpVisivel && resultadosAudios.length > 0 && (
+          <div className={css(styles.popup)} onBlur={handleBlurInput} onMouseDown={(e) => e.preventDefault()}>
+            <h4 style={{ background: 'none', borderBottom: '1px solid grey', textAlign: 'center', paddingTop: '1%' }}>Músicas</h4>
+            {resultadosAudios.map((audio, index) => (
+              <div key={index} className={css(styles.cont1)} onClick={() => handleClickMedia(audio.audioURL, 1)}>
+                <span style={{ background: 'none' }}>{audio.titulo}<br /></span>
+                <span style={{ background: 'none', fontSize: '16px' }}>{audio.autor}<br /></span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {popUpVisivel && resultadosPessoa.length > 0 && (
+          <div className={css(styles.popup)} onBlur={handleBlurInput} onMouseDown={(e) => e.preventDefault()}>
+            <h4 style={{ background: 'none', borderBottom: '1px solid grey', textAlign: 'center', paddingTop: '1%' }}>Artistas</h4>
+            {resultadosPessoa.map((p, index) => (
+              <div key={index} className={css(styles.cont1)} onClick={() => handleClickAutor(p.username)}>
+                <span style={{ background: 'none' }}>{p.username}<br /></span>
+              </div>
+            ))}
           </div>
         )}
 
@@ -395,10 +455,10 @@ export default function Home({ handleShow2, username }) {
               {nav === 'Conta' && <Conta handleShow={handleShow} username={username} pessoa={pessoa} />}
               {nav === 'Perfil' && <Perfil handleShow={handleShow} username={names} owner={username} audios={audios} videos={videos} podcasts={podcasts} selecionarMedia={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Upload' && <Upload handleShow={handleShow} username={username} />}
-              {nav === 'Artistas' && <Artistas pessoa={pessoa} audios={audios} videos={videos} podcasts={podcasts} irPerfil={irPerfil}/>}
+              {nav === 'Artistas' && <Artistas pessoa={pessoa} audios={audios} videos={videos} podcasts={podcasts} irPerfil={irPerfil} />}
               {nav === 'Grupos' && <Group handleShow={handleShow} name={name} />}
               {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow} />}
-              {nav === 'GrupoIn' && <GroupIn handleShow={handleShow} nome={grupoName}/>}
+              {nav === 'GrupoIn' && <GroupIn handleShow={handleShow} nome={grupoName} />}
             </React.Fragment>
           )
         )}
@@ -499,7 +559,7 @@ const styles = StyleSheet.create({
     borderLeft: 'none'
   },
 
-  popup:{
+  popup: {
     position: 'absolute',
     border: '1px solid #ccc',
     borderRadius: '5px',
