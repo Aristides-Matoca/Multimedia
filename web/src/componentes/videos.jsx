@@ -21,8 +21,8 @@ const Videos = ({ handleShow, videos, selecionarVideo, irPerfil }) => {
         <div className={css(styles.videosContainer)}>
             <div className={css(styles.listaVideos)}>
                 {videos.map((video, index) => (
-                    <div key={index}className={css(styles.lista)}>
-                        <img className={css(styles.img)} src={video.imageDownloadURL} alt="Image" onClick={() => reproduzirVideo(index)}/> <br />
+                    <div key={index} className={css(styles.lista)}>
+                        <img className={css(styles.img)} src={video.imageDownloadURL} alt="Image" onClick={() => reproduzirVideo(index)} /> <br />
                         <span style={{ background: 'none' }} onClick={() => reproduzirVideo(index)}>{video.titulo}</span> <br />
                         <span className={css(styles.artista)} onClick={() => irPerfil(video.autor)}>{video.autor}</span>
                     </div>
@@ -46,9 +46,9 @@ const styles = StyleSheet.create({
         //border: '1px solid grey',
         borderTopLeftRadius: '8px',
         borderTopRightRadius: '8px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridGap: '10px',
         color: 'white',
         background: 'rgb(36,36,36)',
         marginRight: '0.7%'
@@ -64,11 +64,11 @@ const styles = StyleSheet.create({
     },
 
     img: {
-        width: '280px',
-        height: '210px',
+        width: '260px',
+        height: '190px',
         background: 'rgb(36,36,36)',
         borderRadius: '15px',
-        marginBottom: '4%',
+        marginBottom: '1%',
         border: '1px solid grey'
     },
 

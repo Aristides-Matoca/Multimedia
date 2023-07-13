@@ -4,7 +4,7 @@ import { StyleSheet, css } from 'aphrodite'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function Conta({handleShow, username, info, pessoa}){
+export default function Conta({handleShow, username, pessoa}){
     const api = "http://localhost:4000";
 
     console.log(pessoa)

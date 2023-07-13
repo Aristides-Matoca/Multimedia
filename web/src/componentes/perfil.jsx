@@ -9,7 +9,7 @@ import { FiHeart as Heart } from "react-icons/fi"
 import { BsThreeDots as Dots } from "react-icons/bs"
 import { BiLeftArrow as Arrow } from "react-icons/bi"
 
-export default function Perfil({ username, owner, audios, videos, podcasts, selecionarAudio, isPlaying }) {
+export default function Perfil({ handleShow, username, owner, audios, videos, podcasts, selecionarMedia, isPlaying }) {
     const [selectedAudios, setSelectedAudios] = useState([])
     const [selectedVideos, setSelectedVideos] = useState([])
     const [selectedPodcasts, setSelectedPodcasts] = useState([])
@@ -40,6 +40,32 @@ export default function Perfil({ username, owner, audios, videos, podcasts, sele
 
         filtrarPodcasts();
     }, [podcasts, username]);
+
+    const handleClick = (pos, url) => {
+        var posicao
+
+        if(pos == 1){
+            posicao = audios.findIndex(audio => audio.audioURL === url)
+        }
+
+        else if (pos == 2) {
+            posicao = videos.findIndex(video => video.videoURL === url)
+            handleShow('Assistir')
+        }
+
+        else if(pos == 4){
+            posicao = podcasts.findIndex(podcast => podcast.audioURL === url)
+        }
+
+        selecionarMedia(posicao, pos, 11);
+        setTimeout(() => {
+            selectMedia(posicao, pos);
+        }, 100);
+    };
+
+    const selectMedia = (posicao, pos) => {
+        selecionarMedia(posicao, pos, 11);
+    };
 
 
     //Tem a ver com upload de fotos
@@ -191,7 +217,7 @@ export default function Perfil({ username, owner, audios, videos, podcasts, sele
                                             </span>
                                         )}
 
-                                        <span style={{ background: 'none' }}>
+                                        <span style={{ background: 'none' }} onClick={() => handleClick(1, audio.videoURL)}>
                                             {isPlaying == true ? (
                                                 <Pause className={css(styles.icone)} />
                                             ) : (
@@ -225,7 +251,7 @@ export default function Perfil({ username, owner, audios, videos, podcasts, sele
                     <TabPane tabId="2" className={css(styles.tab)}>
                         <div className={css(styles.listaVideos)}>
                             {selectedVideos.map((video, index) => (
-                                <div key={index} className={css(styles.lista)}>
+                                <div key={index} className={css(styles.lista)} onClick={() => handleClick(2, video.videoURL)}>
                                     <img className={css(styles.imgV)} src={video.imageDownloadURL} alt="Image" /> <br />
                                     <span style={{ background: 'none' }}>{video.titulo}</span> <br />
                                     <span style={{ background: 'none' }}>{video.autor}</span>
@@ -266,7 +292,7 @@ export default function Perfil({ username, owner, audios, videos, podcasts, sele
                                             </span>
                                         )}
 
-                                        <span style={{ background: 'none' }}>
+                                        <span style={{ background: 'none' }} onClick={() => handleClick(4, podcast.videoURL)}>
                                             {isPlaying == true ? (
                                                 <Pause className={css(styles.icone)} />
                                             ) : (
@@ -489,9 +515,9 @@ const styles = StyleSheet.create({
 
     listaVideos: {
         width: '100%',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridGap: '10px',
         color: 'white',
         background: 'none',
     },

@@ -84,9 +84,9 @@ export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
                     </div>
                     <Row className={css(styles.row2)}>
                         {selectedArtistas.map((people, index) => (
-                            <NavItem className={css(styles.item2)}>
+                            <NavItem className={css(styles.item2)} onClick={() => irPerfil(people.username)}>
                                 <img className={css(styles.img2)} src={people.foto} /><br />
-                                <span className={css(styles.autor)} onClick={() => irPerfil(people.username)}>{people.username}</span>
+                                <span className={css(styles.autor)}>{people.username}</span>
                             </NavItem>
                         ))}
                     </Row>
@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
     item2: {
         background: 'rgb(36,36,36)',
         width: '20%',
-        //height: '100%',
         borderRadius: '5px',
         padding: '1%',
         ':hover': {

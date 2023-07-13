@@ -4,9 +4,9 @@ import { Label, Input, Button, Container } from 'reactstrap'
 import { FaPlay } from 'react-icons/fa'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import user from '../img/user.jpg'
 
-
-export default function SignIn({ handleShow, handleLogin }){
+export default function SignIn({ handleShow, handleLogin }) {
 
     const api = "http://localhost:4000";
 
@@ -15,6 +15,7 @@ export default function SignIn({ handleShow, handleLogin }){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [foto, setFoto] = useState(user)
 
     function validatePassword(password) {
         // Define the conditions for a valid password
@@ -35,11 +36,11 @@ export default function SignIn({ handleShow, handleLogin }){
     }
 
     function validateEmail(email) {
-        const emailPattern = /^[a-z]+\.[a-z]+@isptec\.co\.ao$/ 
+        const emailPattern = /^[a-z]+\.[a-z]+@isptec\.co\.ao$/
         const emal = /^20(20|21|22|23)\d{4}@isptec\.co\.ao$/;
         const ema = /^20(1[2-9]|20)\d{4}@isptec\.co\.ao$/;
 
-        return emailPattern.test(email) || emal.test(email) || ema.test(email) ;
+        return emailPattern.test(email) || emal.test(email) || ema.test(email);
     }
 
     useEffect(() => {
@@ -87,7 +88,7 @@ export default function SignIn({ handleShow, handleLogin }){
         let em = validateEmail(email);
         const nExiste = verificarUsuario();
 
-        if (!em){
+        if (!em) {
             alert("Só são aceites membros do ISPTEC.");
             setTimeout(() => {
                 handleShow('SignIn')
@@ -110,13 +111,14 @@ export default function SignIn({ handleShow, handleLogin }){
             else {
                 // Criar um novo usuário
                 axios
-                    .post(api + '/create', { username, email, password })
+                    .post(api + '/create', { username, email, password, foto })
                     .then(response => {
                         const createdUser = response.data;
                         console.log('Created user:', createdUser);
                         setUsername('');
                         setEmail('');
                         setPassword('');
+                        setFoto('');
                         setTimeout(() => {
                             handleShow('Home')
                         }, 100);
