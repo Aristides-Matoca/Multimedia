@@ -7,16 +7,51 @@ import React, { useState, useEffect } from 'react';
 export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
     const [autores, setAutores] = useState([]);
     const [selectedArtistas, setSelectedArtistas] = useState([])
+    const [playList, setPlayList] = useState([])
+    const estilos = [
+        '',
+        'Documentário',
+        'Afro House',
+        'Rock Alternativo',
+        'Electrónica',
+        'Hip-hop',
+        'Pop',
+        'Desporto',
+        'Tecnologia',
+        'Gastronomia',
+        'Filme',
+        'Série',
+        'Ciência',
+        'Conversa',
+    ];
+
+    var playL = []
 
     useEffect(() => {
         const verificarAutores = () => {
             const novosAutores = pessoa
                 .filter(people => audios.some(audio => audio.autor === people.username))
                 .map(people => people);
-
             setAutores(prevAutores => [...new Set([...prevAutores, ...novosAutores])]);
-        };
+            //Criação de playlist
+            playL = []
+            for(let j = 0; j < estilos.length; j++){
+                let p = []
+                for(let i = 0; i < audios.length; i++){    
+                    if((audios[i].est == estilos[j]) || (audios[i].style == estilos[j])){
+                        p.push(audios[i])  
+                    }  
+                }
+                if(p.length != 0){
+                    playL.push(p)
+                }
+                
+            }
+            console.log(playL)
+            setPlayList(playL)
+            console.log(playList)
 
+        };
         verificarAutores();
     }, [pessoa, audios]);
 
@@ -29,6 +64,7 @@ export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
         }
     }, [autores]);
 
+    
 
     return (
         <Row className={css(styles.row)}>
@@ -39,43 +75,20 @@ export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
                 </div>
 
                 <Nav className={css(styles.nav)}>
+                    
                     <NavItem className={css(styles.item1)} onClick={() => handleShow('Ouvir')}>
                         <img className={css(styles.img)} src={Img} alt="Beyonce" />
                         <span className={css(styles.name)}>Playlist 1</span>
                     </NavItem>
 
-                    <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Ariana" />
-                        <span className={css(styles.name)}>Playlist 2</span>
-                    </NavItem>
-
-                    <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Kendrick" />
-                        <span className={css(styles.name)}>Playlist 3</span>
-                    </NavItem>
+                    {playList.map((item, index) => (
+                        <NavItem className={css(styles.item1)} key={index} onClick={() => handleShow('Ouvir')} >    
+                            <img className={css(styles.img)} src={Img} alt="Beyonce" />
+                            <span className={css(styles.name)}>{item[0].est}</span>
+                        </NavItem>
+                    ))}
                 </Nav>
 
-                <div className={css(styles.divtitles)}>
-                    <h2 className={css(styles.title)}>Álbuns mais ouvidos</h2>
-                    <span className={css(styles.vermais)}>Ver mais</span>
-                </div>
-
-                <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Beyonce" />
-                        <span className={css(styles.name)}>Álbum 1</span>
-                    </NavItem>
-
-                    <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Ariana" />
-                        <span className={css(styles.name)}>Álbum 2</span>
-                    </NavItem>
-
-                    <NavItem className={css(styles.item1)}>
-                        <img className={css(styles.img)} src={Img} alt="Kendrick" />
-                        <span className={css(styles.name)}>Álbum 3</span>
-                    </NavItem>
-                </Nav>
 
                 <Nav className={css(styles.nav2)}>
                     <div className={css(styles.divtitles)}>

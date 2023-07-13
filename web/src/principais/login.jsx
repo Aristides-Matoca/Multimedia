@@ -64,20 +64,7 @@ export default function Login({ handleShow, handleLogin }){
     }
     else {
       // Criar um novo usuário
-      axios
-        .post(api + '/addUOn', { username })
-        .then(response => {
-          const createdUser = response.data;
-          console.log('Created user:', createdUser);
-          setUsername('');
-          setPassword('');
-          setTimeout(() => {
-            handleShow('Home')
-          }, 100);
-        })
-        .catch(error => {
-          console.error('Error creating user:', error);
-        });
+      handleShow('Home')
     }
 
   };
