@@ -25,7 +25,7 @@ export default function GroupIn({handleShow, name}){
           <Nav vertical className={css(styles.nav1)}>
           <Nav vertical className={css(styles.nav11)}>
             <div className={css(styles.divtitles)}>
-                <h2 className={css(styles.title)}>Grupos</h2>
+                <h2 className={css(styles.title)}>{name}</h2>
             </div>
 
             <Nav className={css(styles.nav)}>

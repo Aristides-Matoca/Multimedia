@@ -7,13 +7,13 @@ import { FiEdit2 } from "react-icons/fi";
 import axios from 'axios';
 import { storage } from '../../backend/config'
 
-export default function CriarGrupo({handleShow}){
+export default function CriarGrupo({handleShow, username}){
 
     const api = 'http://localhost:4000';
 
     const [selectedFileImagem, setSelectedFileImagem] = useState(null);
 
-    const [owner, setOwner] = useState('');
+    const [owner, setOwner] = useState(username);
     const [nome, setNome] = useState('');
     const [description, setDescricao] = useState('');
     const [dadosUsuario, setDadosUsuario] = useState(null);
@@ -108,10 +108,11 @@ export default function CriarGrupo({handleShow}){
                     console.error("Error uploading image file:", imageError);
                 });
             } else{
-                enviar(db,{owners: {owner,}, membros: {owner,}, nome, description});
+                enviar(db,{pedidos: {},owners: {owner}, membros: {membro: owner,}, nome, description});
             } 
         }
         alert("Grupo criado!");
+        handleShow('Grupos')
       };
 
       function enviar(db, info){

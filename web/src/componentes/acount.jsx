@@ -76,6 +76,14 @@ console.log(pEmail)
           .get(api + '/')
           .then(response => {
             setDadosUsuario(response.data);
+            if(info==null){
+                dadosUsuario.forEach(obj => {
+                    if (obj.username == username) {
+                      setEmail(obj.email)
+                      console.log(email)
+                    }
+                  });
+            }
           })
           .catch(error => {
             console.error('Error:', error);
