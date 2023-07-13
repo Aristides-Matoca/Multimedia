@@ -4,7 +4,6 @@ import { Label, Input, Button, Container } from 'reactstrap'
 import { FaPlay } from 'react-icons/fa'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import user from '../img/user.jpg'
 
 export default function SignIn({ handleShow, handleLogin }) {
 

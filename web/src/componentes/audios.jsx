@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { StyleSheet, css } from 'aphrodite'
 import { Row, Nav, NavItem } from 'reactstrap'
-import Img from '../img/imagem2.png'
+import Img from '../img/audiologo.jpg'
 import React, { useState, useEffect } from 'react';
 
 export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
@@ -75,10 +75,9 @@ export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
                 </div>
 
                 <Nav className={css(styles.nav)}>
-                    
                     <NavItem className={css(styles.item1)} onClick={() => handleShow('Ouvir')}>
                         <img className={css(styles.img)} src={Img} alt="Beyonce" />
-                        <span className={css(styles.name)}>Playlist 1</span>
+                        <span className={css(styles.name)}>Playlist ISPMedia</span>
                     </NavItem>
 
                     {playList.map((item, index) => (
@@ -152,17 +151,17 @@ const styles = StyleSheet.create({
     nav: {
         background: 'black',
         padding: '2% 1.5% 2% 1.5%',
-        margin: '-0.5% -0.5% 0.5% -2.1%',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        margin: '-0.5% -0.5% 1% -2.1%',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gridGap: '10px',
         borderBottomLeftRadius: '6px',
         borderBottomRightRadius: '6px',
     },
 
     item1: {
         background: 'rgb(36,36,36)',
-        width: '30%',
+        width: '90%',
         borderRadius: '5px',
         display: 'flex',
         alignItems: 'inherit',
@@ -183,7 +182,7 @@ const styles = StyleSheet.create({
 
     name: {
         background: 'none',
-        marginLeft: '6%',
+        margin: '8% 0 0 6%',
         fontSize: '22px'
     },
 
