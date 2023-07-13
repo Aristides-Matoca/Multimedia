@@ -7,7 +7,7 @@ import React from 'react';
 import axios from 'axios';
 
 export default function Group({ handleShow, name, username }) {
-  const api = 'http://localhost:4000';
+  const api = 'http://192.168.255.18:5001';
   const [grupos, setGrupos] = useState([]);
   const [gruposC, setGruposC] = useState([]);
   const [gruposA, setGruposA] = useState([]);

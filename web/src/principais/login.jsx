@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export default function Login({ handleShow, handleLogin }){
 
-  const api = "http://localhost:4000";
+  const api = "http://192.168.255.18:5001";
 
   const [dadosUsuario, setDadosUsuario] = useState(null);
 

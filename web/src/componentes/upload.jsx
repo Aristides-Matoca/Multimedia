@@ -9,7 +9,7 @@ import { storage } from '../../backend/config'
 
 export default function Upload({ handleShow, username }) {
 
-    const api = 'http://localhost:4000';
+    const api = 'http://192.168.255.18:5001';
 
     const [selectedFileImagem, setSelectedFileImagem] = useState(null);
     const [nameI, setName] = useState(null);

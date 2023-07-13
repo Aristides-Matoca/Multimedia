@@ -8,7 +8,7 @@ import { Pessoa, storage, Audios, Videos, Grupos, Podcast } from './config.js';
 const app = express();
 app.use(express.json());
 app.use(cors());
-const port = 4000;
+const port = 5001;
 
 // Receber da colecção pessoa
 app.get("/", async(req, res) => {
@@ -211,6 +211,6 @@ app.post("/deleteGrupo", async(req, res)=>{
     res.send({msg: "Deleted"});
 })
 
-app.listen(port, ()=>console.log("Up & Running *4000"))
+app.listen(port, ()=>console.log("Up & Running *5001"))
 
 export default app;
