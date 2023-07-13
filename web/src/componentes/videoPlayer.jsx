@@ -79,7 +79,7 @@ const VideoPlayer = ({ videos, selecionarVideo, urlVideo, mediaRef, indexVideo, 
                     <div key={index} onClick={() => reproduzirVideo(index)} className={css(styles.lista)} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}>
                         <div style={{ background: 'none' }}>
                             <span style={{ background: 'none' }}>{index + 1}</span> -
-                            <span style={{ background: 'none' }}> {video.description}</span>
+                            <span style={{ background: 'none' }}> {video.titulo}</span>
                         </div>
 
                         <span className={css(styles.options)}>

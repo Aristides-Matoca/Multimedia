@@ -64,8 +64,6 @@ export default function Home({ handleShow2, username }) {
   const [urlVideo, setUrlVideo] = useState(null);
   const mediaRef = useRef(null);
 
-  const [em, setP] = useState(null)
-
   const [grupoName, setGrupoName] = useState("");
 
   const api = "http://localhost:4000";
@@ -100,20 +98,11 @@ export default function Home({ handleShow2, username }) {
       .then(response => {
         const pessoas = response.data;
         setPessoa(pessoas);
-        if (pessoa != null) {
-          pessoa.forEach(obj => {
-            if (obj.username === username) {      
-              setP(obj.email)       
-            }
-          });
-        }
       })
       .catch(error => {
         console.error('Error fetching uploads:', error);
       });
   }, []);
-
-  //console.log(pessoa)
 
   /* useEffect(() => {
      // Fetch the uploads from Firestore or your backend API
@@ -325,6 +314,31 @@ export default function Home({ handleShow2, username }) {
     setShowDefinitions(false)
   };
 
+  //Pesquisa de usuarios
+  const [valorPesquisa, setValorPesquisa] = useState('');
+  const [resultadosPesquisa, setResultadosPesquisa] = useState([]);
+  const [popUpVisivel, setPopUpVisivel] = useState(false);
+
+  const handleChangePesquisa = (event) => {
+    const valor = event.target.value;
+    setValorPesquisa(valor);
+
+    const resultados = pessoa.filter(p =>
+      p.username.toLowerCase().includes(valor.toLowerCase())
+    );
+    setResultadosPesquisa(resultados);
+    setPopUpVisivel(true);
+  };
+
+  const handleBlurInput = () => {
+    setPopUpVisivel(false);
+    setResultadosPesquisa([]);
+  };
+
+  const handleClickAutor = (autor) => {
+    setPopUpVisivel(false);
+    irPerfil(autor)
+  }
 
   return (
     <Row className={css(styles.row2)}>
@@ -338,11 +352,22 @@ export default function Home({ handleShow2, username }) {
           <InputGroupText className={css(styles.logosearch)}>
             <TbSearch className={css(styles.logosearch)} />
           </InputGroupText>
-          <Input className={css(styles.textsearch)} placeholder='Pesquise por Sons, Artistas e Álbuns' />
+          <Input value={valorPesquisa} onChange={handleChangePesquisa} onBlur={handleBlurInput} onFocus={() => setPopUpVisivel(true)} className={css(styles.textsearch)} placeholder='Pesquise por Sons, Artistas e Álbuns' />
         </InputGroup>
 
+        {popUpVisivel && resultadosPesquisa.length > 0 && (
+          <div className={css(styles.popup)} onBlur={handleBlurInput} onMouseDown={(e) => e.preventDefault()}>
+            <h4 >Artistas</h4>
+              {resultadosPesquisa.map((p, index) => (
+                <div key={index} className={css(styles.cont1)} onClick={() => handleClickAutor(p.username)}>
+                  <span style={{background:'none'}}>{p.username}<br/></span>
+                </div>
+              ))}
+          </div>
+        )}
+
         <IoIosNotifications className={css(styles.notUser)} />
-        <TbSettings ref={iconRef} className={css(styles.notUser)} onClick={handleClick} />
+        <TbSettings onBlur={handleDefinitionsClick} className={css(styles.notUser)} onClick={handleClick} />
         {showDefinitions ? (
           <div className={css(styles.definition)} onClick={handleDefinitionsClick} ref={definitionsRef}>
             <p className={css(styles.cont)} onClick={() => handleShow('Conta')}>Minha Conta</p>
@@ -358,19 +383,19 @@ export default function Home({ handleShow2, username }) {
         {Object.entries(navs).map(([nav, show]) =>
           show && (
             <React.Fragment key={nav}>
-              {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia} videos={videos} radios={radios} podcasts={podcasts}/>}
-              {nav === 'Audio' && <Audios handleShow={handleShow} />}
+              {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia} videos={videos} radios={radios} podcasts={podcasts} />}
+              {nav === 'Audio' && <Audios handleShow={handleShow} audios={audios} pessoa={pessoa} irPerfil={irPerfil} />}
               {nav === 'Video' && <Videos handleShow={handleShow} videos={videos} selecionarVideo={selecionarMedia} irPerfil={irPerfil} />}
-              {nav === 'Assistir' && <VideoPlayer videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} indexVideo={indexVideo} irPerfil={irPerfil}/>}
+              {nav === 'Assistir' && <VideoPlayer videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} indexVideo={indexVideo} irPerfil={irPerfil} />}
               {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying} />}
-              {nav === 'Podcast' && <Podcasts podcasts={podcasts} selecionarPodcast={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil}/>}
+              {nav === 'Podcast' && <Podcasts podcasts={podcasts} selecionarPodcast={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil} />}
               {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil} />}
-              {nav === 'Conta' && <Conta handleShow={handleShow} username={username} info={em}/>}
-              {nav === 'Perfil' && <Perfil username={names} owner={username} audios={audios} videos={videos} podcasts={podcasts} selecionarAudio={selecionarMedia} isPlaying={isPlaying} />}
+              {nav === 'Conta' && <Conta handleShow={handleShow} username={username} pessoa={pessoa} />}
+              {nav === 'Perfil' && <Perfil handleShow={handleShow} username={names} owner={username} audios={audios} videos={videos} podcasts={podcasts} selecionarAudio={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Upload' && <Upload handleShow={handleShow} username={username} />}
               {nav === 'Artistas' && <Artistas pessoa={pessoa} audios={audios} videos={videos} podcasts={podcasts} irPerfil={irPerfil}/>}
-              {nav === 'Grupos' && <Group handleShow={handleShow} name={name} username={username}/>}
-              {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow} username={username}/>}
+              {nav === 'Grupos' && <Group handleShow={handleShow} name={name} />}
+              {nav === 'CriarGrupo' && <CriarGrupo handleShow={handleShow} />}
               {nav === 'GrupoIn' && <GroupIn handleShow={handleShow} nome={grupoName}/>}
             </React.Fragment>
           )
@@ -470,6 +495,61 @@ const styles = StyleSheet.create({
   textsearch: {
     background: 'rgba(255, 253, 245, 1)',
     borderLeft: 'none'
+  },
+
+  popup:{
+    position: 'absolute',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+    textAlign: 'justify',
+    background: 'rgb(44,44,43)',
+    width: '97%',
+    height: '600%',
+    color: 'white',
+    flexGrow: '1',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    scrollbarColor: 'transparent transparent',
+    '::-webkit-scrollbar': {
+      width: '10px',
+    },
+
+    '::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+    },
+
+    '::-webkit-scrollbar-thumb': {
+      backgroundColor: 'transparent',
+      border: 'none',
+      borderRadius: '5px',
+    },
+
+    '::-webkit-scrollbar-thumb:hover': {
+      backgroundColor: 'transparent',
+    },
+
+    '::-webkit-scrollbar-thumb:vertical': {
+      backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    },
+
+    '::-webkit-scrollbar-thumb:vertical:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    },
+  },
+
+  cont1: {
+    background: 'none',
+    fontSize: '18px',
+    color: 'white',
+    margin: '0 1% 0 1%',
+    padding: '1%',
+    ':hover': {
+      cursor: 'pointer',
+      color: 'rgba(255, 213, 0, 1)',
+      background: 'rgb(36,36,36)',
+      borderRadius: '5px'
+    },
   },
 
   notUser: {

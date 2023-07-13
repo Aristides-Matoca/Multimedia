@@ -1,22 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, css } from 'aphrodite'
-import user from '../img/user.jpg'
 
-const Artistas = ({ pessoa, audios, videos, podcast, irPerfil }) => {
-    const [newPessoa, setNewPessoa] = useState([])
-    const podeTitulo = 'Artistas'
+const Artistas = ({ pessoa, audios, videos, podcasts, irPerfil }) => {
+    const [podeTitulo, setPodeTitulo] = useState('Artistas')
+    const [autores, setAutores] = useState([]);
+    const [autoresVideo, setAutoresVideo] = useState([]);
+    const [autoresPodcast, setAutoresPodcast] = useState([]);
 
-    useEffect(() => {
+    useEffect(() => {//Compara Pessoa com autores de audios
         if (pessoa != null) {
-            const pessoaActualizada = pessoa.map(p => {
-                if (p.foto === null) {
-                    return { ...p, foto: user };
-                }
-                return p;
-            });
-            setNewPessoa(pessoaActualizada);
+            const verificarAutores = () => {
+                const novosAutores = pessoa
+                    .filter(people => audios.some(audio => audio.autor === people.username))
+                    .map(people => people);
+
+                setAutores(prevAutores => [...new Set([...prevAutores, ...novosAutores])]);
+            };
+            verificarAutores();
         }
-    }, []);
+    }, [pessoa, audios]);
+
+    useEffect(() => {//Compara Pessoa com autores de Videos
+        if (pessoa != null) {
+            const verificarAutores = () => {
+                const novosAutores = pessoa
+                    .filter(people => videos.some(video => video.autor === people.username))
+                    .map(people => people);
+
+                    setAutoresVideo(prevAutores => [...new Set([...prevAutores, ...novosAutores])]);
+            };
+            verificarAutores();
+        }
+    }, [pessoa, videos]);
+
+    useEffect(() => {//Adiciona autores de videos com autores de audios
+        const adicionarAutores = () => {
+          const novosAutores = autoresVideo.filter(item => {
+            return !autores.some(autor => autor.username === item.username);
+          });
+    
+          setAutores(prevAutores => [...prevAutores, ...novosAutores]);
+        };
+    
+        adicionarAutores();
+      }, [autores, autoresVideo]);
+    
+    useEffect(() => {//Compara Pessoa com autores de Podcasts
+        if (pessoa != null) {
+            const verificarAutores = () => {
+                const novosAutores = pessoa
+                    .filter(people => podcasts.some(podcast => podcast.autor === people.username))
+                    .map(people => people);
+
+                    setAutoresPodcast(prevAutores => [...new Set([...prevAutores, ...novosAutores])]);
+            };
+            verificarAutores();
+        }
+    }, [pessoa, podcasts]);
+
+    useEffect(() => {//Adiciona autores de podcasts com autores de audios e videos
+        const adicionarAutores = () => {
+          const novosAutores = autoresPodcast.filter(item => {
+            return !autores.some(autor => autor.username === item.username);
+          });
+    
+          setAutores(prevAutores => [...prevAutores, ...novosAutores]);
+        };
+    
+        adicionarAutores();
+      }, [autores, autoresPodcast]);
 
     return (
         <div className={css(styles.container)}>
@@ -25,28 +77,15 @@ const Artistas = ({ pessoa, audios, videos, podcast, irPerfil }) => {
                 <span style={{ background: 'none' }}>{podeTitulo}</span>
             </div>
 
-            <div className={css(styles.info)} style={{ background: 'none' }}>
+            <div className={css(styles.artistas)}>
+                {autores.map((people, index) => (
 
-                <div className={css(styles.spans)}>
-                    <span style={{ background: 'none' }}>#</span>
-                    <span style={{ marginLeft: '4%', background: 'none' }}>Título</span>
-                </div>
-                <span style={{ background: 'none', marginRight: '-1.5%' }}>Reproduzir</span>
-            </div>
-
-            {newPessoa.map((pessoa, index) => (
-                <div key={index} className={css(styles.radios)}>
-
-                    <div className={css(styles.spans)}>
-                        <span style={{ background: 'none' }}>{index + 1}</span>
-                        <img src={pessoa.foto} className={css(styles.img)} alt="" />
-
-                        <div className={css(styles.titles)}>
-                            <span className={css(styles.autor)} onClick={() => irPerfil(pessoa.username)}>{pessoa.username}</span>
-                        </div>
+                    <div key={index} className={css(styles.spans)} onClick={() => irPerfil(people.username)}>
+                        <img src={people.foto} className={css(styles.img)} alt="" /> <br />
+                        <span className={css(styles.autor)}>{people.username}</span>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     );
 };
@@ -67,84 +106,51 @@ const styles = StyleSheet.create({
         background: 'linear-gradient(to bottom, #555555, rgba(0, 0, 0, 0.3))',
         borderTopLeftRadius: '8px',
         borderTopRightRadius: '8px',
-        padding: '6% 0 4% 0',
+        borderBottom: '1px solid grey',
+        padding: '3% 0 3% 0',
         fontSize: '40px',
         color: 'white'
     },
 
-    info: {
-        borderBottom: '1px solid grey',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        color: 'rgb(169,170,172)',
-        background: 'none',
-        fontSize: '16px',
-        padding: '0.3% 2% 0.3% 0',
-        margin: '0 1.5% 0 1.5%'
-    },
-
-    radios: {
+    artistas: {
         //border: '1px solid red',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridGap: '10px',
         color: 'white',
         background: 'black',
         fontSize: '16px',
-        padding: '0.3% 2% 0.3% 0',
+        padding: '1% 2% 1% 0',
         margin: '0 1.5% 0 1.5%',
-
-        ':hover': {
-            background: 'rgb(36,36,36)',
-            borderRadius: '6px'
-        },
-        ':active': {
-            background: 'rgb(36,36,36)'
-        }
     },
 
     spans: {
-        background: 'none',
-        marginLeft: '1%',
-        display: 'flex',
-        alignItems: 'center',
-        width: '40%'
+        background: 'rgb(36,36,36)',
+        width: '75%',
+        borderRadius: '5px',
+        padding: '2% 1% 0.5% 1%',
+        ':hover': {
+            textDecoration: 'underline',
+            background: 'rgb(157,157,157)',
+            borderRadius: '6px',
+            cursor: 'pointer'
+        },
+        ':active': {
+            background: 'rgb(157,157,157)'
+        }
     },
 
     img: {
-        width: '45px',
-        height: '40px',
-        marginLeft: '4%',
-        background: 'rgb(36,36,36)'
-    },
-
-    titles: {
-        marginLeft: '3%',
+        width: '200px',
+        height: '200px',
         background: 'none',
-        textAlign: 'justify'
+        borderRadius: '5px',
+        boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.5)',
+        marginBottom: '2%'
     },
 
     autor: {
         background: 'none',
         fontSize: '14px',
-
-        ':hover': {
-            cursor: 'pointer',
-            textDecoration: 'underline'
-        }
     },
-
-    radioname: {
-        background: 'none',
-        fontSize: '14px',
-    },
-
-    icone: {
-        background: 'none',
-        fontSize: '29px',
-        ':hover': {
-            cursor: 'pointer'
-        }
-    }
 })
