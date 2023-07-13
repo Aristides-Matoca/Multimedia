@@ -329,7 +329,7 @@ export default function Home({ handleShow2, username }) {
     );
     setResultadosPesquisa(resultados);
     setPopUpVisivel(true);
-  };
+  }; 
 
   const handleBlurInput = () => {
     setPopUpVisivel(false);
