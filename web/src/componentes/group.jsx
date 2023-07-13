@@ -37,7 +37,9 @@ export default function Group({ handleShow, name, username }) {
           } else {
             for(let i = 0; i < membros.length ; i++){             
               if (membros[i].membro === username) {
-                gP.push(gruposData[i]);
+                if ( gP.indexOf(gruposData[i]) == -1){
+                  gP.push(gruposData[i]);
+                }
               } 
             }
             gA.push(gruposData[i]);         
@@ -134,7 +136,7 @@ export default function Group({ handleShow, name, username }) {
                   <img className={css(styles.img)} src={item.imageURL} alt="Beyonce" />
                 </div>
                 <span className={css(styles.name)} onClick={() => handleShow('GrupoIn')}>{item.nome}</span>
-                <button onClick={() => alter(item.nome)}>Entrar</button>
+                <button >Entrar</button>
               </NavItem>
             ))}
           </Nav>
