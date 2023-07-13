@@ -81,14 +81,6 @@ app.post("/create", async(req, res)=>{
     res.send({msg: "User Added"})
 })
 
-// Enviar para usuáriosOn
-
-app.post("/addUOn", async(req, res)=>{
-    const data = req.body
-    console.log("Data of Pessoa ", data)
-    await UsuariosOn.add(data)
-    res.send({msg: "User Added"})
-})
 
 // Enviar ficheiro 
 

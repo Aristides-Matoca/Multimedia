@@ -111,7 +111,7 @@ export default function SignIn({ handleShow, handleLogin }) {
             else {
                 // Criar um novo usuário
                 axios
-                    .post(api + '/create', { username, email, password, foto })
+                    .post(api + '/create', { username, email, password, foto, upload: "true" })
                     .then(response => {
                         const createdUser = response.data;
                         console.log('Created user:', createdUser);
