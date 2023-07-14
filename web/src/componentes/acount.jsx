@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Conta({handleShow, username, pessoa}){
-    const api = "http://192.168.255.18:5001";
+    const api = "http://172.20.10.3:5001";
 
     console.log(pessoa)
     const [pEmail, setPEmail] = useState('')
