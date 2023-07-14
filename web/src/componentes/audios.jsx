@@ -4,28 +4,18 @@ import { Row, Nav, NavItem } from 'reactstrap'
 import Img from '../img/audiologo.jpg'
 import React, { useState, useEffect } from 'react';
 
-export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
+export default function Audios({ handleShow, audios, pessoa, irPerfil, play }) {
     const [autores, setAutores] = useState([]);
     const [selectedArtistas, setSelectedArtistas] = useState([])
-    const [playList, setPlayList] = useState([])
-    const estilos = [
-        '',
-        'Documentário',
-        'Afro House',
-        'Rock Alternativo',
-        'Electrónica',
-        'Hip-hop',
-        'Pop',
-        'Desporto',
-        'Tecnologia',
-        'Gastronomia',
-        'Filme',
-        'Série',
-        'Ciência',
-        'Conversa',
-    ];
-
-    var playL = []
+    const [newPlayLists, setNewPlayLists] = useState([])
+    const [playLists, setPlayLists] = useState([
+        {img: Img, nome: 'Playlist ISPMedia'},
+        {img: Img, nome: 'Mix Pop'},
+        {img: Img, nome: 'Mix 2023'},
+        {img: Img, nome: 'Mix Hip-Hop'},
+        {img: Img, nome: 'Mix 2020'},
+        {img: Img, nome: 'Mix 1990'},
+    ])
 
     useEffect(() => {
         const verificarAutores = () => {
@@ -33,23 +23,6 @@ export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
                 .filter(people => audios.some(audio => audio.autor === people.username))
                 .map(people => people);
             setAutores(prevAutores => [...new Set([...prevAutores, ...novosAutores])]);
-            //Criação de playlist
-            playL = []
-            for(let j = 0; j < estilos.length; j++){
-                let p = []
-                for(let i = 0; i < audios.length; i++){    
-                    if((audios[i].est == estilos[j]) || (audios[i].style == estilos[j])){
-                        p.push(audios[i])  
-                    }  
-                }
-                if(p.length != 0){
-                    playL.push(p)
-                }
-                
-            }
-            console.log(playL)
-            setPlayList(playL)
-            console.log(playList)
 
         };
         verificarAutores();
@@ -64,7 +37,13 @@ export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
         }
     }, [autores]);
 
-    
+    useEffect(() => {
+        if (playLists != null) {
+            // Embaralhar o array original e selecionar os primeiros 4 vídeos
+            const shuffledArray = [...playLists].sort(() => 0.5 - Math.random());
+            setNewPlayLists(shuffledArray)
+        }
+    }, [playLists]);
 
     return (
         <Row className={css(styles.row)}>
@@ -75,15 +54,10 @@ export default function Audios({ handleShow, audios, pessoa, irPerfil}) {
                 </div>
 
                 <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item1)} onClick={() => handleShow('Ouvir')}>
-                        <img className={css(styles.img)} src={Img} alt="Beyonce" />
-                        <span className={css(styles.name)}>Playlist ISPMedia</span>
-                    </NavItem>
-
-                    {playList.map((item, index) => (
-                        <NavItem className={css(styles.item1)} key={index} onClick={() => handleShow('Ouvir')} >    
-                            <img className={css(styles.img)} src={Img} alt="Beyonce" />
-                            <span className={css(styles.name)}>{item[0].est}</span>
+                    {newPlayLists.map((playList, index) => (
+                        <NavItem className={css(styles.item1)} key={index} onClick={() => play(playList.nome)} >
+                            <img className={css(styles.img)} src={playList.img} alt="" />
+                            <span className={css(styles.name)}>{playList.nome}</span>
                         </NavItem>
                     ))}
                 </Nav>
@@ -161,10 +135,11 @@ const styles = StyleSheet.create({
 
     item1: {
         background: 'rgb(36,36,36)',
-        width: '90%',
+        width: '98%',
         borderRadius: '5px',
         display: 'flex',
         alignItems: 'inherit',
+        marginBottom: '1%',
         ':hover': {
             background: 'rgb(157,157,157)',
             cursor: 'pointer'
@@ -195,6 +170,9 @@ const styles = StyleSheet.create({
         gridTemplateColumns: '1fr',
         gridGap: '10px',
         borderRadius: '6px',
+        flexGrow: '1',
+        overflowY: 'hidden',
+        overflowX: 'hidden',
     },
 
     row2: {

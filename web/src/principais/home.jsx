@@ -36,18 +36,20 @@ export default function Home({ handleShow2, username }) {
     handleShow('Perfil')
   }
 
+  //PlayList
+  const [playlist, setPlaylist] = useState(null)
+
+  const play = (value) => {
+    setPlaylist(value)
+    handleShow('Ouvir')
+  }
+
   const [audios, setAudios] = useState(null);
-
-  /* const [podcasts, setPodcasts] = useState([
-     { tipo: 'Podcast', titulo: 'Podast 1', autor: 'Harry Matoca', legenda: 'Entrevista ao Kelson', imageDownloadURL: podlogo, audioURL: KMW },
-   ]);*/
-
   const [podcasts, setPodcasts] = useState(null);
-
   const [videos, setVideos] = useState(null);
+  const [pessoa, setPessoa] = useState(null);
 
   //const [radios, setRadios] = useState(null);
-  const [pessoa, setPessoa] = useState(null);
 
   const [radios, setRadios] = useState([
     { tipo: 'Radio', titulo: 'Rádio Mais', legenda: 'Estação 1', imageDownloadURL: radiologo, audioURL: 'https://radios.justweb.pt/8050/stream/?1685627470876' },
@@ -445,13 +447,13 @@ export default function Home({ handleShow2, username }) {
         {Object.entries(navs).map(([nav, show]) =>
           show && (
             <React.Fragment key={nav}>
-              {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia} videos={videos} radios={radios} podcasts={podcasts} />}
-              {nav === 'Audio' && <Audios handleShow={handleShow} audios={audios} pessoa={pessoa} irPerfil={irPerfil} />}
+              {nav === 'Inicio' && <Homepage handleShow={handleShow} selecionarMedia={selecionarMedia} videos={videos} radios={radios} podcasts={podcasts} play={play} />}
+              {nav === 'Audio' && <Audios handleShow={handleShow} audios={audios} pessoa={pessoa} irPerfil={irPerfil} play={play} />}
               {nav === 'Video' && <Videos handleShow={handleShow} videos={videos} selecionarVideo={selecionarMedia} irPerfil={irPerfil} />}
               {nav === 'Assistir' && <VideoPlayer videos={videos} selecionarVideo={selecionarMedia} urlVideo={urlVideo} mediaRef={mediaRef} indexVideo={indexVideo} irPerfil={irPerfil} />}
               {nav === 'Radio' && <Radios radios={radios} selecionarRadio={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Podcast' && <Podcasts podcasts={podcasts} selecionarPodcast={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil} />}
-              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil} />}
+              {nav === 'Ouvir' && <AudioPlayer audios={audios} selecionarAudio={selecionarMedia} isPlaying={isPlaying} irPerfil={irPerfil} playlist={playlist} />}
               {nav === 'Conta' && <Conta handleShow={handleShow} username={username} pessoa={pessoa} />}
               {nav === 'Perfil' && <Perfil handleShow={handleShow} username={names} owner={username} audios={audios} videos={videos} podcasts={podcasts} selecionarMedia={selecionarMedia} isPlaying={isPlaying} />}
               {nav === 'Upload' && <Upload handleShow={handleShow} username={username} />}
