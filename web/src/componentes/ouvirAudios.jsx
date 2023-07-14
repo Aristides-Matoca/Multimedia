@@ -56,8 +56,11 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil, playlist })
     }
   }, [audios, playlist]);
 
-  const handleClick = (index) => {
+  const handleClick = (index, url) => {
     var playPause
+    var posicao
+
+    posicao = audios.findIndex(audio => audio.audioURL === url)
 
     if (audioPlayingIndex === index) {
       setAudioPlayingIndex(null); // Pausa o áudio se o mesmo já estiver sendo reproduzido
@@ -67,14 +70,14 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil, playlist })
       playPause = 11
     }
 
-    selecionarAudio(index, 1, playPause);
+    selecionarAudio(posicao, 1, playPause);
     setTimeout(() => {
-      selectAudio(index, playPause);
+      selectAudio(posicao, playPause);
     }, 100);
   };
 
-  const selectAudio = (index, playPause) => {
-    selecionarAudio(index, 1, playPause);
+  const selectAudio = (posicao, playPause) => {
+    selecionarAudio(posicao, 1, playPause);
   };
 
   //Funções de Options------------------------------------------------------------------
@@ -157,7 +160,7 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil, playlist })
               </span>
             )}
 
-            <span style={{ background: 'none' }} onClick={() => handleClick(index)}>
+            <span style={{ background: 'none' }} onClick={() => handleClick(index, audio.audioURL)}>
               {audioPlayingIndex === index && isPlaying == true ? (
                 <Pause className={css(styles.icone)} />
               ) : (

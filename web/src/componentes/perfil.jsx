@@ -13,6 +13,8 @@ export default function Perfil({ handleShow, username, owner, audios, videos, po
     const [selectedAudios, setSelectedAudios] = useState([])
     const [selectedVideos, setSelectedVideos] = useState([])
     const [selectedPodcasts, setSelectedPodcasts] = useState([])
+    const [audioPlayingIndex, setAudioPlayingIndex] = useState(null)
+    const [podPlayingIndex, setPodPlayingIndex] = useState(null)
 
     useEffect(() => {
         const filtrarAudios = () => {
@@ -41,30 +43,46 @@ export default function Perfil({ handleShow, username, owner, audios, videos, po
         filtrarPodcasts();
     }, [podcasts, username]);
 
-    const handleClick = (pos, url) => {
+    const handleClick = (pos, url, index) => {
         var posicao
+        var playPause
 
-        if(pos == 1){
+        if (pos == 1) {
             posicao = audios.findIndex(audio => audio.audioURL === url)
+            if (audioPlayingIndex === index) {
+                setAudioPlayingIndex(null); // Pausa o áudio se o mesmo já estiver sendo reproduzido
+                playPause = 12
+            } else {
+                setAudioPlayingIndex(index); // Reproduz o áudio selecionado
+                playPause = 11
+            }
         }
 
         else if (pos == 2) {
             posicao = videos.findIndex(video => video.videoURL === url)
+            playPause = 11
             handleShow('Assistir')
         }
 
-        else if(pos == 4){
+        else if (pos == 4) {
             posicao = podcasts.findIndex(podcast => podcast.audioURL === url)
+            if (podPlayingIndex === index) {
+                setPodPlayingIndex(null); // Pausa o áudio se o mesmo já estiver sendo reproduzido
+                playPause = 12
+            } else {
+                setPodPlayingIndex(index); // Reproduz o áudio selecionado
+                playPause = 11
+            }
         }
 
-        selecionarMedia(posicao, pos, 11);
+        selecionarMedia(posicao, pos, playPause);
         setTimeout(() => {
-            selectMedia(posicao, pos);
+            selectMedia(posicao, pos, playPause);
         }, 100);
     };
 
-    const selectMedia = (posicao, pos) => {
-        selecionarMedia(posicao, pos, 11);
+    const selectMedia = (posicao, pos, playPause) => {
+        selecionarMedia(posicao, pos, playPause);
     };
 
 
@@ -217,8 +235,8 @@ export default function Perfil({ handleShow, username, owner, audios, videos, po
                                             </span>
                                         )}
 
-                                        <span style={{ background: 'none' }} onClick={() => handleClick(1, audio.audioURL)}>
-                                            {isPlaying == true ? (
+                                        <span style={{ background: 'none' }} onClick={() => handleClick(1, audio.audioURL, index)}>
+                                            {audioPlayingIndex === index && isPlaying == true ? (
                                                 <Pause className={css(styles.icone)} />
                                             ) : (
                                                 <Play className={css(styles.icone)} />
@@ -251,7 +269,7 @@ export default function Perfil({ handleShow, username, owner, audios, videos, po
                     <TabPane tabId="2" className={css(styles.tab)}>
                         <div className={css(styles.listaVideos)}>
                             {selectedVideos.map((video, index) => (
-                                <div key={index} className={css(styles.lista)} onClick={() => handleClick(2, video.videoURL)}>
+                                <div key={index} className={css(styles.lista)} onClick={() => handleClick(2, video.videoURL, null)}>
                                     <img className={css(styles.imgV)} src={video.imageDownloadURL} alt="Image" /> <br />
                                     <span style={{ background: 'none' }}>{video.titulo}</span> <br />
                                     <span style={{ background: 'none' }}>{video.autor}</span>
@@ -292,8 +310,8 @@ export default function Perfil({ handleShow, username, owner, audios, videos, po
                                             </span>
                                         )}
 
-                                        <span style={{ background: 'none' }} onClick={() => handleClick(4, podcast.audioURL)}>
-                                            {isPlaying == true ? (
+                                        <span style={{ background: 'none' }} onClick={() => handleClick(4, podcast.audioURL, index)}>
+                                            {podPlayingIndex === index && isPlaying == true ? (
                                                 <Pause className={css(styles.icone)} />
                                             ) : (
                                                 <Play className={css(styles.icone)} />
@@ -465,7 +483,7 @@ const styles = StyleSheet.create({
         }
     },
 
-   options: {
+    options: {
         marginRight: '-12%',
         background: 'none',
         fontSize: '25px',
@@ -474,7 +492,7 @@ const styles = StyleSheet.create({
         }
     },
 
-   definition: {
+    definition: {
         position: 'absolute',
         top: '53%',
         right: '2%',
@@ -486,7 +504,7 @@ const styles = StyleSheet.create({
         width: '17%'
     },
 
-     cont1: {
+    cont1: {
         background: 'none',
         fontSize: '18px',
         color: 'white',

@@ -9,12 +9,11 @@ export default function Audios({ handleShow, audios, pessoa, irPerfil, play }) {
     const [selectedArtistas, setSelectedArtistas] = useState([])
     const [newPlayLists, setNewPlayLists] = useState([])
     const [playLists, setPlayLists] = useState([
-        {img: Img, nome: 'Playlist ISPMedia'},
-        {img: Img, nome: 'Mix Pop'},
-        {img: Img, nome: 'Mix 2023'},
-        {img: Img, nome: 'Mix Hip-Hop'},
-        {img: Img, nome: 'Mix 2020'},
-        {img: Img, nome: 'Mix 1990'},
+        { img: Img, nome: 'Mix Pop' },
+        { img: Img, nome: 'Mix 2023' },
+        { img: Img, nome: 'Mix Hip-Hop' },
+        { img: Img, nome: 'Mix 2020' },
+        { img: Img, nome: 'Mix 1990' },
     ])
 
     useEffect(() => {
@@ -54,6 +53,11 @@ export default function Audios({ handleShow, audios, pessoa, irPerfil, play }) {
                 </div>
 
                 <Nav className={css(styles.nav)}>
+                    <NavItem className={css(styles.item1)} onClick={() => play('Playlist ISPMedia')} >
+                        <img className={css(styles.img)} src={Img} alt="" />
+                        <span className={css(styles.name)}>Playlist ISPMedia</span>
+                    </NavItem>
+
                     {newPlayLists.map((playList, index) => (
                         <NavItem className={css(styles.item1)} key={index} onClick={() => play(playList.nome)} >
                             <img className={css(styles.img)} src={playList.img} alt="" />
