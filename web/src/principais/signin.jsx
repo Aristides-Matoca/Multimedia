@@ -3,12 +3,12 @@ import './signin.css'
 import { Label, Input, Button, Container } from 'reactstrap'
 import { FaPlay } from 'react-icons/fa'
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from 'axios';   
 
 export default function SignIn({ handleShow, handleLogin }) {
 
-    const api = "http://localhost:4000";
-    const [user, setUser] = useState('https://firebasestorage.googleapis.com/v0/b/ispmedia-79115.appspot.com/o/imagens%2Fuser.jpg?alt=media&token=7d7fdd22-fc79-403e-84ed-051f966f1253')
+    const api = "http://192.168.255.18:5001";
+
     const [dadosUsuario, setDadosUsuario] = useState(null);
 
     const [email, setEmail] = useState('');
