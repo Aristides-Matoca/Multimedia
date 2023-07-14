@@ -4,10 +4,28 @@ import { Row, Nav, NavItem } from 'reactstrap'
 import audiologo from '../img/audiologo.jpg'
 import React, { useState, useEffect } from 'react'
 
-export default function Homepage({ handleShow, selecionarMedia, videos, radios, podcasts }) {
+export default function Homepage({ handleShow, selecionarMedia, videos, radios, podcasts, play }) {
     const [selectedVideos, setSelectedVideos] = useState([])
     const [selectedRadios, setSelectedRadios] = useState([])
     const [selectedPodcasts, setSelectedPodcasts] = useState([])
+    const [newPlayLists, setNewPlayLists] = useState([])
+    const [playLists, setPlayLists] = useState([
+        { img: audiologo, nome: 'Playlist ISPMedia' },
+        { img: audiologo, nome: 'Mix Pop' },
+        { img: audiologo, nome: 'Mix 2023' },
+        { img: audiologo, nome: 'Mix Hip-Hop' },
+        { img: audiologo, nome: 'Mix 2020' },
+        { img: audiologo, nome: 'Mix 1990' },
+    ])
+
+    useEffect(() => {
+        if (playLists != null) {
+            // Embaralhar o array original e selecionar os primeiros 4 vídeos
+            const shuffledArray = [...playLists].sort(() => 0.5 - Math.random());
+            const selected = shuffledArray.slice(0, 3);
+            setNewPlayLists(selected)
+        }
+    }, [playLists]);
 
     useEffect(() => {
         if (videos != null) {
@@ -42,11 +60,11 @@ export default function Homepage({ handleShow, selecionarMedia, videos, radios, 
             handleShow('Assistir')
         }
 
-        else if(pos == 3){
+        else if (pos == 3) {
             posicao = radios.findIndex(radio => radio.audioURL === url)
         }
 
-        else if(pos == 4){
+        else if (pos == 4) {
             posicao = podcasts.findIndex(podcast => podcast.audioURL === url)
         }
 
@@ -85,20 +103,12 @@ export default function Homepage({ handleShow, selecionarMedia, videos, radios, 
                 </div>
 
                 <Nav className={css(styles.nav)}>
-                    <NavItem className={css(styles.item3)}>
-                        <img className={css(styles.img3)} src={audiologo} alt="Audio" /> <br />
-                        <span className={css(styles.name)}>4<br /> Beyonce</span>
-                    </NavItem>
-
-                    <NavItem className={css(styles.item3)}>
-                        <img className={css(styles.img3)} src={audiologo} alt="Audio" /> <br />
-                        <span className={css(styles.name)}>Thank u, Next<br /> Ariana Grande</span>
-                    </NavItem>
-
-                    <NavItem className={css(styles.item3)}>
-                        <img className={css(styles.img3)} src={audiologo} alt="Audio" />
-                        <span className={css(styles.name)}>Damn<br /> Kendrick Lamar</span>
-                    </NavItem>
+                    {newPlayLists.map((playList, index) => (
+                        <NavItem className={css(styles.item3)} key={index} onClick={() => play(playList.nome)} >
+                            <img className={css(styles.img3)} src={playList.img} alt="" />
+                            <span className={css(styles.name)}>{playList.nome}</span>
+                        </NavItem>
+                    ))}
                 </Nav>
 
                 <div className={css(styles.divtitles)}>
@@ -201,7 +211,7 @@ const styles = StyleSheet.create({
         background: 'none',
         borderRadius: '5px',
         boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.5)',
-        marginBottom: '5%', 
+        marginBottom: '5%',
     },
 
     img: {

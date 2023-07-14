@@ -6,12 +6,61 @@ import { BsThreeDots as Dots } from "react-icons/bs"
 import { BiLeftArrow as Arrow } from "react-icons/bi"
 
 
-const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil }) => {
+const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil, playlist }) => {
   const [audioPlayingIndex, setAudioPlayingIndex] = useState(null)
-  const playlist = 'Playlist 1'
+  const [selectedPlayList, setSelectedPlayList] = useState([])
 
-  const handleClick = (index) => {
+  useEffect(() => {
+    if (playlist === 'Playlist ISPMedia') {
+      setSelectedPlayList(audios)
+    }
+
+    else if (playlist === 'Mix Pop') {
+      const filtrarAudios = () => {
+        const audiosFiltradas = audios.filter(audio => audio.est === 'Pop' || audio.style === 'Pop');
+        setSelectedPlayList(audiosFiltradas);
+      };
+      filtrarAudios();
+    }
+
+    else if (playlist === 'Mix Hip-Hop') {
+      const filtrarAudios = () => {
+        const audiosFiltradas = audios.filter(audio => audio.est === 'Rap' || audio.est === 'Hip-Hop' || audio.style === 'Rap');
+        setSelectedPlayList(audiosFiltradas);
+      };
+      filtrarAudios();
+    }
+
+    else if (playlist === 'Mix 2023') {
+      const filtrarAudios = () => {
+        const audiosFiltradas = audios.filter(audio => audio.ano === '2023' || audio.ano === '2023');
+        setSelectedPlayList(audiosFiltradas);
+      };
+      filtrarAudios();
+    }
+
+    else if (playlist === 'Mix 2020') {
+      const filtrarAudios = () => {
+        const audiosFiltradas = audios.filter(audio => audio.ano === '2020' || audio.ano === '2020');
+        setSelectedPlayList(audiosFiltradas);
+      };
+      filtrarAudios();
+    }
+
+    else if (playlist === 'Mix 1990') {
+      const filtrarAudios = () => {
+        const audiosFiltradas = audios.filter(audio => audio.ano === '1990' || audio.ano === '1990');
+        setSelectedPlayList(audiosFiltradas);
+      };
+      filtrarAudios();
+    }
+  }, [audios, playlist]);
+
+  const handleClick = (index, url) => {
     var playPause
+    var posicao
+
+    posicao = audios.findIndex(audio => audio.audioURL === url)
 
     if (audioPlayingIndex === index) {
       setAudioPlayingIndex(null); // Pausa o áudio se o mesmo já estiver sendo reproduzido
@@ -21,14 +70,14 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil }) => {
       playPause = 11
     }
 
-    selecionarAudio(index, 1, playPause);
+    selecionarAudio(posicao, 1, playPause);
     setTimeout(() => {
-      selectAudio(index, playPause);
+      selectAudio(posicao, playPause);
     }, 100);
   };
 
-  const selectAudio = (index, playPause) => {
-    selecionarAudio(index, 1, playPause);
+  const selectAudio = (posicao, playPause) => {
+    selecionarAudio(posicao, 1, playPause);
   };
 
   //Funções de Options------------------------------------------------------------------
@@ -86,7 +135,7 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil }) => {
 
         <span style={{ background: 'none' }}>Reproduzir</span>
       </div>
-      {audios.map((audio, index) => (
+      {selectedPlayList.map((audio, index) => (
         <div key={index} className={css(styles.audios)} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}>
 
           <div className={css(styles.spans)}>
@@ -111,7 +160,7 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil }) => {
               </span>
             )}
 
-            <span style={{ background: 'none' }} onClick={() => handleClick(index)}>
+            <span style={{ background: 'none' }} onClick={() => handleClick(index, audio.audioURL)}>
               {audioPlayingIndex === index && isPlaying == true ? (
                 <Pause className={css(styles.icone)} />
               ) : (
@@ -127,7 +176,7 @@ const AudioPlayer = ({ audios, selecionarAudio, isPlaying, irPerfil }) => {
                     <div className={css(styles.definition)} onClick={handleOptionsClick} ref={optionsRef}>
                       <p className={css(styles.cont)}>Adicionar aos favoritos</p>
                       <p className={css(styles.cont)} onClick={() => irPerfil(audio.autor)}>Ir ao perfil do artista</p>
-                      <p className={css(styles.cont2)}><Arrow style={{background: 'none', color: 'white'}}/> Adicionar a playlist</p>
+                      <p className={css(styles.cont2)}><Arrow style={{ background: 'none', color: 'white' }} /> Adicionar a playlist</p>
                     </div>
                   ) : null}
                 </React.Fragment>
