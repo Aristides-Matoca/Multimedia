@@ -9,7 +9,7 @@ import { storage } from '../../backend/config'
 
 export default function CriarGrupo({handleShow, username}){
 
-    const api = 'http://172.20.10.3:5001';
+    const api = 'http://localhost:5001';
 
     const [selectedFileImagem, setSelectedFileImagem] = useState(null);
 

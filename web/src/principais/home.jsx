@@ -69,7 +69,7 @@ export default function Home({ handleShow2, username }) {
 
   const [grupoName, setGrupoName] = useState("");
 
-  const api = "http://172.20.10.3:5001";
+  const api = "http://localhost:5001";
 
   useEffect(() => {
     // Fetch the uploads from Firestore or your backend API
