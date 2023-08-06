@@ -14,7 +14,7 @@ export default function SignIn({ handleShow, handleLogin }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [foto, setFoto] = useState(user)
+    //const [foto, setFoto] = useState(user)
 
     function validatePassword(password) {
         // Define the conditions for a valid password
@@ -110,14 +110,13 @@ export default function SignIn({ handleShow, handleLogin }) {
             else {
                 // Criar um novo usuário
                 axios
-                    .post(api + '/create', { username, email, password, foto, upload: "true" })
+                    .post(api + '/create', { username, email, password, upload: "true" })
                     .then(response => {
                         const createdUser = response.data;
                         console.log('Created user:', createdUser);
                         setUsername('');
                         setEmail('');
                         setPassword('');
-                        setFoto('');
                         setTimeout(() => {
                             handleShow('Home')
                         }, 100);
